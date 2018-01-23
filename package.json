@@ -1,9 +1,8 @@
 {
   "name": "wallet",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon api/server.js"
   },
   "license": "UNLICENSED",
   "dependencies": {
@@ -11,5 +10,9 @@
   },
   "devDependencies": {
     "nodemon": "^1.14.11"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "watch": ["api/*"]
   }
 }
