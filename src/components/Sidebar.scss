@@ -1,0 +1,27 @@
+.sidebar{
+  flex: 0 1 15em;
+  height: 100vh;
+  background-color: #333333;
+  color: #ccc;
+  z-index: 100;
+
+  .brand{
+    text-align: center;
+    font-size: 1.2em;
+    color: #39ac39;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+
+  a{
+    display: block;
+    color: inherit;
+    text-decoration: inherit;
+    padding: 1em 2em;
+    transition: background-color 0.1s;
+
+    &:hover{
+      background-color: rgba(#fff, 0.1);
+    }
+  }
+}
