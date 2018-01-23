@@ -1,18 +1,26 @@
 {
   "name": "wallet",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "start": "nodemon api/server.js"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "dev": "nodemon api/server.js",
+    "test": "react-scripts test --env=jsdom"
   },
   "license": "UNLICENSED",
   "dependencies": {
     "express": "^4.16.2"
   },
   "devDependencies": {
-    "nodemon": "^1.14.11"
+    "custom-react-scripts": "^0.2.1",
+    "nodemon": "^1.14.11",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "nodemonConfig": {
-    "verbose": true,
-    "watch": ["api/*"]
+    "watch": [
+      "api/*"
+    ]
   }
 }
