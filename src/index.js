@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.scss';
@@ -11,10 +12,14 @@ import Sidebar from './components/Sidebar';
 class Root extends Component{
   render(){
     return (
-      <div className="root">
-        <Sidebar/>
-        <App/>
-      </div>
+      <BrowserRouter>
+        <div className="root">
+          <Sidebar/>
+          <Switch>
+            <Route exact path="/" component={App}/>
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
 }
