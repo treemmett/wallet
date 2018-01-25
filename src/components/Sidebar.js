@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Sidebar.scss';
 
 export default class Sidebar extends Component{
@@ -8,7 +9,7 @@ export default class Sidebar extends Component{
         <div className="brand">Wallet</div>
         <div className="nav">
           <a href="#null">Budget</a>
-          <a href="#null">Tax</a>
+          <Link to="/income">Income & Tax</Link>
         </div>
       </div>
     );

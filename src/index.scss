@@ -1,3 +1,11 @@
+$main: #5cd65c;
+$mainHover: hsl(120, 55%, 60%);
+$mainActive: hsl(120, 45%, 60%);
+
+$secondary: #fafafa;
+$secondaryHover: hsl(0, 0%, 95%);
+$secondaryActive: hsl(0, 0%, 92%);
+
 body {
   margin: 0;
   padding: 0;
@@ -51,20 +59,33 @@ form{
 
   .radio{
     display: inline-block;
+    position: relative;
     margin-bottom: 1em;
 
     input[type=radio]{
-      visibility: hidden;
-      position: fixed;
+      position: absolute;
+      top: 100%;
+      transform: translateY(-100%);
+      z-index: -10000;
+      opacity: 0;
     }
 
     label{
       padding: 0.5em 1em;
-      background-color: #fafafa;
+      background-color: $secondary;
       border: 1px solid #eee;
       text-align: center;
       font-size: 1.1em;
       user-select: none;
+      transition: background-color 0.1s, border-color 0.1s, color 0.1s;
+
+      &:hover{
+        background-color: $secondaryHover;
+      }
+
+      &:active{
+        background-color: $secondaryActive;
+      }
     }
 
     .option + .option > label{
@@ -79,10 +100,39 @@ form{
       border-radius: 0 0 0.4em 0.4em;
     }
 
-    input:checked + label{
-      background-color: #5cd65c;
-      border-color: #5cd65c;
+    //Active radio
+    input[type=radio]:checked + label{
+      background-color: $main;
+      border-color: $main;
       color: #fff;
+
+      &:hover{
+        background-color: $mainHover;
+      }
+
+      &:active{
+        background-color: $mainActive;
+      }
+    }
+
+    input[type=radio]:checked:focus + label{
+      background-color: $mainActive;
+    }
+  }
+
+  button, input[type=button], input[type=submit]{
+    background-color: $main;
+    color: #fff;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+
+    &:hover{
+      background-color: $mainHover;
+    }
+
+    &:active, &:focus{
+      background-color: $mainActive;
     }
   }
 
