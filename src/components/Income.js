@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 export default class Income extends Component{
+  constructor(){
+    super();
+
+    this.state = {
+      scaleHourly: false
+    }
+  }
+
   saveIncome = e => {
     e.preventDefault();
     alert('Done');
@@ -37,6 +46,11 @@ export default class Income extends Component{
     }
   }
 
+  updateScale = e => {
+    this.setState({scaleHourly: e.target.value === 'hourly'});
+    e.target.blur();
+  }
+
   render(){
     return (
       <div className="app">
@@ -46,18 +60,18 @@ export default class Income extends Component{
             <label>Pay Scale</label>
             <div className="radio">
               <div className="option">
-                <input type="radio" id="income_scale_hourly" name="income_scale" value="hourly" required/>
+                <input type="radio" id="income_scale_hourly" name="income_scale" value="hourly" onChange={this.updateScale} required/>
                 <label htmlFor="income_scale_hourly">Hourly</label>
               </div>
 
               <div className="option">
-                <input type="radio" id="income_scale_salary" name="income_scale" value="salary"/>
+                <input type="radio" id="income_scale_salary" name="income_scale" value="salary" onChange={this.updateScale}/>
                 <label htmlFor="income_scale_salary">Salary</label>
               </div>
             </div>
 
-            <label htmlFor="income_hours">Average Hours per Week</label>
-            <input id="income_hours" name="income_hours" required/>
+            <label className={classNames({hidden: !this.state.scaleHourly})} htmlFor="income_hours">Average Hours per Week</label>
+            <input className={classNames({hidden: !this.state.scaleHourly})} id="income_hours" name="income_hours" required/>
 
             <label htmlFor="income_rate">Income Rate</label>
             <input id="income_rate" name="income_rate" placeholder="$00.00" onChange={this.formatCurrency} onFocus={this.formatCurrency} onBlur={this.formatCurrency}required/>

@@ -13,6 +13,7 @@
     "express": "^4.16.2"
   },
   "devDependencies": {
+    "classnames": "^2.2.5",
     "custom-react-scripts": "^0.2.1",
     "nodemon": "^1.14.11",
     "react": "^16.2.0",
