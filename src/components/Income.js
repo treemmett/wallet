@@ -12,7 +12,18 @@ export default class Income extends Component{
 
   saveIncome = e => {
     e.preventDefault();
-    alert('Done');
+
+    //Convert rate string to number
+    const rate = Number(e.target['income_rate'].value.replace(/\$|,/g, ''));
+
+    //Save settings
+    localStorage.setItem('income', JSON.stringify({
+      rate: rate,
+      scale: e.target['income_scale'].value.trim(),
+      hours: this.state.scaleHourly ? e.target['income_hours'].value.trim() : undefined
+    }));
+
+    alert('Settings saved');
   }
 
   formatCurrency = e => {
@@ -71,10 +82,10 @@ export default class Income extends Component{
             </div>
 
             <label className={classNames({hidden: !this.state.scaleHourly})} htmlFor="income_hours">Average Hours per Week</label>
-            <input className={classNames({hidden: !this.state.scaleHourly})} id="income_hours" name="income_hours" required/>
+            <input className={classNames({hidden: !this.state.scaleHourly})} id="income_hours" name="income_hours" required={this.state.scaleHourly}/>
 
             <label htmlFor="income_rate">Income Rate</label>
-            <input id="income_rate" name="income_rate" placeholder="$00.00" onChange={this.formatCurrency} onFocus={this.formatCurrency} onBlur={this.formatCurrency}required/>
+            <input id="income_rate" name="income_rate" placeholder="$00.00" onChange={this.formatCurrency} onFocus={this.formatCurrency} onBlur={this.formatCurrency} required/>
 
             <input type="submit" value="Save"/>
           </form>
