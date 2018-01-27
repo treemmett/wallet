@@ -92,7 +92,7 @@ form{
       }
     }
 
-    .option + .option > label{
+    &:not(.horizontal) .option + .option > label{
       border-top: 0;
     }
 
@@ -102,6 +102,24 @@ form{
 
     .option:last-of-type > label{
       border-radius: 0 0 0.4em 0.4em;
+    }
+
+    &.horizontal{
+      .option{
+        display: inline-block;
+
+        & + .option > label{
+          border-left: 0;
+        }
+
+        &:first-of-type > label{
+          border-radius: 0.4em 0 0 0.4em;
+        }
+
+        &:last-of-type > label{
+          border-radius: 0 0.4em 0.4em 0;
+        }
+      }
     }
 
     //Active radio
@@ -117,10 +135,6 @@ form{
       &:active{
         background-color: $mainActive;
       }
-    }
-
-    input[type=radio]:checked:focus + label{
-      background-color: $mainActive;
     }
   }
 

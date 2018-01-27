@@ -26,6 +26,10 @@ export default class Income extends Component{
     alert('Settings saved');
   }
 
+  saveTax = e => {
+    e.preventDefault();
+  }
+
   formatCurrency = e => {
     //Remove all non currency characters from value
     const val = e.target.value.trim().replace(/[^\d.{1}]/g, '');
@@ -59,7 +63,6 @@ export default class Income extends Component{
 
   updateScale = e => {
     this.setState({scaleHourly: e.target.value === 'hourly'});
-    e.target.blur();
   }
 
   render(){
@@ -68,6 +71,7 @@ export default class Income extends Component{
         <section>
           <div className="title">Income</div>
           <form onSubmit={this.saveIncome}>
+
             <label>Pay Scale</label>
             <div className="radio">
               <div className="option">
@@ -86,6 +90,38 @@ export default class Income extends Component{
 
             <label htmlFor="income_rate">Income Rate</label>
             <input id="income_rate" name="income_rate" placeholder="$00.00" onChange={this.formatCurrency} onFocus={this.formatCurrency} onBlur={this.formatCurrency} required/>
+
+            <input type="submit" value="Save"/>
+          </form>
+        </section>
+
+        <section>
+          <div className="title">Tax</div>
+          <form onSubmit={this.saveTax}>
+
+            <label>Filing Status</label>
+            <div className="radio horizontal">
+              <div className="option">
+                <input type="radio" id="tax_status_single" name="tax_status" value="single" required/>
+                <label htmlFor="tax_status_single">Single</label>
+              </div>
+
+              <div className="option">
+                <input type="radio" id="tax_status_maried" name="tax_status" value="maried" required/>
+                <label htmlFor="tax_status_maried">Maried</label>
+              </div>
+
+              <div className="option">
+                <input type="radio" id="tax_status_hoh" name="tax_status" value="hoh" required/>
+                <label htmlFor="tax_status_hoh">Head of Household</label>
+              </div>
+            </div>
+
+            <label htmlFor="tax_age">Age as of Dec 31, {new Date().getFullYear()}</label>
+            <input id="tax_age" name="tax_age" required/>
+
+            <label htmlFor="tax_dependants">Number of Dependants</label>
+            <input id="tax_dependants" name="tax_dependants" required/>
 
             <input type="submit" value="Save"/>
           </form>
