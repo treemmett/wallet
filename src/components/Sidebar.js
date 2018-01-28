@@ -8,7 +8,7 @@ export default class Sidebar extends Component{
       <div className="sidebar">
         <div className="brand">Wallet</div>
         <div className="nav">
-          <a href="#null">Budget</a>
+          <Link to="/budget">Budget</Link>
           <Link to="/income">Income & Tax</Link>
         </div>
       </div>

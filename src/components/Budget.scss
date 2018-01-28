@@ -1,0 +1,31 @@
+.budget{
+  padding-left: 0;
+  padding-right: 0;
+
+  .table{
+    .category{
+      color: #333;
+      margin-bottom: 1em;
+
+      .main, .row{
+        display: flex;
+        background-color: #fff;
+        padding: 1em;
+        border: 1px solid #eee;
+        user-select: none;
+
+        *:first-child{
+          margin-right: auto;
+        }
+      }
+
+      .main{
+        font-weight: bold;
+      }
+
+      .row{
+        border-top: none;
+      }
+    }
+  }
+}

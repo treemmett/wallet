@@ -7,6 +7,7 @@ import './index.scss';
 
 //Components
 import App from './components/App';
+import Budget from './components/Budget';
 import Income from './components/Income';
 import Sidebar from './components/Sidebar';
 
@@ -20,6 +21,7 @@ class Root extends Component{
             <Route exact path="/" component={App}/>
 
             <Route exact path="/income" component={Income}/>
+            <Route exact path="/budget" component={Budget}/>
           </Switch>
         </div>
       </BrowserRouter>
