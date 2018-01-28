@@ -61,6 +61,16 @@ export default class Income extends Component{
     }
   }
 
+  formatNumber = e => {
+    //Remove all non number characters from value
+    const val = e.target.value.trim().replace(/[^\d.]/g, '');
+
+    //Seperate periods
+    const int = val.split('.');
+
+    e.target.value = int[0];
+  }
+
   updateScale = e => {
     this.setState({scaleHourly: e.target.value === 'hourly'});
   }
@@ -86,7 +96,7 @@ export default class Income extends Component{
             </div>
 
             <label className={classNames({hidden: !this.state.scaleHourly})} htmlFor="income_hours">Average Hours per Week</label>
-            <input className={classNames({hidden: !this.state.scaleHourly})} id="income_hours" name="income_hours" required={this.state.scaleHourly}/>
+            <input className={classNames({hidden: !this.state.scaleHourly})} onChange={this.formatNumber} id="income_hours" name="income_hours" required={this.state.scaleHourly}/>
 
             <label htmlFor="income_rate">Income Rate</label>
             <input id="income_rate" name="income_rate" placeholder="$00.00" onChange={this.formatCurrency} onFocus={this.formatCurrency} onBlur={this.formatCurrency} required/>
@@ -118,10 +128,10 @@ export default class Income extends Component{
             </div>
 
             <label htmlFor="tax_age">Age as of Dec 31, {new Date().getFullYear()}</label>
-            <input id="tax_age" name="tax_age" required/>
+            <input id="tax_age" name="tax_age" onChange={this.formatNumber} required/>
 
             <label htmlFor="tax_dependants">Number of Dependants</label>
-            <input id="tax_dependants" name="tax_dependants" required/>
+            <input id="tax_dependants" name="tax_dependants" onChange={this.formatNumber} required/>
 
             <input type="submit" value="Save"/>
           </form>
