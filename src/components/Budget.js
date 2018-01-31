@@ -6,46 +6,17 @@ export default class Budget extends Component{
     super();
 
     this.state = {
-      categories: [
-        {
-          name: 'Home',
-          id: 0,
-          subcategories: [
-            {
-              name: 'Rent',
-              spending: 1000,
-              id: 3
-            },
-            {
-              name: 'Utilities',
-              spending: 100,
-              id: 8
-            }
-          ]
-        },
-        {
-          name: 'Transportation',
-          id: 1,
-          subcategories: [
-            {
-              name: 'Auto Loan',
-              spending: 200,
-              id: 17
-            },
-            {
-              name: 'Gas',
-              spending: 100,
-              id: 19
-            },
-            {
-              name: 'Insurance',
-              spending: 70,
-              id: 6
-            }
-          ]
-        },
-      ]
+      categories: []
     }
+  }
+
+  componentDidMount(){
+    //Get budget on mount
+    this.getBudget();
+  }
+
+  getBudget = e => {
+    fetch('/api/budget').then(res => res.json()).then(res => this.setState({categories: res}));
   }
 
   render(){
