@@ -13,12 +13,16 @@ body {
 
   .root{
     display: flex;
+    height: 100vh;
+    overflow: hidden;
   }
 }
 
 //Global App Styles
 .app{
   flex-grow: 1;
+  // flex-shrink: 1;
+  overflow: auto;
   background-color: #f6f6f6;
   padding: 2em 2.5em;
 }

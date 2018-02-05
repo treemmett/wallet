@@ -1,9 +1,12 @@
 .sidebar{
-  flex: 0 1 15em;
+  flex: 0 0 15em;
+  width: 15em;
+  flex-shrink: 0;
   height: 100vh;
   background-color: #333333;
   color: #ccc;
   z-index: 100;
+  overflow: auto;
 
   .brand{
     text-align: center;
@@ -23,5 +26,9 @@
     &:hover{
       background-color: rgba(#fff, 0.1);
     }
+  }
+
+  *:last-child{
+    margin-bottom: 1em;
   }
 }
