@@ -139,11 +139,15 @@ form{
   }
 
   button, input[type=button], input[type=submit]{
+    display: inline-block;
     background-color: $main;
     color: #fff;
     border: 0;
     cursor: pointer;
     outline: none;
+    padding: 0.5em 0.75em;
+    border-radius: 0.4em;
+    font-size: 1em;
 
     &:hover{
       background-color: $mainHover;
@@ -152,9 +156,36 @@ form{
     &:active, &:focus{
       background-color: $mainActive;
     }
+
+    &.secondary{
+      background-color: $secondary;
+      color: #333;
+
+      &:hover{
+        background-color: $secondaryHover;
+      }
+
+      &:active{
+        background-color: $secondaryActive;
+      }
+    }
+
+    & + button, input[type=button], input[type=submit]{
+      margin-left: 0.5em;
+    }
   }
 
   & > *:last-child{
     margin-bottom: 0;
   }
+}
+
+svg{
+  fill: none;
+  stroke: #333;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  height: 24px;
+  width: 24px;
 }

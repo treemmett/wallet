@@ -1,6 +1,7 @@
 .budget{
   padding-left: 0;
   padding-right: 0;
+  position: relative;
 
   .table{
     .category{
@@ -14,18 +15,52 @@
         border: 1px solid #eee;
         user-select: none;
 
-        *:first-child{
-          margin-right: auto;
+        .add{
+          visibility: hidden;
+          height: 18px;
+          width: 18px;
+          margin-left: 1em;
+          stroke: #888;
+
+          &:hover{
+            stroke: #333;
+            cursor: pointer;
+          }
+        }
+
+        &:hover{
+          .add{
+            visibility: visible;
+          }
+        }
+
+        *:last-child{
+          margin-left: auto;
+        }
+
+        &:not(.row){ //.main
+          font-weight: bold;
+        }
+
+        &:not(.main){ //.row
+          border-top: none;
         }
       }
+    }
+  }
 
-      .main{
-        font-weight: bold;
-      }
+  .modal{
+    position: absolute;
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 0.4em;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23), 0 0 5px rgba(0,0,0,0.12);
+    left: 50%;
+    top: 4em;
+    transform: translateX(-50%);
 
-      .row{
-        border-top: none;
-      }
+    button, input[type=submit]{
+      margin-bottom: 0;
     }
   }
 }
