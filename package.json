@@ -11,10 +11,12 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongodb": "^3.0.2"
   },
   "devDependencies": {
     "classnames": "^2.2.5",
+    "concurrently": "^3.5.1",
     "custom-react-scripts": "^0.2.1",
     "nodemon": "^1.14.11",
     "react": "^16.2.0",
