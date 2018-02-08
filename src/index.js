@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
 
@@ -12,6 +13,17 @@ import Income from './components/Income';
 import Sidebar from './components/Sidebar';
 
 class Root extends Component{
+  constructor(){
+    super();
+
+    //Setup Axios instance
+    global.api = axios.create({
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
+  }
+
   render(){
     return (
       <BrowserRouter>
