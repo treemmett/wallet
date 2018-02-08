@@ -179,6 +179,11 @@ form{
     }
   }
 
+  input:active, input:focus, button:active, button:focus {
+    outline: none;
+    border: 1px solid #777;
+  }
+
   & > *:last-child{
     margin-bottom: 0;
   }

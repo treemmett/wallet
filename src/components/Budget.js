@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Plus from '../svg/Plus';
+import Sidebar from './Sidebar';
 import './Budget.scss';
 
 export default class Budget extends Component{
@@ -64,10 +65,13 @@ export default class Budget extends Component{
     });
 
     return (
-      <div className="app budget">
-        { this.state.modal }
-        <div className="table">
-          {categories}
+      <div className="root">
+        <Sidebar/>
+        <div className="app budget">
+          { this.state.modal }
+          <div className="table">
+            {categories}
+          </div>
         </div>
       </div>
     );

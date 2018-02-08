@@ -10,7 +10,7 @@ import './index.scss';
 import App from './components/App';
 import Budget from './components/Budget';
 import Income from './components/Income';
-import Sidebar from './components/Sidebar';
+import Login from './components/Login';
 
 class Root extends Component{
   constructor(){
@@ -27,15 +27,14 @@ class Root extends Component{
   render(){
     return (
       <BrowserRouter>
-        <div className="root">
-          <Sidebar/>
-          <Switch>
-            <Route exact path="/" component={App}/>
+        <Switch>
+          <Route exact path="/" component={App}/>
 
-            <Route exact path="/income" component={Income}/>
-            <Route exact path="/budget" component={Budget}/>
-          </Switch>
-        </div>
+          <Route exact path="/income" component={Income}/>
+          <Route exact path="/budget" component={Budget}/>
+
+          <Route exact path="/login" component={Login}/>
+        </Switch>
       </BrowserRouter>
     );
   }
