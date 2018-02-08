@@ -34,6 +34,7 @@ class Root extends Component{
           <Route exact path="/budget" component={Budget}/>
 
           <Route exact path="/login" component={Login}/>
+          <Route exact path="/login/register" component={Login}/>
         </Switch>
       </BrowserRouter>
     );
