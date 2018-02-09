@@ -61,14 +61,8 @@ auth.post('/', (req, res, next) => {
 
 auth.post('/register', (req, res, next) => {
   //Check if all fields are present
-  if(!req.body.email || !req.body.password || !req.body.confirm_password){
+  if(!req.body.email || !req.body.password){
     res.status(400).send({error: 'missing_required_input', message: 'Missing required input'});
-    return next();
-  }
-
-  //Check if password matches
-  if(req.body.password !== req.body.confirm_password){
-    res.status(400).send({error: 'invalid_input', message: 'Passwords do not match'});
     return next();
   }
 
