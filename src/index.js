@@ -32,6 +32,19 @@ class Root extends Component{
       }
 
       return response;
+    }, error => {
+
+      if(error.response){
+        console.error(error.response.data.error);
+        alert(error.response.data.message);
+      }else if(error.request){
+        console.error(error.request);
+      }else{
+        console.error(error.message);
+        alert('Something went wrong');
+      }
+
+      return Promise.reject(error);
     });
   }
 

@@ -19,6 +19,15 @@ app.use((req, res, next) => {
 //Use all routes
 app.use('/api', require('./routes'));
 
+//Error handling
+app.use((err, req, res, next) => {
+  res.status(500).send({
+    error: 'server_error',
+    message: 'Something went wrong. Try again in a few minutes'
+  });
+  return next(err);
+});
+
 
 
 //Create MongoDB connection

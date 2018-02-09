@@ -20,11 +20,11 @@ export default class Login extends Component{
     global.api.post('/api/auth/register', data).then(response => {
       if(response.data.success){
         alert('Registration successful');
-      }
 
-      //Navigate to root
-      this.props.history.push('/');
-    }).catch(err => console.log(err.response));
+        //Navigate to root
+        this.props.history.push('/');
+      }
+    });
   }
 
   checkConfirmPassword = e => {

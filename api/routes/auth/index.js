@@ -28,7 +28,6 @@ auth.post('/register', (req, res, next) => {
     //Generate hash of password
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       if(err){
-        res.status(500).send({error: 'server_error', message: 'A server error occured. Please try again later'});
         return next(err);
       }
 
@@ -51,7 +50,6 @@ auth.post('/register', (req, res, next) => {
         ]
       }, (err, data) => {
         if(err){
-          res.status(500).send({error: 'server_error', message: 'A server error occured. Please try again later'});
           return next(err);
         }
 
