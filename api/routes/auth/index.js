@@ -56,7 +56,7 @@ auth.post('/register', (req, res, next) => {
         }
 
         //Send token
-        res.send({success: true, token: token});
+        res.set('Access-Token', token).send({success: true});
         return next();
       });
     });

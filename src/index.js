@@ -22,6 +22,17 @@ class Root extends Component{
         'content-type': 'application/json'
       }
     });
+
+    //Set response interceptor
+    global.api.interceptors.response.use(response => {
+
+      //Add access token to localStorage
+      if(response.headers['access-token']){
+        localStorage.setItem('token', response.headers['access-token']);
+      }
+
+      return response;
+    });
   }
 
   render(){

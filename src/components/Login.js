@@ -9,6 +9,22 @@ export default class Login extends Component{
 
   register = e => {
     e.preventDefault();
+
+    //Compile data body
+    const data = {
+      email: e.target.elements.email.value.trim(),
+      password: e.target.elements.password.value.trim(),
+      confirm_password: e.target.elements.confirm_password.value.trim()
+    }
+
+    global.api.post('/api/auth/register', data).then(response => {
+      if(response.data.success){
+        alert('Registration successful');
+      }
+
+      //Navigate to root
+      this.props.history.push('/');
+    }).catch(err => console.log(err.response));
   }
 
   checkConfirmPassword = e => {
