@@ -5,6 +5,21 @@ import './Login.scss';
 export default class Login extends Component{
   login = e => {
     e.preventDefault();
+
+    //Compile data body
+    const data = {
+      email: e.target.elements.email.value.trim(),
+      password: e.target.elements.password.value.trim()
+    }
+
+    global.api.post('/api/auth', data).then(response => {
+      if(response.data.success){
+        alert('Login successful');
+
+        //Navigate to root
+        this.props.history.push('/');
+      }
+    });
   }
 
   register = e => {
