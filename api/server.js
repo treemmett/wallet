@@ -10,7 +10,8 @@ app.use(bodyParser.json());
 
 //Require token
 app.use(jwt({
-  secret: 'mySecretKey'
+  secret: 'mySecretKey',
+  isRevoked: checkToken
 }).unless({path: [
   /^\/api\/auth\/?$/,
   /^\/api\/auth\/register\/?$/
@@ -62,3 +63,26 @@ MongoClient.connect(url, (err, client) => {
   //Start server
   app.listen(8080, _ => console.log('API listening on port 8080'));
 });
+
+//Function to check if auth token is revoked
+function checkToken(req, payload, done){
+  //Connect to db collection
+  const usersDb = req.app.locals.db.collection('users');
+
+  //Find user with email
+  usersDb.findOne({email: payload.email}, (err, user) => {
+    if(err){
+      done(err);
+    }
+
+    //Check if token is in list of valid tokens
+    for(let i = 0; i < user.tokens.length; i++){
+      console.log(i);
+      if(payload.jti === user.tokens[i].jti){
+        return done();
+      }
+    }
+
+    return done(null, true);
+  });
+}
