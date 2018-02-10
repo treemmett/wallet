@@ -1,11 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('express-jwt');
 const MongoClient = require('mongodb').MongoClient
 const app = express();
 
 //Set app settings
 app.use(express.json());
 app.use(bodyParser.json());
+
+//Require token
+app.use(jwt({
+  secret: 'mySecretKey'
+}).unless({path: [
+  /^\/api\/auth\/?$/,
+  /^\/api\/auth\/register\/?$/
+]}));
 
 //Set response headers
 app.use((req, res, next) => {
@@ -21,11 +30,17 @@ app.use('/api', require('./routes'));
 
 //Error handling
 app.use((err, req, res, next) => {
+  //Check if error was caused by JWT
+  if(err.name === 'UnauthorizedError'){
+    res.status(401).send({error: 'invalid_token'});
+    return next();
+  }
+
   res.status(500).send({
     error: 'server_error',
     message: 'Something went wrong. Try again in a few minutes'
   });
-  return next(err);
+  return next();
 });
 
 

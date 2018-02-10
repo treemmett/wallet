@@ -23,6 +23,17 @@ class Root extends Component{
       }
     });
 
+    //Set request interceptor
+    global.api.interceptors.request.use(config => {
+
+      //Add token to all requests
+      if(localStorage.token){
+        config.headers.authorization = 'Bearer '+localStorage.token;
+      }
+
+      return config;
+    });
+
     //Set response interceptor
     global.api.interceptors.response.use(response => {
 
@@ -35,8 +46,18 @@ class Root extends Component{
     }, error => {
 
       if(error.response){
+
+        //Remove token if 401 is received
+        if(error.response.status === 401){
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        }
+
         console.error(error.response.data.error);
-        alert(error.response.data.message);
+
+        if(error.response.data.message){
+          alert(error.response.data.message);
+        }
       }else if(error.request){
         console.error(error.request);
       }else{

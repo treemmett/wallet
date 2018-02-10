@@ -19,7 +19,7 @@ export default class Budget extends Component{
 
   getBudget = e => {
     global.api.get('/api/budget')
-    .then(res => this.setState({categories: res.data}));
+    .then(res => this.setState({categories: res.data})).catch(_ => {});
   }
 
   createCategory = (e, that) => {

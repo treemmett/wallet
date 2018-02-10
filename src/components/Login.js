@@ -14,12 +14,11 @@ export default class Login extends Component{
 
     global.api.post('/api/auth', data).then(response => {
       if(response.data.success){
-        alert('Login successful');
 
         //Navigate to root
         this.props.history.push('/');
       }
-    });
+    }).catch(_ => {});
   }
 
   register = e => {
@@ -39,7 +38,7 @@ export default class Login extends Component{
         //Navigate to root
         this.props.history.push('/');
       }
-    });
+    }).catch(_ => {});
   }
 
   checkConfirmPassword = e => {
