@@ -1,6 +1,7 @@
 const auth = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require(__root + 'config');
 
 auth.post('/', (req, res, next) => {
   //Check if all fields are present
@@ -43,7 +44,7 @@ auth.post('/', (req, res, next) => {
       const uuid = Buffer.from(epoch.toString()).toString('base64').replace(/=/g, '');
 
       //Generate token
-      const token = jwt.sign({email: req.body.email, jti: uuid}, 'mySecretKey', {expiresIn: '1h'});
+      const token = jwt.sign({email: req.body.email, jti: uuid}, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
 
       //Add token to users token list
       users.update({email: req.body.email}, {$push: {tokens: {jti: uuid}}}, (err, count, obj) => {
@@ -89,7 +90,7 @@ auth.post('/register', (req, res, next) => {
       const uuid = Buffer.from(epoch.toString()).toString('base64').replace(/=/g, '');
 
       //Create token
-      const token = jwt.sign({email: req.body.email, jti: uuid}, 'mySecretKey', {expiresIn: '1h'});
+      const token = jwt.sign({email: req.body.email, jti: uuid}, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
 
       //Add user to database
       users.insertOne({

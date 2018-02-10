@@ -3,14 +3,16 @@ const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
 const MongoClient = require('mongodb').MongoClient
 const app = express();
+const config = require('./config');
 
 //Set app settings
 app.use(express.json());
 app.use(bodyParser.json());
+global.__root = __dirname + '/';
 
 //Require token
 app.use(jwt({
-  secret: 'mySecretKey',
+  secret: config.jwt.secret,
   isRevoked: checkToken
 }).unless({path: [
   /^\/api\/auth\/?$/,
@@ -44,19 +46,15 @@ app.use((err, req, res, next) => {
   return next();
 });
 
-
-
 //Create MongoDB connection
-const url = 'mongodb://localhost:27017';
-const dbName = 'wallet';
-MongoClient.connect(url, (err, client) => {
+MongoClient.connect(config.database.url, (err, client) => {
   //Kill server if connection failed
   if(err){
     console.error('Failed to connect to database. ' + err.stack);
     process.exit(err);
   }
 
-  const db = client.db(dbName);
+  const db = client.db(config.database.name);
 
   app.locals.db = db;
 
