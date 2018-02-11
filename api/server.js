@@ -73,14 +73,55 @@ function checkToken(req, payload, done){
       done(err);
     }
 
-    //Check if token is in list of valid tokens
+    //Check if user exists
+    if(!user){
+      done(null, true);
+    }
+
+    //Calculate current time for token check
+    const epoch = Math.floor(new Date().getTime() / 1000);
+
+    let tokenInvalid = true;
+
+    //Loop through all tokens in user profile
     for(let i = 0; i < user.tokens.length; i++){
-      console.log(i);
+
+      //Check if current token matches token that is received
       if(payload.jti === user.tokens[i].jti){
-        return done();
+        //Continue middleware to reduce delay, but continue checking all tokens
+        tokenInvalid = false;
+        done();
+        continue;
+      }
+
+      //Continue check if token has no expiration
+      if(!user.tokens[i].exp){
+        continue;
+      }
+
+      //Check if token has expired
+      if(epoch > user.tokens[i].exp){
+
+        //Remove token from DB
+        usersDb.update(
+          {
+            _id: user._id
+          },
+          {
+            $pull: {
+              'tokens': {
+                jti: user.tokens[i].jti
+              }
+            }
+          }
+        );
       }
     }
 
-    return done(null, true);
+    //Return invalid token if no valid token was found
+    if(tokenInvalid){
+      return done(null, true);
+    }
+
   });
 }

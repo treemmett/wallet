@@ -46,8 +46,11 @@ auth.post('/', (req, res, next) => {
       //Generate token
       const token = jwt.sign({email: req.body.email, jti: uuid}, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
 
+      //Decode token to get expiration
+      const tokenPayload = jwt.decode(token);
+
       //Add token to users token list
-      users.update({email: req.body.email}, {$push: {tokens: {jti: uuid}}}, (err, count, obj) => {
+      users.update({email: req.body.email}, {$push: {tokens: {jti: uuid, exp: tokenPayload.exp}}}, (err, count, obj) => {
         if(err){
           return next(err);
         }
@@ -92,13 +95,19 @@ auth.post('/register', (req, res, next) => {
       //Create token
       const token = jwt.sign({email: req.body.email, jti: uuid}, config.jwt.secret, {expiresIn: config.jwt.expiresIn});
 
+      //Decode token to get expiration
+      const tokenPayload = jwt.decode(token);
+
       //Add user to database
       users.insertOne({
         email: req.body.email,
         hash: hash,
         created: Math.floor(epoch / 1000),
         tokens: [
-          {jti: uuid}
+          {
+            jti: uuid,
+            exp: tokenPayload.exp
+          }
         ]
       }, (err, data) => {
         if(err){
