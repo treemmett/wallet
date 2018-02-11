@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.scss';
@@ -75,15 +75,43 @@ class Root extends Component{
         <Switch>
           <Route exact path="/" component={App}/>
 
-          <Route exact path="/income" component={Income}/>
-          <Route exact path="/budget" component={Budget}/>
-
           <Route exact path="/login" component={Login}/>
           <Route exact path="/login/register" component={Login}/>
+
+          <PrivateRoute exact path="/income" component={Income}/>
+          <PrivateRoute  exact path="/budget" component={Budget}/>
         </Switch>
       </BrowserRouter>
     );
   }
+}
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    checkAuth()
+      ? <Component {...props}/>
+      : <Redirect to={{pathname: '/login', state: {referrer: props.match.path}}}/>
+  )} />
+);
+
+function checkAuth(){
+  //Return false if token is not saved
+  if(!localStorage.token){
+    return false;
+  }
+
+  //Parse token expiration date
+  const tokenExp = JSON.parse(atob(localStorage.token.split('.')[1])).exp;
+  const epoch = Math.floor(new Date().getTime() / 1000);
+
+  const valid = tokenExp > epoch;
+
+  if(!valid){
+    //Clear storage if session is expired
+    localStorage.clear();
+  }
+
+  return valid;
 }
 
 ReactDOM.render(<Root/>, document.getElementById('root'));

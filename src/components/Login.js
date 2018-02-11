@@ -15,8 +15,12 @@ export default class Login extends Component{
     global.api.post('/api/auth', data).then(response => {
       if(response.data.success){
 
-        //Navigate to root
-        this.props.history.push('/');
+        //Navigate to referrer if present, root if not
+        try{
+          this.props.history.push(this.props.location.state.referrer);
+        }catch(e){
+          this.props.history.push('/');
+        }
       }
     }).catch(_ => {});
   }
@@ -33,7 +37,6 @@ export default class Login extends Component{
 
     global.api.post('/api/auth/register', data).then(response => {
       if(response.data.success){
-        alert('Registration successful');
 
         //Navigate to root
         this.props.history.push('/');
