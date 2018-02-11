@@ -7,7 +7,6 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.scss';
 
 //Components
-import App from './components/App';
 import Budget from './components/Budget';
 import Income from './components/Income';
 import Login from './components/Login';
@@ -74,12 +73,10 @@ class Root extends Component{
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={App}/>
-
           <Route exact path="/login" component={Login}/>
           <Route exact path="/login/register" component={Login}/>
 
-          <PrivateRoute  exact path="/budget" component={Budget}/>
+          <PrivateRoute  exact path="/" component={Budget}/>
           <PrivateRoute exact path="/income" component={Income}/>
           <PrivateRoute  exact path="/transactions" component={Transactions}/>
         </Switch>
