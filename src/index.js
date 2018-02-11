@@ -11,6 +11,7 @@ import App from './components/App';
 import Budget from './components/Budget';
 import Income from './components/Income';
 import Login from './components/Login';
+import Transactions from './components/Transactions';
 
 class Root extends Component{
   constructor(){
@@ -78,8 +79,9 @@ class Root extends Component{
           <Route exact path="/login" component={Login}/>
           <Route exact path="/login/register" component={Login}/>
 
-          <PrivateRoute exact path="/income" component={Income}/>
           <PrivateRoute  exact path="/budget" component={Budget}/>
+          <PrivateRoute exact path="/income" component={Income}/>
+          <PrivateRoute  exact path="/transactions" component={Transactions}/>
         </Switch>
       </BrowserRouter>
     );
