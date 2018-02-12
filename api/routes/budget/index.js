@@ -1,5 +1,6 @@
 const budget = require('express').Router();
 const ObjectID = require('mongodb').ObjectID;
+const config = require(__root + 'config');
 
 budget.use((req, res, next) => {
   //Check if user has document in budget collection
@@ -58,13 +59,15 @@ budget.use((req, res, next) => {
   });
 });
 
-budget.get('/', (req, res, next) => {
+budget.route('/')
+.get((req, res, next) => {
 
   //Select budget from users document
   const budgetDb = req.app.locals.db.collection('budget');
   budgetDb.findOne({email: req.user.email}, (err, data) => {
     res.send(data.budget);
   });
-});
+})
+.all(config.methodNotAllowed);
 
 module.exports = budget;

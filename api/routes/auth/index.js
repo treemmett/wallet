@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require(__root + 'config');
 
-auth.post('/', (req, res, next) => {
+auth.route('/')
+.post((req, res, next) => {
   //Check if all fields are present
   if(!req.body.email || !req.body.password){
     res.status(400).send({error: 'missing_required_input', message: 'Missing required input'});
@@ -61,9 +62,11 @@ auth.post('/', (req, res, next) => {
       });
     });
   });
-});
+})
+.all(config.methodNotAllowed);
 
-auth.post('/register', (req, res, next) => {
+auth.route('/register')
+.post((req, res, next) => {
   //Check if all fields are present
   if(!req.body.email || !req.body.password){
     res.status(400).send({error: 'missing_required_input', message: 'Missing required input'});
@@ -120,6 +123,7 @@ auth.post('/register', (req, res, next) => {
       });
     });
   });
-});
+})
+.all(config.methodNotAllowed);
 
 module.exports = auth;
