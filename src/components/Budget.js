@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Plus from '../svg/Plus';
+import Plus from '../svg/PlusCircle';
 import Sidebar from './Sidebar';
 import './Budget.scss';
 

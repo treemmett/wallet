@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
+import ActionBar from './ActionBar';
 import Sidebar from './Sidebar';
+import Plus from '../svg/Plus';
 import './Transactions.scss';
 
 export default class Transactions extends Component{
+  constructor(){
+    super();
+    this.state = {
+      transactions: [],
+      actionBarFunctions: {
+        left: [
+          {
+            icon: <Plus/>,
+            action: this.newTransaction
+          }
+        ],
+        right: []
+      }
+    }
+  }
+
+  newTransaction = e => {
+    const newState = this.state.transactions.concat({});
+    this.setState({transactions: newState});
+  }
+
   render(){
-    let a = [];
-    for(let i = 0; i < 10; i++){
-      a.push(<Row/>);
+    //Compile rows
+    let rows = [];
+    for(let i = 0; i < this.state.transactions.length; i++){
+      rows.push(<Row key={i}/>);
     }
 
     return (
       <div className="root">
         <Sidebar/>
         <div className="app transactions">
+          <ActionBar left={this.state.actionBarFunctions.left} right={this.state.actionBarFunctions.right}/>
           <div className="table">
             <div className="header">
               <div className="body">
@@ -27,7 +52,7 @@ export default class Transactions extends Component{
               </div>
             </div>
             <div className="body">
-              {a}
+              {rows}
             </div>
           </div>
         </div>
