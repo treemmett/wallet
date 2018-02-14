@@ -70,4 +70,6 @@ budget.route('/')
 })
 .all(config.methodNotAllowed);
 
+budget.use('/transactions', require('./transactions'));
+
 module.exports = budget;
