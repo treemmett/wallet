@@ -28,6 +28,25 @@ app.use((req, res, next) => {
   return next();
 });
 
+//Intercept before response is sent
+app.use((req, res, next) => {
+  res.realSend = res.send;
+
+  //Response interceptors
+  res.send = function(data){
+
+    //Change _id key to id
+    if(typeof data === 'object'){
+      const dataJson = JSON.stringify(data);
+      data = JSON.parse(dataJson.replace(/"_id":/gi, '"id":'));
+    }
+
+    res.realSend(data);
+    return next();
+  }
+  return next();
+});
+
 //Use all routes
 app.use('/api', require('./routes'));
 
