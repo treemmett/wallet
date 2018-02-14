@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import ActionBar from './ActionBar';
 import Sidebar from './Sidebar';
 import Plus from '../svg/Plus';
@@ -21,6 +22,12 @@ export default class Transactions extends Component{
     }
   }
 
+  componentDidMount(){
+    //Get transactions api call
+    global.api.get('/api/budget/transactions')
+    .then(res => this.setState({transactions: res.data})).catch(_ => {});
+  }
+
   newTransaction = e => {
     const newState = this.state.transactions.concat({});
     this.setState({transactions: newState});
@@ -30,7 +37,7 @@ export default class Transactions extends Component{
     //Compile rows
     let rows = [];
     for(let i = 0; i < this.state.transactions.length; i++){
-      rows.push(<Row key={i}/>);
+      rows.push(<Row key={i} data={this.state.transactions[i]}/>);
     }
 
     return (
@@ -65,12 +72,12 @@ class Row extends Component{
   render(){
     return (
       <div className="row">
-        <div className="cell" data-type="date">01/01/2018</div>
-        <div className="cell">Store</div>
-        <div className="cell">Groceries</div>
+        <div className="cell" data-type="date">{moment.unix(this.props.data.date).format('MMM DD, YYYY')}</div>
+        <div className="cell">{this.props.data.payee}</div>
+        <div className="cell">{this.props.data.category}</div>
         <div className="cell"></div>
-        <div className="cell" data-type="outflow">$36.56</div>
-        <div className="cell" data-type="inflow">$2.56</div>
+        <div className="cell" data-type="outflow">{this.props.data.amount}</div>
+        <div className="cell" data-type="inflow"></div>
       </div>
     );
   }

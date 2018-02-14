@@ -73,6 +73,23 @@
     * **Code:** 400</br>
     **Body:** `{"error": "email_in_use", "message": "Email is already registered"}`
 
+### Get transactions
+
+  Returns array of all transactions
+
+  * **URL**
+
+    /api/budget/transactions
+
+  * **Method**
+
+    `GET`
+
+  * **Success Response**
+
+    * **Code:** 200<br/>
+    **Body:** `[{"_id": "1234...", "amount": 87.32, "category": "groceries", "date": 1514764800, "payee": "Tom's groceries"}, {"_id": "1234...", "amount": 21.63, "category": "transportation", "date": 1514764800, "payee": "Gas station"}]`
+
 ### Add transaction
 
   Adds new transaction to database, returns added transaction

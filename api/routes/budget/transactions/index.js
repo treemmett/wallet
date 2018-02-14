@@ -3,6 +3,17 @@ const ObjectID = require('mongodb').ObjectID;
 const config = require(__root + 'config');
 
 transactions.route('/')
+.get((req, res, next) => {
+  //Select transactions from database
+  const budgetDb = req.app.locals.db.collection('budget');
+  budgetDb.findOne({email: req.user.email}, (err, data) => {
+    if(err){
+      return next(err);
+    }
+
+    res.send(data.transactions);
+  });
+})
 .post((req, res, next) => {
   //Check if all data is present
   if(!req.body.amount || !req.body.category || !req.body.date || !req.body.payee){
