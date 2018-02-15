@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const jwt = require('express-jwt');
+const expJwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
+const ms = require('ms');
 const MongoClient = require('mongodb').MongoClient
 const app = express();
 const config = require('./config');
@@ -11,7 +13,7 @@ app.use(bodyParser.json());
 global.__root = __dirname + '/';
 
 //Require token
-app.use(jwt({
+app.use(expJwt({
   secret: config.jwt.secret,
   isRevoked: checkToken
 }).unless({path: [
@@ -25,6 +27,17 @@ app.use((req, res, next) => {
   res.set('Connection', 'close');
   res.removeHeader('Date');
   res.removeHeader('X-Powered-By');
+
+  //Duplicate token and update expiration
+  if(req.user){
+    const payload = JSON.parse(JSON.stringify(req.user));
+    payload.exp = Math.floor((ms(config.jwt.expiresIn) + new Date().getTime()) / 1000);
+
+    //Sign new token
+    const newToken = jwt.sign(payload, config.jwt.secret);
+    res.set('Access-Token', newToken);
+  }
+
   return next();
 });
 
