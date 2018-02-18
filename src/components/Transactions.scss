@@ -10,45 +10,76 @@
     height: 100vh;
     color: #333;
 
+    .header, .row{
+      display: flex;
+      position: relative;
+      background-color: #fff;
+      width: 100%;
+      align-items: center;
+      height: 2em;
+      border-bottom: 1px solid #eee;
+    }
+
+    .row.edit{
+      background-color: #118AB2;
+      color: #fff;
+    }
+
     .header{
       position: sticky;
       top: 0;
-      box-sizing: border-box;
+      border-top: 1px solid #eee;
+      color: #888;
+    }
 
-      .cell{
-        border: 1px solid #eee;
-        color: #888;
+    .cell{
+      padding: 0 0.6em;
+      font-size: 0.875em;
+      user-select: none;
+
+      &[data-type=date]{
+        width: 80px;
+      }
+
+      &[data-type=category], &[data-type=payee], &[data-type=notes]{
+        flex-grow: 1;
+      }
+
+      &[data-type=inflow], &[data-type=outflow]{
+        text-align: right;
+        padding-right: 0.6em;
+        width: 70px;
       }
     }
 
-    .body{
-      display: table;
+    input{
       width: 100%;
-      background-color: #fff;
-      table-layout: fixed;
-      border-collapse: collapse;
+      padding: 0.1em 0.2em;
+      box-sizing: border-box;
+    }
 
-      .row{
-        display: table-row;
-        height: 28px;
+    .actions{
+      position: absolute;
+      bottom: -2em;
+      right: 2em;
+      height: 1em;
+      background-color: #118AB2;
+      padding: 0.5em 1em;
+      z-index: 5;
+      color: #fff;
+      border-radius: 0 0 10px 10px;
+      user-select: none;
 
-        .cell{
-          display: table-cell;
-          border-bottom: 1px solid #eee;
-          padding-left: 0.6em;
-          font-size: 0.875em;
-          vertical-align: middle;
-          user-select: none;
+      span{
+        display: inline-block;
+        cursor: pointer;
 
-          &[data-type=date]{
-            width: 80px;
-          }
+        &:hover{
+          text-decoration: underline;
+        }
 
-          &[data-type=inflow], &[data-type=outflow]{
-            text-align: right;
-            padding-right: 0.6em;
-            width: 70px;
-          }
+        &+span{
+          margin-left: 1em;
         }
       }
     }
