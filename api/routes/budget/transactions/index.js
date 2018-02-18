@@ -22,10 +22,7 @@ transactions.route('/')
   }
 
   //Check if data type is correct
-  if(
-    typeof req.body.amount !== 'number' ||
-    typeof req.body.date !== 'number'
-  ){
+  if(typeof req.body.amount !== 'number'){
     res.status(400).send({error: 'invalid_data_type', message: 'Data type is incorrect'});
     return next();
   }

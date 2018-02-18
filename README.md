@@ -108,7 +108,7 @@
 
     * `amount` Dollar amount of transaction [number]
     * `category` Transaction category ID
-    * `date` Date-time of transaction in Unix time [number]
+    * `date` Date of transaction
     * `payee` Transaction recipient
 
   * **Success Response**

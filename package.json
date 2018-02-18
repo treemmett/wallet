@@ -23,7 +23,6 @@
     "classnames": "^2.2.5",
     "concurrently": "^3.5.1",
     "custom-react-scripts": "^0.2.1",
-    "moment": "^2.20.1",
     "nodemon": "^1.14.11",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

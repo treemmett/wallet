@@ -43,6 +43,7 @@
 
       &[data-type=category], &[data-type=payee], &[data-type=notes]{
         flex-grow: 1;
+        flex-shrink: 0;
       }
 
       &[data-type=inflow], &[data-type=outflow]{
@@ -56,6 +57,13 @@
       width: 100%;
       padding: 0.1em 0.2em;
       box-sizing: border-box;
+      margin: 0;
+      border-radius: 0;
+
+      &:invalid{
+        border:2px solid #ff2222;
+        box-shadow: 0 0 20px #f22;
+      }
     }
 
     .actions{
@@ -70,15 +78,21 @@
       border-radius: 0 0 10px 10px;
       user-select: none;
 
-      span{
+      span, input[type=submit]{
         display: inline-block;
+        width: auto;
+        background-color: inherit;
         cursor: pointer;
 
         &:hover{
           text-decoration: underline;
         }
 
-        &+span{
+        &:active, &:focus{
+          border: 0;
+        }
+
+        &+span, &+input[type=submit]{
           margin-left: 1em;
         }
       }
