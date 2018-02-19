@@ -38,7 +38,23 @@ export default class Transactions extends Component{
   }
 
   deselectRows = e => {
-    this.setState({selected: []});
+    //Remove new transaction if existing was cancelled
+    if(this.state.selected.indexOf('new') >= 0){
+      //Duplicate transactions
+      const transactions = this.state.transactions.slice(0);
+
+      //Find element for new transaction
+      for(let i = 0; i < transactions.length; i++){
+        if(transactions[i].id === 'new'){
+            transactions.splice(i, 1);
+            this.setState({transactions: transactions, selected: []});
+            break;
+        }
+      }
+    }else{
+      this.setState({selected: []});
+    }
+
   }
 
   getTransactions = e => {
@@ -48,9 +64,16 @@ export default class Transactions extends Component{
   }
 
   newTransaction = e => {
+    //Check if new transaction is already in scope
+    if(this.state.selected.indexOf('new') !== -1){
+      return;
+    }
+
+    console.log(this.state.selected.indexOf('new'))
+
     const newState = this.state.transactions.slice(0);
-    newState.unshift({id: 0});
-    this.setState({transactions: newState, selected: [0]});
+    newState.unshift({id: 'new'});
+    this.setState({transactions: newState, selected: ['new']});
   }
 
   render(){
@@ -128,8 +151,14 @@ class Row extends Component{
       }
     }
 
-    //Send API request
-    global.api.post('/api/budget/transactions', data).then(this.props.refreshTransactions).catch(err => {});
+    //If this is a new transaction
+    if(this.props.data.id === 'new'){
+      //Add new transaction
+      global.api.post('/api/budget/transactions', data).then(this.props.refreshTransactions).catch(err => {});
+    }else{
+      //Update existing transaction
+      global.api.put('/api/budget/transactions/'+this.props.data.id, data).then(this.props.refreshTransactions).catch(err => {});
+    }
   }
 
   render(){

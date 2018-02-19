@@ -62,4 +62,50 @@ transactions.route('/')
 })
 .all(config.methodNotAllowed);
 
+transactions.route('/:transactionId')
+.put((req, res, next) => {
+  //Check if ID is valid
+  if(!req.params.transactionId.match(/^[0-9a-fA-F]{24}$/)){
+    res.status(400).send({error: 'invalid_transaction_id', message: 'Transaction ID is invalid'});
+    return next();
+  }
+
+  //Compile data to update
+  const data = {};
+  if(req.body.amount){
+    data['transactions.$.amount'] = Math.round(Number(req.body.amount) * 100) / 100;
+  }
+  if(req.body.category){
+    data['transactions.$.category'] = req.body.category.trim();
+  }
+  if(req.body.date){
+    data['transactions.$.date'] = req.body.date.trim();
+  }
+  if(req.body.payee){
+    data['transactions.$.payee'] = req.body.payee.trim();
+  }
+  if(req.body.notes){
+    data['transactions.$.notes'] = req.body.notes.trim();
+  }
+
+  const budgetDb = req.app.locals.db.collection('budget');
+  budgetDb.update({email: req.user.email, 'transactions._id': ObjectID(req.params.transactionId)}, {$set: data}, (err, count) => {
+    if(err){
+      return next(err);
+    }
+
+    //Duplicate count because N is unreadable otherwise
+    count = JSON.parse(JSON.stringify(count));
+
+    //Check if no fields are updated
+    if(!count.n){
+      res.status(404).send({error: 'transaction_id_not_found', message: 'Transaction was not found'});
+      return next();
+    }
+
+    res.send({success: true});
+  });
+})
+.all(config.methodNotAllowed);
+
 module.exports = transactions;
