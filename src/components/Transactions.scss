@@ -36,14 +36,17 @@
       padding: 0 0.6em;
       font-size: 0.875em;
       user-select: none;
+      flex-shrink: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &[data-type=date]{
         width: 80px;
       }
 
       &[data-type=category], &[data-type=payee], &[data-type=notes]{
-        flex-grow: 1;
-        flex-shrink: 0;
+        width: calc(calc(100% - 70px - 80px) / 3);
+        flex: 1;
       }
 
       &[data-type=inflow], &[data-type=outflow]{

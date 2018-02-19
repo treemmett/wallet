@@ -32,9 +32,10 @@ transactions.route('/')
     _id: new ObjectID(),
     //Round amount to the second decimal
     amount: Math.round(req.body.amount * 100) / 100,
-    category: req.body.category,
-    date: req.body.date,
+    category: req.body.category.trim(),
+    date: req.body.date.trim(),
     payee: req.body.payee.toString().trim(),
+    notes: req.body.notes.trim(),
   }
 
   //Add transaction to database

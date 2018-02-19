@@ -112,6 +112,14 @@ class Row extends Component{
   }
 
   render(){
+    //Check if amount is inflow or outflow
+    let inflow, outflow;
+    if(this.props.data.amount > 0){
+      inflow = Math.abs(this.props.data.amount);
+    }else{
+      outflow = Math.abs(this.props.data.amount);
+    }
+
     //Row if edit mode is enabled
     if(this.props.editMode){
       return (
@@ -136,9 +144,9 @@ class Row extends Component{
         <div className="cell" data-type="date">{this.props.data.date}</div>
         <div className="cell" data-type="payee">{this.props.data.payee}</div>
         <div className="cell" data-type="category">{this.props.data.category}</div>
-        <div className="cell" data-type="notes"></div>
-        <div className="cell" data-type="outflow">{this.props.data.amount}</div>
-        <div className="cell" data-type="inflow"></div>
+        <div className="cell" data-type="notes">{this.props.data.notes}</div>
+        <div className="cell" data-type="outflow">{outflow}</div>
+        <div className="cell" data-type="inflow">{inflow}</div>
       </div>
     );
   }
