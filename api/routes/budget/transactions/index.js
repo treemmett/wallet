@@ -22,7 +22,7 @@ transactions.route('/')
   }
 
   //Check if data type is correct
-  if(typeof req.body.amount !== 'number'){
+  if(isNaN(req.body.amount)){
     res.status(400).send({error: 'invalid_data_type', message: 'Data type is incorrect'});
     return next();
   }
@@ -31,11 +31,15 @@ transactions.route('/')
   const data = {
     _id: new ObjectID(),
     //Round amount to the second decimal
-    amount: Math.round(req.body.amount * 100) / 100,
+    amount: Math.round(Number(req.body.amount) * 100) / 100,
     category: req.body.category.trim(),
     date: req.body.date.trim(),
-    payee: req.body.payee.toString().trim(),
-    notes: req.body.notes.trim(),
+    payee: req.body.payee.toString().trim()
+  }
+
+  //Add optional parameters
+  if(req.body.notes){
+    data.notes = req.body.notes.trim()
   }
 
   //Add transaction to database
