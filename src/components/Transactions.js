@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import ActionBar from './ActionBar';
 import Sidebar from './Sidebar';
 import Plus from '../svg/Plus';
@@ -26,6 +27,20 @@ export default class Transactions extends Component{
     this.getTransactions();
   }
 
+  selectRows = (e, id) => {
+    if(e.ctrlKey){
+      const selected = this.state.selected.slice(0);
+      selected.push(id);
+      this.setState({selected: selected});
+    }else{
+      this.setState({selected: [id]});
+    }
+  }
+
+  deselectRows = e => {
+    this.setState({selected: []});
+  }
+
   getTransactions = e => {
     //Get transactions api call
     global.api.get('/api/budget/transactions')
@@ -34,7 +49,7 @@ export default class Transactions extends Component{
 
   newTransaction = e => {
     const newState = this.state.transactions.slice(0);
-    newState.unshift({});
+    newState.unshift({id: 0});
     this.setState({transactions: newState, selected: [0]});
   }
 
@@ -43,9 +58,15 @@ export default class Transactions extends Component{
     let rows = [];
     for(let i = 0; i < this.state.transactions.length; i++){
       //Check if row is selected
-      const selected = this.state.selected.indexOf(i) >= 0;
+      const selected = this.state.selected.indexOf(this.state.transactions[i].id) >= 0;
+      let editMode = false;
 
-      rows.push(<Row key={i} data={this.state.transactions[i]} editMode={selected} refreshTransactions={this.getTransactions}/>);
+      if(selected){
+        //Add edit prop if this is the only row selected
+        editMode = this.state.selected.length === 1;
+      }
+
+      rows.push(<Row key={i} data={this.state.transactions[i]} editMode={editMode} selected={selected} refreshTransactions={this.getTransactions} select={this.selectRows} deselect={this.deselectRows}/>);
     }
 
     return (
@@ -123,15 +144,15 @@ class Row extends Component{
     //Row if edit mode is enabled
     if(this.props.editMode){
       return (
-        <form className="row edit" onSubmit={this.save}>
-          <div className="cell" data-type="date"><input name="date" placeholder="mm/dd/yy"/></div>
-          <div className="cell" data-type="payee"><input name="payee"/></div>
-          <div className="cell" data-type="category"><input name="category"/></div>
-          <div className="cell" data-type="notes"><input name="notes"/></div>
-          <div className="cell" data-type="outflow"><input name="outflow" type="number" min="0.01" step="0.01"/></div>
-          <div className="cell" data-type="inflow"><input name="inflow" type="number" min="0.01" step="0.01"/></div>
+        <form className="row selected" onSubmit={this.save}>
+          <div className="cell" data-type="date"><input name="date" placeholder="mm/dd/yy" defaultValue={this.props.data.date}/></div>
+          <div className="cell" data-type="payee"><input name="payee" defaultValue={this.props.data.payee}/></div>
+          <div className="cell" data-type="category"><input name="category" defaultValue={this.props.data.category}/></div>
+          <div className="cell" data-type="notes"><input name="notes" defaultValue={this.props.data.notes}/></div>
+          <div className="cell" data-type="outflow"><input name="outflow" type="number" min="0.01" step="0.01" defaultValue={outflow}/></div>
+          <div className="cell" data-type="inflow"><input name="inflow" type="number" min="0.01" step="0.01" defaultValue={inflow}/></div>
           <div className="actions">
-            <span>Cancel</span>
+            <span onClick={this.props.deselect}>Cancel</span>
             <input type="submit" value="Save"/>
           </div>
         </form>
@@ -140,7 +161,7 @@ class Row extends Component{
 
     //Row if not editing
     return (
-      <div className="row">
+      <div className={classNames({row: true, selected: this.props.selected})} onClick={e => this.props.select(e, this.props.data.id)}>
         <div className="cell" data-type="date">{this.props.data.date}</div>
         <div className="cell" data-type="payee">{this.props.data.payee}</div>
         <div className="cell" data-type="category">{this.props.data.category}</div>
