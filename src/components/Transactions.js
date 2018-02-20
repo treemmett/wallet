@@ -4,6 +4,7 @@ import ActionBar from './ActionBar';
 import Sidebar from './Sidebar';
 import Plus from '../svg/Plus';
 import './Transactions.scss';
+import formatCurrency from '../functions/formatCurrency';
 
 export default class Transactions extends Component{
   constructor(){
@@ -69,8 +70,6 @@ export default class Transactions extends Component{
       return;
     }
 
-    console.log(this.state.selected.indexOf('new'))
-
     const newState = this.state.transactions.slice(0);
     newState.unshift({id: 'new'});
     this.setState({transactions: newState, selected: ['new']});
@@ -126,8 +125,13 @@ class Row extends Component{
       return;
     }
 
-    //Calculate value of transaction
-    const amount = Number(e.target.inflow.value || -e.target.outflow.value);
+    //Remove formatting from amount
+    let amount = Number((e.target.inflow.value || e.target.outflow.value).replace(/\$|,/g, ''));
+
+    //Set the value to negative if transaction is a withdrawal
+    if(e.target.outflow.value && !e.target.inflow.value){
+      amount = 0 - amount;
+    }
 
     //Compile data to send
     const data = {
@@ -163,11 +167,13 @@ class Row extends Component{
 
   render(){
     //Check if amount is inflow or outflow
-    let inflow, outflow;
-    if(this.props.data.amount > 0){
-      inflow = Math.abs(this.props.data.amount);
-    }else{
-      outflow = Math.abs(this.props.data.amount);
+    let inflow = '', outflow = '';
+    if(this.props.data.amount){
+      if(this.props.data.amount > 0){
+        inflow = formatCurrency(Math.abs(this.props.data.amount).toString());
+      }else{
+        outflow = formatCurrency(Math.abs(this.props.data.amount).toString());
+      }
     }
 
     //Row if edit mode is enabled
@@ -178,8 +184,8 @@ class Row extends Component{
           <div className="cell" data-type="payee"><input name="payee" defaultValue={this.props.data.payee}/></div>
           <div className="cell" data-type="category"><input name="category" defaultValue={this.props.data.category}/></div>
           <div className="cell" data-type="notes"><input name="notes" defaultValue={this.props.data.notes}/></div>
-          <div className="cell" data-type="outflow"><input name="outflow" type="number" min="0.01" step="0.01" defaultValue={outflow}/></div>
-          <div className="cell" data-type="inflow"><input name="inflow" type="number" min="0.01" step="0.01" defaultValue={inflow}/></div>
+          <div className="cell" data-type="outflow"><input name="outflow" onFocus={formatCurrency} onInput={formatCurrency} onBlur={formatCurrency} defaultValue={outflow}/></div>
+          <div className="cell" data-type="inflow"><input name="inflow" onFocus={formatCurrency} onInput={formatCurrency} onBlur={formatCurrency} defaultValue={inflow}/></div>
           <div className="actions">
             <span onClick={this.props.deselect}>Cancel</span>
             <input type="submit" value="Save"/>
