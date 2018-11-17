@@ -1,6 +1,8 @@
 import Vue from 'vue';
+import Dashboard from './layouts/dashboard';
 
 new Vue({
   el: '#app',
-  template: '<div>Loaded</div>'
+  components: { Dashboard },
+  template: '<Dashboard/>'
 })
