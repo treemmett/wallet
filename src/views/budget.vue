@@ -1,6 +1,6 @@
 <template>
   <Dashboard>
-    <section>
+    <div class="budget-wrapper">
       <div class="budget">
         <div class="group" v-for="group in budget" :key="group.id">
           <div class="head">
@@ -18,7 +18,9 @@
           </div>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="card"/>
   </Dashboard>
 </template>
 
@@ -112,54 +114,72 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  section{
+  .budget-wrapper{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
     padding: 2em;
+    padding-right: 22em;
+    box-sizing: border-box;
+    overflow: auto;
+    height: 100%;
+
+    .group{
+      background-color: #fff;
+      box-shadow: 0 5px 20px rgba(#000, 0.1);
+      border-radius: 6px;
+      margin-bottom: 2em;
+
+      &:last-child{
+        margin-bottom: 0;
+      }
+
+      .head{
+        font-size: 20px;
+        padding: 1em;
+        display: flex;
+        align-items: center;
+
+        .amount{
+          font-size: 12px;
+        }
+      }
+
+      .categories{
+        border-top: 1px solid #ddd;
+        margin: 0 1em;
+        font-size: 18px;
+      }
+
+      .category{
+        display: flex;
+        align-items: center;
+        padding: 1em 0;
+      }
+
+      .title{
+        margin-right: auto;
+      }
+
+      .amount{
+        color: #888;
+        width: 100px;
+        margin-left: 1em;
+      }
+    }
   }
 
-  .budget{
-    width: 70%;
-  }
-
-  .group{
+  .card{
+    position: absolute;
+    right: 2em;
+    width: 18em;
+    max-height: calc(75% - 4em);
+    overflow: scroll;
     background-color: #fff;
     box-shadow: 0 5px 20px rgba(#000, 0.1);
     border-radius: 6px;
-
-    & + &{
-      margin-top: 2em;
-    }
-
-    .head{
-      font-size: 20px;
-      padding: 1em;
-      display: flex;
-      align-items: center;
-
-      .amount{
-        font-size: 12px;
-      }
-    }
-
-    .categories{
-      border-top: 1px solid #ddd;
-      margin: 0 1em;
-      font-size: 18px;
-    }
-
-    .category{
-      display: flex;
-      align-items: center;
-      padding: 1em 0;
-    }
-
-    .title{
-      margin-right: auto;
-    }
-
-    .amount{
-      color: #888;
-      width: 100px;
-      margin-left: 1em;
-    }
+    padding: 1em;
+    box-sizing: border-box;
   }
 </style>

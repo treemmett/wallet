@@ -10,7 +10,7 @@
       <a href="#"><span class="icon-settings"/>Settings</a>
     </nav>
 
-    <div class="page">
+    <div class="view">
       <slot/>
     </div>
   </div>
@@ -56,10 +56,12 @@ export default {
     }
   }
 
-  .page{
+  .view{
     position: relative;
     height: calc(100vh - 80px);
     overflow: auto;
+    padding: 2em;
+    box-sizing: border-box;
   }
 </style>
 
