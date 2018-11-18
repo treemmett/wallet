@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import Dashboard from './layouts/dashboard';
+import router from './router';
 
 new Vue({
+  router,
   el: '#app',
-  components: { Dashboard },
-  template: '<Dashboard/>'
+  template: '<router-view/>'
 })
