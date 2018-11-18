@@ -24,12 +24,14 @@ export default {
 
 <style lang="scss" scoped>
   nav{
+    position: relative;
     background-color: #fff;
     box-shadow: 0 5px 20px rgba(#000, 0.1);
     display: flex;
     justify-content: space-around;
     box-sizing: border-box;
     height: 80px;
+    z-index: 10;
   }
 
   a{
@@ -55,10 +57,9 @@ export default {
   }
 
   .page{
+    position: relative;
     height: calc(100vh - 80px);
     overflow: auto;
-    padding: 2em;
-    box-sizing: border-box;
   }
 </style>
 
