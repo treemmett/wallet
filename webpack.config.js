@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
@@ -47,6 +48,13 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(['build']),
+
+    new CopyWebpackPlugin([
+      {
+        from: 'src/static',
+        to: 'static'
+      }
+    ]),
 
     new HtmlWebpackPlugin({
       inject: false,
