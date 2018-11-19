@@ -2,11 +2,12 @@
   <Dashboard>
     <div class="budget-wrapper">
       <div class="budget">
-        <div class="group" v-for="group in budget" :key="group.id">
+        <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in budget" :key="group.id">
           <div class="head">
             <div class="title">{{group.name}}</div>
             <div class="amount">Budgeted</div>
             <div class="amount">Used</div>
+            <div class="carot" @click="collapseGroup(group.id)"><span class="icon-angle-down"/></div>
           </div>
 
           <div class="categories">
@@ -102,10 +103,20 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      collapsedGroups: []
     }
   },
   methods: {
+    collapseGroup(id){
+      // check if group is already collapsed
+      const index = this.collapsedGroups.indexOf(id);
+      if(index > -1){
+        this.collapsedGroups.splice(index, 1);
+      }else{
+        this.collapsedGroups.push(id);
+      }
+    },
     formatMoney(value){
       return moneyFormatter.format(value);
     }
@@ -129,7 +140,8 @@ export default {
       background-color: #fff;
       box-shadow: 0 5px 20px rgba(#000, 0.1);
       border-radius: 6px;
-      margin-bottom: 2em;
+      margin-bottom: 1em;
+      position: relative;
 
       &:last-child{
         margin-bottom: 0;
@@ -144,12 +156,51 @@ export default {
         .amount{
           font-size: 12px;
         }
+
+        .carot{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          border-radius: 50%;
+          right: 1rem;
+          width: 1.75rem;
+          height: 1.75rem;
+          color: #aaa;
+          opacity: 0;
+          transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out, opacity 0.1s ease-in-out;
+          cursor: pointer;
+
+          &:hover{
+            background-color: #eee;
+          }
+        }
+      }
+
+      &:hover .carot{
+        opacity: 1;
+      }
+
+      &.collapsed{
+        .carot{
+          opacity: 1;
+          transform: rotate(180deg);
+        }
+
+        .categories{
+          max-height: 0;
+          border-top-color: rgba(#ddd, 0);
+          transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), border-top-color 0.2s ease-in-out;
+        }
       }
 
       .categories{
         border-top: 1px solid #ddd;
         margin: 0 1em;
         font-size: 18px;
+        transition: max-height 1s ease-in-out, border-top-color 0.2s ease-in-out;
+        overflow: hidden;
+        max-height: 1000px;
       }
 
       .category{

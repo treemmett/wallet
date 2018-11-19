@@ -20,6 +20,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-angle-down:before{
+  content: "\e90b";
+}
+.icon-angle-left:before{
+  content: "\e90c";
+}
+.icon-angle-right:before{
+  content: "\e90d";
+}
+.icon-angle-up:before{
+  content: "\e90e";
+}
 .icon-analytics:before{
   content: "\e900";
 }
