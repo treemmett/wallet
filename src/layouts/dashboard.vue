@@ -1,8 +1,8 @@
 <template>
   <div>
     <nav>
-      <a href="#" class="active"><span class="icon-wallet"/>Budget</a>
-      <a href="#"><span class="icon-receipt"/>Transactions</a>
+      <router-link :to="{ name: 'budget' }"><span class="icon-wallet"/>Budget</router-link>
+      <router-link :to="{ name: 'transactions' }"><span class="icon-receipt"/>Transactions</router-link>
       <a href="#"><span class="icon-money-check"/>Income</a>
       <a href="#"><span class="icon-piggy-bank"/>Goals</a>
       <a href="#"><span class="icon-account"/>Tax</a>
@@ -47,12 +47,12 @@ export default {
       margin-right: 1em;
     }
 
-    &.active{
-      color: #ed6a5e
-    }
-
     &:hover{
       color: #777;
+    }
+
+    &.router-link-exact-active{
+      color: #ed6a5e
     }
   }
 
@@ -67,7 +67,7 @@ export default {
 
 
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
   @import url('/static/fonts/icons.css');
 
   body{
