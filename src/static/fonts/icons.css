@@ -20,6 +20,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-plus-circle:before{
+  content: "\e90f";
+}
+.icon-plus:before{
+  content: "\e910";
+}
+.icon-search:before{
+  content: "\e911";
+}
 .icon-angle-down:before{
   content: "\e90b";
 }

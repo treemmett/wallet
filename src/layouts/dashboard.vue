@@ -76,5 +76,9 @@ export default {
     font-family: 'Montserrat', sans-serif;
     color: #333;
   }
+
+  *{
+    font-family: 'Montserrat', sans-serif;
+  }
 </style>
 
