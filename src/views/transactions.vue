@@ -7,16 +7,19 @@
         <div class="amount" :class="{ positive: item.amount > 0 }">{{item.amount}}</div>
       </div>
     </div>
+    <Fab><span class="icon-plus"/></Fab>
   </Dashboard>
 </template>
 
 <script>
 import Dashboard from '../layouts/dashboard';
+import Fab from '../components/fab';
 
 export default {
   name: 'Transactions',
   components: {
-    Dashboard
+    Dashboard,
+    Fab
   },
   data(){
     return {
