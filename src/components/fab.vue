@@ -8,7 +8,7 @@
   @import '../colors';
 
   .fab{
-    position: fixed;
+    position: absolute;
     bottom: 1em;
     right: 1em;
     display: flex;

@@ -6,8 +6,31 @@
         <div class="category">{{item.category}}</div>
         <div class="amount" :class="{ positive: item.amount > 0 }">{{item.amount}}</div>
       </div>
+
+      <Fab>+</Fab>
     </div>
-    <Fab><span class="icon-plus"/></Fab>
+
+    <div class="info">
+      <form>
+        <label>Description</label>
+        <input/>
+
+        <label>Category</label>
+        <select>
+          <option>Dining</option>
+          <option>Personal Care</option>
+          <option>Rent</option>
+        </select>
+
+        <label>Amount</label>
+        <input/>
+
+        <div class="right">
+          <input type="button" value="Cancel"/>
+          <input type="submit" value="Save"/>
+        </div>
+      </form>
+    </div>
   </Dashboard>
 </template>
 
@@ -52,6 +75,88 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import '../colors';
+
+  .list{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    padding: 2em;
+    padding-right: 25em;
+    box-sizing: border-box;
+    overflow: auto;
+    height: 100%;
+  }
+
+  .info{
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    padding: 1em;
+    box-sizing: border-box;
+    width: 21em;
+    background-color: #fff;
+    box-shadow: 0 5px 20px rgba(#000, 0.1);
+    border-radius: 6px;
+    margin-right: 2em;
+
+    label{
+      display: block;
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 0.25em;
+
+      &:not(:first-of-type){
+        margin-top: 0.75em;
+      }
+    }
+
+    input:not([type=submit]):not([type=button]), select{
+      display: block;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      font-size: 16px;
+      padding: 0.25em 0.5em;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      outline: none;
+    }
+
+    input:not([type=submit]):not([type=button]){
+      transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
+
+      &:focus{
+        $blue: #11aaff;
+        box-shadow: 0 0 1px $blue;
+        border-color: $blue;
+      }
+    }
+
+    .right{
+      margin-top: 0.75em;
+      text-align: right;
+
+      input{
+        font-size: 16px;
+        border-radius: 5px;
+        outline: none;
+        padding: 0.5em 1em;
+        margin-left: 0.5em;
+        cursor: pointer;
+
+        &[type=submit]{
+          background: $blue-gradient;
+          color: #fff;
+          border: none;
+          transition: background-color 0.15s ease;
+        }
+      }
+    }
+  }
+
   .transaction{
     position: relative;
     padding: 1em;

@@ -20,6 +20,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-sort:before{
+  content: "\e913";
+}
+.icon-sort-solid:before{
+  content: "\e914";
+}
 .icon-plus-circle:before{
   content: "\e90f";
 }
