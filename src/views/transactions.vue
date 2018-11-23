@@ -2,7 +2,7 @@
   <Dashboard>
     <div class="list">
       <div class="transaction" v-for="item in $store.state.transactions" :key="item.id">
-        <div class="vendor">{{item.vendor}}</div>
+        <div class="description">{{item.description}}</div>
         <div class="category">{{item.category}}</div>
         <div class="amount" :class="{ positive: item.amount > 0 }">{{item.amount}}</div>
       </div>
@@ -11,19 +11,20 @@
     </div>
 
     <div class="info">
-      <form>
-        <label>Description</label>
-        <input/>
+      <form @submit.prevent="addTransaction">
+        <label for="description">Description</label>
+        <input name="description" id="description"/>
 
         <label for="category">Category</label>
         <select name="category" id="category">
+          <option disabled selected/>
           <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
             <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
           </optgroup>
         </select>
 
-        <label>Amount</label>
-        <input/>
+        <label for="amount">Amount</label>
+        <input name="amount" id="amount"/>
 
         <div class="right">
           <input type="button" value="Cancel"/>
@@ -43,6 +44,15 @@ export default {
   components: {
     Dashboard,
     Fab
+  },
+  methods: {
+    addTransaction(e){
+      this.$store.commit('addTransaction', {
+        description: e.target.elements.description.value.trim(),
+        category: e.target.elements.category.value.trim(),
+        amount: e.target.elements.amount.value.trim(),
+      })
+    }
   }
 }
 </script>
@@ -96,6 +106,10 @@ export default {
       box-sizing: border-box;
       -webkit-appearance: none;
       outline: none;
+    }
+
+    option:disabled{
+      display: none;
     }
 
     input:not([type=submit]):not([type=button]){

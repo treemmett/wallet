@@ -69,21 +69,21 @@ export default new Vuex.Store({
     ],
     transactions: [
       {
-        vendor: 'McDonalds',
+        description: 'McDonalds',
         category: 'Dining',
         date: '2018-11-19T01:36:30',
         amount: -10.42,
         id: 3555507652
       },
       {
-        vendor: 'Dan\'s Barber',
+        description: 'Dan\'s Barber',
         category: 'Personal Care',
         date: '2018-11-18T01:36:30',
         amount: -15.67,
         id: 9302307536
       },
       {
-        vendor: 'Work',
+        description: 'Work',
         category: 'Income',
         date: '2018-11-18T01:36:30',
         amount: 2189.45,
@@ -92,7 +92,7 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
-    addCategory: (state, {categoryName, groupId}) => {
+    addCategory: (state, { categoryName, groupId }) => {
       // create object for category
       const category = {
         name: categoryName,
@@ -106,6 +106,28 @@ export default new Vuex.Store({
 
       // add category
       group.categories.push(category);
+    },
+    addTransaction: (state, { description, category, amount }) => {
+      // find category of transaction
+      let categoryObj;
+      for(let i = 0; i < state.budget.length; i++){
+        const foundCategory = state.budget[i].categories.find(obj => parseInt(category, 10));
+        if(foundCategory){
+          categoryObj = foundCategory;
+          break;
+        }
+      }
+
+      if(!categoryObj){
+        throw new Error('Category does not exist');
+      }
+
+      state.transactions.push({
+        description,
+        amount,
+        category,
+        id: Math.floor(Math.random() * 9999999) // random ID
+      });
     }
   }
 });
