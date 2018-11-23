@@ -2,7 +2,7 @@
   <Dashboard>
     <div class="budget-wrapper">
       <div class="budget">
-        <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in budget" :key="group.id">
+        <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in $store.state.budget" :key="group.id">
           <div class="head">
             <div class="title">
               {{group.name}}
@@ -49,68 +49,6 @@ export default {
   },
   data(){
     return {
-      budget: [
-        {
-          name: 'Housing',
-          id: 4179322703,
-          categories: [
-            {
-              name: 'Rent',
-              budget: 1000,
-              expenses: 1000,
-              id: 2425467916
-            },
-            {
-              name: 'Electric Bill',
-              budget: 80,
-              expenses: 78,
-              id: 1836338723
-            }
-          ]
-        },
-        {
-          name: 'Transportation',
-          id: 9716634112,
-          categories: [
-            {
-              name: 'Auto Loan',
-              budget: 500,
-              expenses: 478,
-              id: 3462203473
-            },
-            {
-              name: 'Fuel',
-              budget: 100,
-              expenses: 27,
-              id: 4096856227
-            },
-            {
-              name: 'Insurance',
-              budget: 150,
-              expenses: 67,
-              id: 9401003545
-            }
-          ]
-        },
-        {
-          name: 'Food',
-          id: 1868312036,
-          categories: [
-            {
-              name: 'Groceries',
-              budget: 200,
-              expenses: 139,
-              id: 3224896798
-            },
-            {
-              name: 'Dining',
-              budget: 100,
-              expenses: 114,
-              id: 5305833339
-            }
-          ]
-        }
-      ],
       collapsedGroups: [],
       categoryCreation: undefined
     }
@@ -139,24 +77,14 @@ export default {
         return this.clearCategoryCreation(true);
       }
 
-      // create object for category
-      const category = {
-        name: e.target.value,
-        id: Math.floor(Math.random() * 1000000),
-        budget: 0,
-        expenses: 0
-      }
-
-      // find group to add category
-      const group = this.budget.find(obj => obj.id === id);
-
-      // add category
-      group.categories.push(category);
+      this.$store.commit('addCategory', {
+        categoryName: e.target.value,
+        groupId: id
+      });
 
       // uncollapse group if needed
       const index = this.collapsedGroups.indexOf(id);
       if(index > -1) this.collapsedGroups.splice(index, 1);
-      console.log(index);
 
       // close input
       this.clearCategoryCreation(true);

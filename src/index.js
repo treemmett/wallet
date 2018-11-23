@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import router from './router';
+import store from './store';
 
 Vue.directive('focus', {
   bind: function(el){
@@ -11,6 +12,7 @@ Vue.directive('focus', {
 
 new Vue({
   router,
+  store,
   el: '#app',
   template: '<router-view/>'
 })

@@ -1,7 +1,7 @@
 <template>
   <Dashboard>
     <div class="list">
-      <div class="transaction" v-for="item in transactions" :key="item.id">
+      <div class="transaction" v-for="item in $store.state.transactions" :key="item.id">
         <div class="vendor">{{item.vendor}}</div>
         <div class="category">{{item.category}}</div>
         <div class="amount" :class="{ positive: item.amount > 0 }">{{item.amount}}</div>
@@ -15,11 +15,11 @@
         <label>Description</label>
         <input/>
 
-        <label>Category</label>
-        <select>
-          <option>Dining</option>
-          <option>Personal Care</option>
-          <option>Rent</option>
+        <label for="category">Category</label>
+        <select name="category" id="category">
+          <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
+            <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
+          </optgroup>
         </select>
 
         <label>Amount</label>
@@ -43,33 +43,6 @@ export default {
   components: {
     Dashboard,
     Fab
-  },
-  data(){
-    return {
-      transactions: [
-        {
-          vendor: 'McDonalds',
-          category: 'Dining',
-          date: '2018-11-19T01:36:30',
-          amount: -10.42,
-          id: 3555507652
-        },
-        {
-          vendor: 'Dan\'s Barber',
-          category: 'Personal Care',
-          date: '2018-11-18T01:36:30',
-          amount: -15.67,
-          id: 9302307536
-        },
-        {
-          vendor: 'Work',
-          category: 'Income',
-          date: '2018-11-18T01:36:30',
-          amount: 2189.45,
-          id: 2385943903
-        }
-      ]
-    }
   }
 }
 </script>
