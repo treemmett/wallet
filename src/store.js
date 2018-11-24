@@ -107,7 +107,7 @@ export default new Vuex.Store({
       // add category
       group.categories.push(category);
     },
-    addTransaction: (state, { description, category, amount }) => {
+    addTransaction: (state, { description, category, amount, type = 'expense' }) => {
       // find category of transaction
       let categoryObj;
       for(let i = 0; i < state.budget.length; i++){
@@ -121,6 +121,10 @@ export default new Vuex.Store({
       if(!categoryObj){
         throw new Error('Category does not exist');
       }
+
+      // parse value
+      var amount = parseFloat(amount.replace(/[^0-9.-]+/g, ''), 10).toFixed(2);
+      amount *= (type === 'expense' ? -1 : 1);
 
       state.transactions.push({
         description,

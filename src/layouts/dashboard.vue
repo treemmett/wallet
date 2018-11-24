@@ -23,6 +23,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  @import '../colors';
+
   nav{
     position: relative;
     background-color: #fff;
@@ -52,7 +54,7 @@ export default {
     }
 
     &.router-link-exact-active{
-      color: #ed6a5e
+      color: $orange;
     }
   }
 
