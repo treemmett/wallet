@@ -8,39 +8,41 @@
       </div>
     </div>
 
-    <div class="sidebar">
-      <div class="card">
-        <form @submit.prevent="addTransaction">
-          <label for="description">Description</label>
-          <input name="description" id="description" required/>
+    <transition name="animation">
+      <div class="sidebar" v-if="sidebarOpen">
+        <div class="card">
+          <form @submit.prevent="addTransaction">
+            <label for="description">Description</label>
+            <input name="description" id="description" required/>
 
-          <label for="category">Category</label>
-          <select name="category" id="category" required>
-            <option disabled selected/>
-            <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
-              <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
-            </optgroup>
-          </select>
+            <label for="category">Category</label>
+            <select name="category" id="category" required>
+              <option disabled selected/>
+              <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
+                <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
+              </optgroup>
+            </select>
 
-          <label for="amount">Amount</label>
-          <input type="tel" name="amount" id="amount" v-model.lazy.number="amount" v-money="moneyConfig" required/>
+            <label for="amount">Amount</label>
+            <input type="tel" name="amount" id="amount" v-model.lazy.number="amount" v-money="moneyConfig" required/>
 
-          <label>Type</label>
-          <div class="radio-group">
-            <input type="radio" name="type" id="expense" value="expense" checked required/>
-            <label class="radio-selector" for="expense">Expense</label>
-            <input type="radio" name="type" id="income" value="income"/>
-            <label class="radio-selector" for="income">Income</label>
-          </div>
+            <label>Type</label>
+            <div class="radio-group">
+              <input type="radio" name="type" id="expense" value="expense" checked required/>
+              <label class="radio-selector" for="expense">Expense</label>
+              <input type="radio" name="type" id="income" value="income"/>
+              <label class="radio-selector" for="income">Income</label>
+            </div>
 
-          <div class="right">
-            <input type="button" value="Cancel"/>
-            <input type="submit" value="Save"/>
-          </div>
-        </form>
+            <div class="right">
+              <input type="button" value="Cancel" @click="sidebarOpen = false"/>
+              <input type="submit" value="Save"/>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-    <Fab>+</Fab>
+    </transition>
+    <Fab @click.native="sidebarOpen = true">+</Fab>
   </Dashboard>
 </template>
 
@@ -53,6 +55,7 @@ export default {
   name: 'Transactions',
   data(){
     return {
+      sidebarOpen: false,
       amount: 0,
       moneyConfig: {
         prefix: '$',
@@ -71,7 +74,10 @@ export default {
         category: e.target.elements.category.value.trim(),
         amount: e.target.elements.amount.value.trim(),
         type: e.target.elements.type.value
-      })
+      });
+
+      // close sidebar
+      this.sidebarOpen = false;
     }
   },
   directives: { money: VMoney }
@@ -276,11 +282,21 @@ export default {
       overflow: visible;
       width: 100%;
       z-index: 7;
+      transition: transform 0.3s ease-out;
 
       .card{
         box-shadow: 0 -5px 20px 5px rgba(#000, 0.1);
         padding: 2em;
         border-radius: 2em 2em 0 0 ;
+        transition: box-shadow 0.5s ease-out;
+      }
+
+      &.animation-enter, &.animation-leave-to{
+        transform: translateY(100%);
+        
+        .card{
+          box-shadow: none;
+        }
       }
     }
 
