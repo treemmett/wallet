@@ -1,34 +1,30 @@
 <template>
   <Dashboard>
-    <div class="budget-wrapper">
-      <div class="budget">
-        <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in $store.state.budget" :key="group.id">
-          <div class="head">
-            <div class="title">
-              {{group.name}}
-              <div class="click-icon icon-plus" :class="{ visible: categoryCreation === group.id }" @click.stop="setCategoryCreation(group.id)">
-                <div class="tooltip" v-if="categoryCreation === group.id">
-                  <input v-focus placeholder="New Category Name" @keypress.enter="createCategory($event, group.id)"/>
-                </div>
+    <div class="budget">
+      <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in $store.state.budget" :key="group.id">
+        <div class="head">
+          <div class="title">
+            {{group.name}}
+            <div class="click-icon icon-plus" :class="{ visible: categoryCreation === group.id }" @click.stop="setCategoryCreation(group.id)">
+              <div class="tooltip" v-if="categoryCreation === group.id">
+                <input v-focus placeholder="New Category Name" @keypress.enter="createCategory($event, group.id)"/>
               </div>
             </div>
-            <div class="amount">Budgeted</div>
-            <div class="amount">Used</div>
-            <div class="click-icon carot icon-angle-down" @click="collapseGroup(group.id)"/>
           </div>
+          <div class="amount">Budgeted</div>
+          <div class="amount">Used</div>
+          <div class="click-icon carot icon-angle-down" @click="collapseGroup(group.id)"/>
+        </div>
 
-          <div class="categories">
-            <div class="category" v-for="category in group.categories" :key="category.id">
-              <div class="title">{{category.name}}</div>
-              <div class="amount">{{formatMoney(category.budget)}}</div>
-              <div class="amount">{{formatMoney(category.expenses)}}</div>
-            </div>
+        <div class="categories">
+          <div class="category" v-for="category in group.categories" :key="category.id">
+            <div class="title">{{category.name}}</div>
+            <div class="amount">{{formatMoney(category.budget)}}</div>
+            <div class="amount">{{formatMoney(category.expenses)}}</div>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="card"/>
   </Dashboard>
 </template>
 
@@ -105,13 +101,8 @@ export default {
 <style lang="scss" scoped>
   @import '../colors';
 
-  .budget-wrapper{
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
+  .budget{
     padding: 2em;
-    padding-right: 22em;
     box-sizing: border-box;
     overflow: auto;
     height: 100%;

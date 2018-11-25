@@ -8,9 +8,9 @@
   @import '../colors';
 
   .fab{
-    position: absolute;
-    bottom: 1em;
-    right: 1em;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,6 +24,7 @@
     transition: box-shadow 0.15s ease-in-out;
     user-select: none;
     cursor: pointer;
+    z-index: 6;
 
     &:hover{
       box-shadow: 0 5px 20px rgba(#000, 0.3);

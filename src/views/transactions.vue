@@ -8,35 +8,37 @@
       </div>
     </div>
 
-    <div class="info">
-      <form @submit.prevent="addTransaction">
-        <label for="description">Description</label>
-        <input name="description" id="description" required/>
+    <div class="sidebar">
+      <div class="card">
+        <form @submit.prevent="addTransaction">
+          <label for="description">Description</label>
+          <input name="description" id="description" required/>
 
-        <label for="category">Category</label>
-        <select name="category" id="category" required>
-          <option disabled selected/>
-          <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
-            <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
-          </optgroup>
-        </select>
+          <label for="category">Category</label>
+          <select name="category" id="category" required>
+            <option disabled selected/>
+            <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
+              <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
+            </optgroup>
+          </select>
 
-        <label for="amount">Amount</label>
-        <input type="tel" name="amount" id="amount" v-model.lazy.number="amount" v-money="moneyConfig" required/>
+          <label for="amount">Amount</label>
+          <input type="tel" name="amount" id="amount" v-model.lazy.number="amount" v-money="moneyConfig" required/>
 
-        <label>Type</label>
-        <div class="radio-group">
-          <input type="radio" name="type" id="expense" value="expense" checked required/>
-          <label class="radio-selector" for="expense">Expense</label>
-          <input type="radio" name="type" id="income" value="income"/>
-          <label class="radio-selector" for="income">Income</label>
-        </div>
+          <label>Type</label>
+          <div class="radio-group">
+            <input type="radio" name="type" id="expense" value="expense" checked required/>
+            <label class="radio-selector" for="expense">Expense</label>
+            <input type="radio" name="type" id="income" value="income"/>
+            <label class="radio-selector" for="income">Income</label>
+          </div>
 
-        <div class="right">
-          <input type="button" value="Cancel"/>
-          <input type="submit" value="Save"/>
-        </div>
-      </form>
+          <div class="right">
+            <input type="button" value="Cancel"/>
+            <input type="submit" value="Save"/>
+          </div>
+        </form>
+      </div>
     </div>
     <Fab>+</Fab>
   </Dashboard>
@@ -80,7 +82,6 @@ export default {
   @import '../colors';
 
   .list{
-    position: absolute;
     width: 100%;
     left: 0;
     top: 0;
@@ -91,17 +92,25 @@ export default {
     height: 100%;
   }
 
-  .info{
+  .sidebar{
     position: absolute;
+    top: 0;
     right: 0;
-    display: inline-block;
-    padding: 1em;
+    padding: 2em;
     box-sizing: border-box;
-    width: 21em;
-    background-color: #fff;
-    box-shadow: 0 5px 20px rgba(#000, 0.1);
-    border-radius: 6px;
-    margin-right: 2em;
+    max-height: 100%;
+    width: 25em;
+    overflow-y: auto;
+    pointer-events: none;
+
+    .card{
+      background-color: #fff;
+      border-radius: 6px;
+      padding: 1em;
+      box-sizing: border-box;
+      pointer-events: auto;
+      box-shadow: 0 5px 20px rgba(#000, 0.1);
+    }
 
     label:not(.radio-selector){
       display: block;
@@ -125,6 +134,14 @@ export default {
       box-sizing: border-box;
       -webkit-appearance: none;
       outline: none;
+
+      transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
+
+      &:focus{
+        $blue: #11aaff;
+        box-shadow: 0 0 1px $blue;
+        border-color: $blue;
+      }
     }
 
     .radio-group{
@@ -150,11 +167,11 @@ export default {
       .radio-selector{
         display: inline-block;
         white-space: pre-line;
-        padding: 0.25em 0.5em;
+        padding: 0.4em 0.5em;
         border: 1px solid #ccc;
         border-right: none;
         border-radius: 6px;
-        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, color 0.15s ease-in-out;
+        transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 
         &:first-of-type{
           border-top-right-radius: 0;
@@ -178,33 +195,36 @@ export default {
       display: none;
     }
 
-    input:not([type]), input[type=tel]{
-      transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
-
-      &:focus{
-        $blue: #11aaff;
-        box-shadow: 0 0 1px $blue;
-        border-color: $blue;
-      }
-    }
-
     .right{
       margin-top: 0.75em;
       text-align: right;
 
       input{
         font-size: 16px;
-        border-radius: 5px;
+        border-radius: 10px;
         outline: none;
-        padding: 0.5em 1em;
+        padding: 0.75em 1.25em;
         margin-left: 0.5em;
         cursor: pointer;
+        transition: background-color 0.15s ease, box-shadow 0.15s ease;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        -webkit-appearance: none;
+        -moz-appearance: none;
 
         &[type=submit]{
-          background: $blue-gradient;
+          background: $blue;
           color: #fff;
           border: none;
-          transition: background-color 0.15s ease;
+
+          &:hover{
+            box-shadow: 0 1px 1px rgba(darken($blue, 10%), 0.5);
+            background-color: darken($blue, 3%);
+          }
+        }
+
+        &:hover{
+          box-shadow: 0 1px 1px rgba(#000, 0.2);
         }
       }
     }
@@ -240,6 +260,40 @@ export default {
       &.positive{
         color: #659157;
       }
+    }
+  }
+
+  @media screen and (max-width: 700px){
+    .list{
+      padding-right: 2em;
+    }
+
+    .sidebar{
+      position: fixed;
+      top: auto;
+      bottom: 0;
+      padding: 0;
+      overflow: visible;
+      width: 100%;
+      z-index: 7;
+
+      .card{
+        box-shadow: 0 -5px 20px 5px rgba(#000, 0.1);
+        padding: 2em;
+        border-radius: 2em 2em 0 0 ;
+      }
+    }
+
+    .sideabar::after{
+      content: '';
+      display: block;
+      position: fixed;
+      background-color: #000;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
   }
 </style>
