@@ -152,7 +152,7 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    calculatedBudget(state){      
+    calculatedBudget(state){
       // add total from all transactions
       const totals = {}
       state.transactions.forEach(transaction => {
@@ -176,6 +176,19 @@ export default new Vuex.Store({
             }
           })
         }
+      });
+    },
+    transactions(state){
+      // seperate categories from groups
+      const categories = state.budget.map(group => group.categories).reduce((a, c) => a.concat(c));
+
+      return state.transactions.map(transaction => {
+        const category = categories.find(cat => cat.id === transaction.category);
+
+        return {
+          ...transaction,
+          categoryName: category ? category.name : 'Unknown Category'
+        };
       });
     }
   }
