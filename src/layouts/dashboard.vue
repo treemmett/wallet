@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <nav>
-      <router-link :to="{ name: 'budget' }"><span class="icon-wallet"/>Budget</router-link>
-      <router-link :to="{ name: 'transactions' }"><span class="icon-receipt"/>Transactions</router-link>
-      <a href="#"><span class="icon-money-check"/>Income</a>
-      <a href="#"><span class="icon-piggy-bank"/>Goals</a>
-      <a href="#"><span class="icon-account"/>Tax</a>
-      <a href="#"><span class="icon-analytics"/>Reports</a>
-      <a href="#"><span class="icon-settings"/>Settings</a>
-    </nav>
+  <div class="layout">
+    <header>
+      <nav>
+        <router-link :to="{ name: 'budget' }" exact><span class="icon-wallet"/>Budget</router-link>
+        <router-link :to="{ name: 'transactions' }"><span class="icon-receipt"/>Transactions</router-link>
+        <a href="#"><span class="icon-money-check"/>Income</a>
+        <a href="#"><span class="icon-piggy-bank"/>Goals</a>
+        <a href="#"><span class="icon-account"/>Tax</a>
+        <a href="#"><span class="icon-analytics"/>Reports</a>
+        <a href="#"><span class="icon-settings"/>Settings</a>
+      </nav>
+    </header>
 
     <div class="view">
       <slot/>
@@ -16,71 +18,77 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard'
-}
-</script>
-
 <style lang="scss" scoped>
   @import '../colors';
 
-  nav{
+  .layout{
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  header{
     position: relative;
     background-color: #fff;
     box-shadow: 0 5px 20px rgba(#000, 0.1);
-    display: flex;
-    box-sizing: border-box;
-    height: 80px;
-    z-index: 10;
+    height: 5em;
+    z-index: 1;
     overflow-x: auto;
-  }
 
-  a{
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
-    color: #acacac;
-    font-size: 17px;
-    padding: 1em 1em;
-    margin: auto;
+    nav{
+      height: 100%;
+      display: flex;
 
-    span{
-      margin-right: 1em;
-    }
+      a{
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0 1.5em;
+        text-decoration: none;
+        color: #777;
+        transition: color 0.15s ease;
 
-    &:hover{
-      color: #777;
-    }
+        &:hover{
+          color: #3a3a3a;
+        }
 
-    &.router-link-exact-active{
-      color: $orange;
+        &.router-link-active{
+          color: $orange;
+        }
+
+        [class^="icon-"]{
+          margin-right: 0.5em;
+          color: inherit;
+        }
+      }
     }
   }
 
   .view{
     position: relative;
-    height: calc(100vh - 80px);
-    overflow: auto;
-    box-sizing: border-box;
+    overflow-y: auto;
+    max-height: 100%;
   }
 </style>
-
 
 <style>
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
   @import url('/static/fonts/icons.css');
-
-  body{
-    background-color: #f8f8f8;
+  
+  html, body{
+    width: 100%;
+    height: 100%;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f8f8;
     color: #333;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   }
 
   *{
-    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    -webkit-overflow-scrolling: touch;
   }
 </style>
-
