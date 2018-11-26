@@ -13,13 +13,11 @@ export default new Vuex.Store({
           {
             name: 'Rent',
             budget: 1000,
-            expenses: 1000,
             id: 2425467916
           },
           {
             name: 'Electric Bill',
             budget: 80,
-            expenses: 78,
             id: 1836338723
           }
         ]
@@ -31,19 +29,16 @@ export default new Vuex.Store({
           {
             name: 'Auto Loan',
             budget: 500,
-            expenses: 478,
             id: 3462203473
           },
           {
             name: 'Fuel',
             budget: 100,
-            expenses: 27,
             id: 4096856227
           },
           {
             name: 'Insurance',
             budget: 150,
-            expenses: 67,
             id: 9401003545
           }
         ]
@@ -55,14 +50,23 @@ export default new Vuex.Store({
           {
             name: 'Groceries',
             budget: 200,
-            expenses: 139,
             id: 3224896798
           },
           {
             name: 'Dining',
             budget: 100,
-            expenses: 114,
             id: 5305833339
+          }
+        ]
+      },
+      {
+        name: 'Quality of Life',
+        id: 2649871691,
+        categories: [
+          {
+            name: 'Personal Care',
+            budget: 100,
+            id: 6948027125
           }
         ]
       }
@@ -70,24 +74,38 @@ export default new Vuex.Store({
     transactions: [
       {
         description: 'McDonalds',
-        category: 'Dining',
+        category: 5305833339,
         date: '2018-11-19T01:36:30',
         amount: -10.42,
         id: 3555507652
       },
       {
         description: 'Dan\'s Barber',
-        category: 'Personal Care',
+        category: 6948027125,
         date: '2018-11-18T01:36:30',
         amount: -15.67,
         id: 9302307536
       },
       {
         description: 'Work',
-        category: 'Income',
+        category: 6977591710,
         date: '2018-11-18T01:36:30',
         amount: 2189.45,
         id: 2385943903
+      },
+      {
+        description: 'Starbucks',
+        category: 5305833339,
+        date: '2018-11-18T01:36:30',
+        amount: -6.45,
+        id: 4836377084
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-18T01:36:30',
+        amount: -45.42,
+        id: 4809125196
       }
     ]
   },
@@ -97,8 +115,7 @@ export default new Vuex.Store({
       const category = {
         name: categoryName,
         id: Math.floor(Math.random() * 1000000),
-        budget: 0,
-        expenses: 0
+        budget: 0
       }
 
       // find group to add category
@@ -131,6 +148,34 @@ export default new Vuex.Store({
         amount,
         category,
         id: Math.floor(Math.random() * 9999999) // random ID
+      });
+    }
+  },
+  getters: {
+    calculatedBudget(state){      
+      // add total from all transactions
+      const totals = {}
+      state.transactions.forEach(transaction => {
+        const categoryId = transaction.category.toString();
+
+        if(typeof totals[categoryId] !== 'number'){
+          totals[categoryId] = 0;
+        }
+        
+        totals[categoryId] += transaction.amount;
+      });
+
+      // add totals to budget
+      return state.budget.map(group => {
+        return {
+          ...group,
+          categories: group.categories.map(category => {
+            return {
+              ...category,
+              expenses: totals[category.id.toString()] || 0
+            }
+          })
+        }
       });
     }
   }

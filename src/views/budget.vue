@@ -1,7 +1,7 @@
 <template>
   <Dashboard>
     <div class="budget">
-      <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in $store.state.budget" :key="group.id">
+      <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in $store.getters.calculatedBudget" :key="group.id">
         <div class="head">
           <div class="title">
             {{group.name}}
