@@ -9,14 +9,14 @@
     </div>
 
     <transition name="animation">
-      <div class="sidebar" v-if="sidebarOpen">
+      <div class="sidebar" v-if="sidebarOpen" @click.self="sidebarOpen = false">
         <div class="card">
           <form @submit.prevent="addTransaction">
             <label for="description">Description</label>
-            <input name="description" id="description" required/>
+            <input class="input" name="description" id="description" required/>
 
             <label for="category">Category</label>
-            <select name="category" id="category" required>
+            <select class="input" name="category" id="category" required>
               <option disabled selected/>
               <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
                 <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
@@ -24,10 +24,13 @@
             </select>
 
             <label for="amount">Amount</label>
-            <input type="tel" name="amount" id="amount" v-model.lazy.number="amount" v-money="moneyConfig" required/>
+            <input class="input" type="tel" name="amount" id="amount" v-model.lazy="selectedDetail.amount" v-money="moneyConfig" required/>
+
+            <label for="date">Date</label>
+            <v-date-picker mode="single" v-model="selectedDetail.date" update-on-input :input-props="{ class: 'input', required: true, name: 'date' }"/>
 
             <label>Type</label>
-            <div class="radio-group">
+            <div class="radio">
               <input type="radio" name="type" id="expense" value="expense" checked required/>
               <label class="radio-selector" for="expense">Expense</label>
               <input type="radio" name="type" id="income" value="income"/>
@@ -49,6 +52,7 @@
 <script>
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
+import moment from 'moment';
 import { VMoney } from 'v-money';
 
 export default {
@@ -56,7 +60,10 @@ export default {
   data(){
     return {
       sidebarOpen: false,
-      amount: 0,
+      selectedDetail: {
+        amount: 0,
+        date: null
+      },
       moneyConfig: {
         prefix: '$',
         precision: 2,
@@ -69,11 +76,16 @@ export default {
   },
   methods: {
     addTransaction(e){
+      // parse date object
+      const date = moment(e.target.elements.date.value, 'MM/DD/YYYY').toISOString();
+      console.log(date);
+
       this.$store.commit('addTransaction', {
         description: e.target.elements.description.value.trim(),
         category: e.target.elements.category.value.trim(),
         amount: e.target.elements.amount.value.trim(),
-        type: e.target.elements.type.value
+        type: e.target.elements.type.value,
+        date
       });
 
       // close sidebar
@@ -102,17 +114,18 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 2em;
-    box-sizing: border-box;
-    max-height: 100%;
     width: 25em;
-    overflow-y: auto;
+    height: 100%;
+    padding: 0 2em;
+    box-sizing: border-box;
     pointer-events: none;
+    overflow-y: auto;
 
     .card{
       background-color: #fff;
       border-radius: 6px;
       padding: 1em;
+      margin: 2em 0;
       box-sizing: border-box;
       pointer-events: auto;
       box-shadow: 0 5px 20px rgba(#000, 0.1);
@@ -127,78 +140,6 @@ export default {
       &:not(:first-of-type){
         margin-top: 0.75em;
       }
-    }
-
-    input:not([type]), input[type=tel], select{
-      display: block;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #fff;
-      font-size: 16px;
-      padding: 0.25em 0.5em;
-      box-sizing: border-box;
-      -webkit-appearance: none;
-      outline: none;
-
-      transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
-
-      &:focus{
-        $blue: #11aaff;
-        box-shadow: 0 0 1px $blue;
-        border-color: $blue;
-      }
-    }
-
-    .radio-group{
-      display: flex;
-
-      input[type=radio]{
-        position: fixed;
-        opacity: 0;
-
-        &:checked + .radio-selector{
-          background-color: $orange;
-          color: #fff;
-          border-color: $orange;
-          box-shadow: 0 1px 1px rgba($orange, 0.5);
-
-          & + input + .radio-selector{
-            border-left: none;
-            padding-left: calc(0.5em + 1px);
-          }
-        }
-      }
-
-      .radio-selector{
-        display: inline-block;
-        white-space: pre-line;
-        padding: 0.4em 0.5em;
-        border: 1px solid #ccc;
-        border-right: none;
-        border-radius: 6px;
-        transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-
-        &:first-of-type{
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-
-        &:last-of-type{
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-          border-right: 1px solid #ccc;
-        }
-
-        &:hover{
-          border-color: $orange;
-          box-shadow: 0 1px 1px rgba($orange, 0.5);
-        }
-      }
-    }
-
-    option:disabled{
-      display: none;
     }
 
     .right{
@@ -276,40 +217,38 @@ export default {
 
     .sidebar{
       position: fixed;
-      top: auto;
-      bottom: 0;
-      padding: 0;
-      overflow: visible;
       width: 100%;
       z-index: 7;
-      transition: transform 0.3s ease-out;
+      background-color: rgba(#000, 0.3);
+      transition: background-color 0.4s ease;
+      pointer-events: auto;
 
       .card{
-        box-shadow: 0 -5px 20px 5px rgba(#000, 0.1);
-        padding: 2em;
-        border-radius: 2em 2em 0 0 ;
-        transition: box-shadow 0.5s ease-out;
+        box-shadow: 0 5px 20px 5px 3px rgba(#000, 0.1);
+        padding: 1.5em;
+        max-width: 25em;
+        margin: auto;
+        margin-top: 6em;
+        transition: transform 0.4s ease-out, box-shadow 0.4s ease-out, opacity 0.4s ease;
       }
 
       &.animation-enter, &.animation-leave-to{
-        transform: translateY(100%);
-        
+        background-color: rgba(#000, 0.0);
+
         .card{
+          transform: translateY(100%);
           box-shadow: none;
+          opacity: 0;
         }
       }
-    }
 
-    .sideabar::after{
-      content: '';
-      display: block;
-      position: fixed;
-      background-color: #000;
-      width: 100vw;
-      height: 100vh;
-      top: 0;
-      left: 0;
-      z-index: -1;
+      &.animation-leave-to{
+        transition: background-color 0.3s ease;
+
+        .card{
+          transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, opacity 0.3s ease;
+        }
+      }
     }
   }
 </style>

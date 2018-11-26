@@ -73,9 +73,10 @@
   }
 </style>
 
-<style>
+<style lang="scss">
   @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
   @import url('/static/fonts/icons.css');
+  @import '../colors';
   
   html, body{
     width: 100%;
@@ -90,5 +91,76 @@
     color: #333;
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .input{
+    display: block;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    padding: 0.25em 0.5em;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    outline: none;
+    transition: box-shadow 0.1s ease-in-out, border-color 0.1s ease-in-out;
+
+    &:focus{
+      $blue: #11aaff;
+      box-shadow: 0 0 1px $blue;
+      border-color: $blue;
+    }
+
+    option:disabled{
+      display: none;
+    }
+  }
+
+  .radio{
+    display: flex;
+
+    input[type=radio]{
+      position: fixed;
+      opacity: 0;
+
+      &:checked + .radio-selector{
+        background-color: $orange;
+        color: #fff;
+        border-color: $orange;
+        box-shadow: 0 1px 1px rgba($orange, 0.5);
+
+        & + input + .radio-selector{
+          border-left: none;
+          padding-left: calc(0.5em + 1px);
+        }
+      }
+    }
+
+    .radio-selector{
+      display: inline-block;
+      white-space: pre-line;
+      padding: 0.4em 0.5em;
+      border: 1px solid #ccc;
+      border-right: none;
+      border-radius: 6px;
+      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+
+      &:first-of-type{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &:last-of-type{
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-right: 1px solid #ccc;
+      }
+
+      &:hover{
+        border-color: $orange;
+        box-shadow: 0 1px 1px rgba($orange, 0.5);
+      }
+    }
   }
 </style>

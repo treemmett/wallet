@@ -124,7 +124,7 @@ export default new Vuex.Store({
       // add category
       group.categories.push(category);
     },
-    addTransaction: (state, { description, category, amount, type = 'expense' }) => {
+    addTransaction: (state, { description, category, amount, date, type = 'expense' }) => {
       // find category of transaction
       let categoryObj;
       for(let i = 0; i < state.budget.length; i++){
@@ -147,6 +147,7 @@ export default new Vuex.Store({
         description,
         amount,
         category,
+        date,
         id: Math.floor(Math.random() * 9999999) // random ID
       });
     }
@@ -189,6 +190,11 @@ export default new Vuex.Store({
           ...transaction,
           categoryName: category ? category.name : 'Unknown Category'
         };
+      }).sort((a, b) => {
+        // sort by recent transaction date
+        if(a.date < b.date) return 1;
+        if(a.date > b.date) return -1;
+        return 0;
       });
     }
   }
