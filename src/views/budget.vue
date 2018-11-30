@@ -25,11 +25,25 @@
         </div>
       </div>
     </div>
+
+    <div class="sidebar">
+      <div class="card">
+        <div class="date">
+          <span class="icon-angle-left" @click="changeMonth(-1)"/>
+          <div class="selector">
+            <div class="month">{{months[selectedDate.month]}}</div>
+            <div class="year">{{selectedDate.year}}</div>
+          </div>
+          <span class="icon-angle-right" @click="changeMonth(1)"/>
+        </div>
+      </div>
+    </div>
   </Dashboard>
 </template>
 
 <script>
 import Dashboard from '../layouts/dashboard';
+import moment from 'moment';
 
 const moneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -46,7 +60,12 @@ export default {
   data(){
     return {
       collapsedGroups: [],
-      categoryCreation: undefined
+      categoryCreation: undefined,
+      selectedDate: {
+        month: moment().month(),
+        year: moment().year()
+      },
+      months: ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
     }
   },
   methods: {
@@ -56,6 +75,18 @@ export default {
         this.categoryCreation = undefined;
         window.removeEventListener('keydown', this.clearCategoryCreation);
         window.removeEventListener('click', this.clearCategoryCreation);
+      }
+    },
+    changeMonth(direction){
+      // check if we should update the year
+      if(direction === 1 && this.selectedDate.month === 11){
+        this.selectedDate.month = 0;
+        this.selectedDate.year += 1;
+      }else if(direction === -1 && this.selectedDate.month === 0){
+        this.selectedDate.month = 11;
+        this.selectedDate.year -= 1;
+      }else{
+        this.selectedDate.month += direction;
       }
     },
     collapseGroup(id){
@@ -103,9 +134,72 @@ export default {
 
   .budget{
     padding: 2em;
+    padding-right: 25em;
     box-sizing: border-box;
     overflow: auto;
     height: 100%;
+  }
+
+  .sidebar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 25em;
+    height: 100%;
+    padding: 0 2em;
+    box-sizing: border-box;
+    pointer-events: none;
+    overflow-y: auto;
+
+    .card{
+      background-color: #fff;
+      width: 100%;
+      border-radius: 6px;
+      padding: 1em;
+      margin: 2em 0;
+      box-sizing: border-box;
+      pointer-events: auto;
+      box-shadow: 0 5px 20px rgba(#000, 0.1);
+    }
+
+    .date{
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-weight: 500;
+      user-select: none;
+      
+      > span{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        color: #aaa;
+        width: 1em;
+        border-radius: 50%;
+        transition: color 0.15s ease, background-color 0.15s ease-in-out;
+        cursor: pointer;
+
+        &:hover{
+          background-color: #eee;
+          color: darken(#aaa, 10%);
+        }
+      }
+
+      .selector{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 4em;
+      }
+
+      .month{
+        text-transform: uppercase;
+      }
+    }
   }
 
   .group{
@@ -226,18 +320,5 @@ export default {
     color: #888;
     width: 100px;
     margin-left: 1em;
-  }
-
-  .card{
-    position: absolute;
-    right: 2em;
-    width: 18em;
-    max-height: calc(75% - 4em);
-    overflow: scroll;
-    background-color: #fff;
-    box-shadow: 0 5px 20px rgba(#000, 0.1);
-    border-radius: 6px;
-    padding: 1em;
-    box-sizing: border-box;
   }
 </style>
