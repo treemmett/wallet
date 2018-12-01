@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import router from './router';
-import Calendar from 'v-calendar';
 import store from './store';
+import Calendar from 'v-calendar';
+import Money from 'v-money';
 import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.directive('focus', {
@@ -13,6 +14,11 @@ Vue.directive('focus', {
 });
 
 Vue.use(Calendar);
+
+Vue.use(Money, {
+  prefix: '$',
+  precision: 2,
+});
 
 new Vue({
   router,

@@ -24,7 +24,7 @@
             </select>
 
             <label for="amount">Amount</label>
-            <input class="input" type="tel" name="amount" id="amount" v-model.lazy="selectedDetail.amount" v-money="moneyConfig" required/>
+            <input class="input" type="tel" name="amount" id="amount" v-model.lazy="selectedDetail.amount" v-money required/>
 
             <label for="date">Date</label>
             <v-date-picker mode="single" v-model="selectedDetail.date" update-on-input :input-props="{ class: 'input', required: true, name: 'date' }"/>
@@ -53,7 +53,6 @@
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
 import moment from 'moment';
-import { VMoney } from 'v-money';
 
 export default {
   name: 'Transactions',
@@ -63,10 +62,6 @@ export default {
       selectedDetail: {
         amount: 0,
         date: null
-      },
-      moneyConfig: {
-        prefix: '$',
-        precision: 2,
       }
     }
   },
@@ -91,8 +86,7 @@ export default {
       // close sidebar
       this.sidebarOpen = false;
     }
-  },
-  directives: { money: VMoney }
+  }
 }
 </script>
 

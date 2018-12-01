@@ -19,7 +19,9 @@
         <div class="categories">
           <div class="category" v-for="category in group.categories" :key="category.id">
             <div class="title">{{category.name}}</div>
-            <div class="amount">{{formatMoney(category.budget)}}</div>
+            <div class="amount">
+              <input v-model="category.budget" v-money="{ precision: 0 }"/>
+            </div>
             <div class="amount">{{formatMoney(category.expenses)}}</div>
           </div>
         </div>
@@ -310,6 +312,12 @@ export default {
     display: flex;
     align-items: center;
     padding: 1em 0;
+
+    &:hover{
+      input{
+        border-color: $blue;
+      }
+    }
   }
 
   .title{
@@ -320,5 +328,20 @@ export default {
     color: #888;
     width: 100px;
     margin-left: 1em;
+
+    input{
+      color: inherit;
+      font-size: inherit;
+      width: 100%;
+      outline: none;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      text-overflow: ellipsis;
+
+      &:focus{
+        border-color: $blue;
+        box-shadow: 0 0 1px $blue;
+      }
+    }
   }
 </style>
