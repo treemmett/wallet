@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -47,6 +48,10 @@ export default new Vuex.Store({
         parent: 2649871691
       }
     ],
+    date: { 
+      month: moment().month(),
+      year: moment().year()
+    },
     groups: [
       {
         name: 'Housing',
@@ -101,7 +106,7 @@ export default new Vuex.Store({
         amount: -45.42,
         id: 4809125196
       }
-    ]
+    ],
   },
   mutations: {
     addCategory: (state, { categoryName, groupId }) => {
@@ -123,14 +128,31 @@ export default new Vuex.Store({
         date,
         id: Math.floor(Math.random() * 9999999) // random ID
       });
+    },
+    changeDate: (state, { direction }) => {
+      // check if we should update the year
+      if(direction === 1 && state.date.month === 11){
+        state.date.month = 0;
+        state.date.year += 1;
+      }else if(direction === -1 && state.date.month === 0){
+        state.date.month = 11;
+        state.date.year -= 1;
+      }else{
+        state.date.month += direction;
+      }
     }
   },
   getters: {
     budget(state){
+      const date = new RegExp(`^${state.date.year}-${state.date.month}`);
+
       // add total from all transactions
       const totals = state.transactions.reduce((acc, cur) => {
         // skip income
         if(cur.amount > 0) return acc;
+
+        // only check transactions in the selected month
+        if(!date.test(cur.date)) return acc;
 
         const amount = Math.abs(cur.amount);
 

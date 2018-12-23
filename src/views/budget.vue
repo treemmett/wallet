@@ -31,12 +31,12 @@
     <div class="sidebar">
       <div class="card">
         <div class="date">
-          <span class="icon-angle-left" @click="changeMonth(-1)"/>
+          <span class="icon-angle-left" @click="$store.commit('changeDate', { direction: -1 })"/>
           <div class="selector">
-            <div class="month">{{months[selectedDate.month]}}</div>
-            <div class="year">{{selectedDate.year}}</div>
+            <div class="month">{{months[$store.state.date.month]}}</div>
+            <div class="year">{{$store.state.date.year}}</div>
           </div>
-          <span class="icon-angle-right" @click="changeMonth(1)"/>
+          <span class="icon-angle-right" @click="$store.commit('changeDate', { direction: 1 })"/>
         </div>
 
         <div class="summary">
@@ -80,10 +80,6 @@ export default {
     return {
       collapsedGroups: [],
       categoryCreation: undefined,
-      selectedDate: {
-        month: moment().month(),
-        year: moment().year()
-      },
       months: ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
     }
   },
@@ -97,16 +93,7 @@ export default {
       }
     },
     changeMonth(direction){
-      // check if we should update the year
-      if(direction === 1 && this.selectedDate.month === 11){
-        this.selectedDate.month = 0;
-        this.selectedDate.year += 1;
-      }else if(direction === -1 && this.selectedDate.month === 0){
-        this.selectedDate.month = 11;
-        this.selectedDate.year -= 1;
-      }else{
-        this.selectedDate.month += direction;
-      }
+      
     },
     collapseGroup(id){
       // check if group is already collapsed
