@@ -153,6 +153,30 @@ export default new Vuex.Store({
     }
   },
   getters: {
+    budgetSummary(state){
+      // TODO: Make date editable
+      const date = /^2018-11/;
+
+      const used = state.transactions.reduce((acc, cur) => {
+        // Skip income
+        if(cur.amount > 0) return acc;
+
+        // Skip transactions not in current month
+        if(!date.test(cur.date)) return acc;
+
+        return acc + Math.abs(cur.amount)
+      }, 0).toFixed(0);
+
+      const budgetted = state.budget.reduce((acc, cur) => {
+        return acc + cur.categories.reduce((acc, cur) => acc + cur.budget, 0)
+      }, 0);
+
+      return {
+        budgetted,
+        used,
+        available: budgetted - used
+      }
+    },
     calculatedBudget(state){
       // add total from all transactions
       const totals = {}

@@ -38,6 +38,23 @@
           </div>
           <span class="icon-angle-right" @click="changeMonth(1)"/>
         </div>
+
+        <div class="summary">
+          <div class="summary-item">
+            <div class="title">Budgetted</div>
+            <div class="value">${{$store.getters.budgetSummary.budgetted}}</div>
+          </div>
+
+          <div class="summary-item">
+            <div class="title">Used</div>
+            <div class="value">${{$store.getters.budgetSummary.used}}</div>
+          </div>
+
+          <div class="summary-item">
+            <div class="title">Available</div>
+            <div class="value">${{$store.getters.budgetSummary.available}}</div>
+          </div>
+        </div>
       </div>
     </div>
   </Dashboard>
@@ -200,6 +217,20 @@ export default {
 
       .month{
         text-transform: uppercase;
+      }
+    }
+
+    .summary{
+      margin-top: 1em;
+      border-top: 1px solid #ddd;
+
+      .summary-item{
+        display: flex;
+        margin: 0.5em 0;
+      }
+
+      .title{
+        font-size: 18px;
       }
     }
   }
