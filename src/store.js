@@ -5,70 +5,64 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    budget: [
+    categories: [
+      {
+        name: 'Rent',
+        id: 2425467916,
+        parent: 4179322703
+      },
+      {
+        name: 'Electric Bill',
+        id: 1836338723,
+        parent: 4179322703
+      },
+      {
+        name: 'Auto Loan',
+        id: 3462203473,
+        parent: 9716634112
+      },
+      {
+        name: 'Fuel',
+        id: 4096856227,
+        parent: 9716634112
+      },
+      {
+        name: 'Insurance',
+        id: 9401003545,
+        parent: 9716634112
+      },
+      {
+        name: 'Groceries',
+        id: 3224896798,
+        parent: 1868312036
+      },
+      {
+        name: 'Dining',
+        id: 5305833339,
+        parent: 1868312036
+      },
+      {
+        name: 'Personal Care',
+        id: 6948027125,
+        parent: 2649871691
+      }
+    ],
+    groups: [
       {
         name: 'Housing',
-        id: 4179322703,
-        categories: [
-          {
-            name: 'Rent',
-            budget: 1000,
-            id: 2425467916
-          },
-          {
-            name: 'Electric Bill',
-            budget: 80,
-            id: 1836338723
-          }
-        ]
+        id: 4179322703
       },
       {
         name: 'Transportation',
-        id: 9716634112,
-        categories: [
-          {
-            name: 'Auto Loan',
-            budget: 500,
-            id: 3462203473
-          },
-          {
-            name: 'Fuel',
-            budget: 100,
-            id: 4096856227
-          },
-          {
-            name: 'Insurance',
-            budget: 150,
-            id: 9401003545
-          }
-        ]
+        id: 9716634112
       },
       {
         name: 'Food',
-        id: 1868312036,
-        categories: [
-          {
-            name: 'Groceries',
-            budget: 200,
-            id: 3224896798
-          },
-          {
-            name: 'Dining',
-            budget: 100,
-            id: 5305833339
-          }
-        ]
+        id: 1868312036
       },
       {
         name: 'Quality of Life',
-        id: 2649871691,
-        categories: [
-          {
-            name: 'Personal Care',
-            budget: 100,
-            id: 6948027125
-          }
-        ]
+        id: 2649871691
       }
     ],
     transactions: [
@@ -111,34 +105,13 @@ export default new Vuex.Store({
   },
   mutations: {
     addCategory: (state, { categoryName, groupId }) => {
-      // create object for category
-      const category = {
+      state.categories.push({
         name: categoryName,
-        id: Math.floor(Math.random() * 1000000),
-        budget: 0
-      }
-
-      // find group to add category
-      const group = state.budget.find(obj => obj.id === groupId);
-
-      // add category
-      group.categories.push(category);
+        id: Math.floor(Math.random() * 999999) + 100000,
+        parent: groupId
+      });
     },
     addTransaction: (state, { description, category, amount, date, type = 'expense' }) => {
-      // find category of transaction
-      let categoryObj;
-      for(let i = 0; i < state.budget.length; i++){
-        const foundCategory = state.budget[i].categories.find(obj => parseInt(category, 10));
-        if(foundCategory){
-          categoryObj = foundCategory;
-          break;
-        }
-      }
-
-      if(!categoryObj){
-        throw new Error('Category does not exist');
-      }
-
       // parse value
       var amount = parseFloat(amount.replace(/[^0-9.-]+/g, ''), 10).toFixed(2);
       amount *= (type === 'expense' ? -1 : 1);
@@ -146,69 +119,66 @@ export default new Vuex.Store({
       state.transactions.push({
         description,
         amount,
-        category,
+        category: parseInt(category, 10),
         date,
         id: Math.floor(Math.random() * 9999999) // random ID
       });
     }
   },
   getters: {
-    budgetSummary(state){
-      // TODO: Make date editable
-      const date = /^2018-11/;
-
-      const used = state.transactions.reduce((acc, cur) => {
-        // Skip income
+    budget(state){
+      // add total from all transactions
+      const totals = state.transactions.reduce((acc, cur) => {
+        // skip income
         if(cur.amount > 0) return acc;
 
-        // Skip transactions not in current month
-        if(!date.test(cur.date)) return acc;
+        const amount = Math.abs(cur.amount);
 
-        return acc + Math.abs(cur.amount)
-      }, 0).toFixed(0);
+        // add amount to groups totals
+        const id = cur.category.toString();
+        if(acc.cat[id]){
+          acc.cat[id] += amount;
+        }else{
+          acc.cat[id] = amount;
+        }
 
-      const budgetted = state.budget.reduce((acc, cur) => {
-        return acc + cur.categories.reduce((acc, cur) => acc + cur.budget, 0)
-      }, 0);
+        // add amount to global total
+        acc.used += amount;
+
+        return acc;
+      }, {
+        cat: {},
+        used: 0,
+        budgetted: 0
+      });
 
       return {
-        budgetted,
-        used,
-        available: budgetted - used
+        available: (totals.budgetted - totals.used).toFixed(0),
+        budgetted: totals.budgetted.toFixed(0),
+        used: totals.used.toFixed(0),
+        groups: state.groups.map(group => {
+          return {
+            ...group,
+            categories: state.categories.reduce((acc, cur) => {
+              // skip categories not in group
+              if(cur.parent !== group.id) return acc;
+  
+              acc.push({
+                ...cur,
+                expenses: totals.cat[cur.id.toString()] || 0
+              });
+  
+              return acc;
+            }, [])
+          }
+        })
       }
-    },
-    calculatedBudget(state){
-      // add total from all transactions
-      const totals = {}
-      state.transactions.forEach(transaction => {
-        const categoryId = transaction.category.toString();
-
-        if(typeof totals[categoryId] !== 'number'){
-          totals[categoryId] = 0;
-        }
-        
-        totals[categoryId] += transaction.amount;
-      });
-
-      // add totals to budget
-      return state.budget.map(group => {
-        return {
-          ...group,
-          categories: group.categories.map(category => {
-            return {
-              ...category,
-              expenses: totals[category.id.toString()] || 0
-            }
-          })
-        }
-      });
     },
     transactions(state){
       // seperate categories from groups
-      const categories = state.budget.map(group => group.categories).reduce((a, c) => a.concat(c));
 
       return state.transactions.map(transaction => {
-        const category = categories.find(cat => cat.id === transaction.category);
+        const category = state.categories.find(cat => cat.id === transaction.category);
 
         return {
           ...transaction,

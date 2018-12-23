@@ -18,7 +18,7 @@
             <label for="category">Category</label>
             <select class="input" name="category" id="category" required>
               <option disabled selected/>
-              <optgroup v-for="group in $store.state.budget" :key="group.id" :label="group.name">
+              <optgroup v-for="group in $store.getters.budget.groups" :key="group.id" :label="group.name">
                 <option v-for="category in group.categories" :key="category.id" :value="category.id">{{category.name}}</option>
               </optgroup>
             </select>
@@ -73,7 +73,6 @@ export default {
     addTransaction(e){
       // parse date object
       const date = moment(e.target.elements.date.value, 'MM/DD/YYYY').toISOString();
-      console.log(date);
 
       this.$store.commit('addTransaction', {
         description: e.target.elements.description.value.trim(),
