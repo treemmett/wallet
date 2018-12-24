@@ -50,6 +50,7 @@ export default new Vuex.Store({
     ],
     date: { 
       month: moment().month(),
+      prettyMonth: moment().format('MMM'),
       year: moment().year()
     },
     groups: [
@@ -130,16 +131,17 @@ export default new Vuex.Store({
       });
     },
     changeDate: (state, { direction }) => {
-      // check if we should update the year
-      if(direction === 1 && state.date.month === 11){
-        state.date.month = 0;
-        state.date.year += 1;
-      }else if(direction === -1 && state.date.month === 0){
-        state.date.month = 11;
-        state.date.year -= 1;
-      }else{
-        state.date.month += direction;
+      const timeObj = moment().year(state.date.year).month(state.date.month);
+
+      if(direction > 0){
+        timeObj.add(1, 'month');
+      }else if(direction < 0){
+        timeObj.subtract(1, 'month');
       }
+
+      state.date.month = timeObj.month();
+      state.date.prettyMonth = timeObj.format('MMM');
+      state.date.year = timeObj.year();
     }
   },
   getters: {

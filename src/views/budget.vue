@@ -33,7 +33,7 @@
         <div class="date">
           <span class="icon-angle-left" @click="$store.commit('changeDate', { direction: -1 })"/>
           <div class="selector">
-            <div class="month">{{months[$store.state.date.month]}}</div>
+            <div class="month">{{$store.state.date.prettyMonth}}</div>
             <div class="year">{{$store.state.date.year}}</div>
           </div>
           <span class="icon-angle-right" @click="$store.commit('changeDate', { direction: 1 })"/>
@@ -80,7 +80,6 @@ export default {
     return {
       collapsedGroups: [],
       categoryCreation: undefined,
-      months: ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
     }
   },
   methods: {
@@ -91,9 +90,6 @@ export default {
         window.removeEventListener('keydown', this.clearCategoryCreation);
         window.removeEventListener('click', this.clearCategoryCreation);
       }
-    },
-    changeMonth(direction){
-      
     },
     collapseGroup(id){
       // check if group is already collapsed
