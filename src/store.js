@@ -146,7 +146,7 @@ export default new Vuex.Store({
   },
   getters: {
     budget(state){
-      const date = new RegExp(`^${state.date.year}-${state.date.month}`);
+      const date = new RegExp(`^${state.date.year}-${moment().month(state.date.month).format('MM')}`);
 
       // add total from all transactions
       const totals = state.transactions.reduce((acc, cur) => {
