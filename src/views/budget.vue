@@ -20,9 +20,9 @@
           <div class="category" v-for="category in group.categories" :key="category.id">
             <div class="title">{{category.name}}</div>
             <div class="amount">
-              <input v-model="category.budget" v-money="{ precision: 0 }"/>
+              <input v-model.number="category.budget" @change="$store.commit('setBudget', { category: category.id, amount: $event.target.value })"/>
             </div>
-            <div class="amount">{{formatMoney(category.expenses)}}</div>
+            <div class="amount">{{category.expenses}}</div>
           </div>
         </div>
       </div>
@@ -42,17 +42,17 @@
         <div class="summary">
           <div class="summary-item">
             <div class="title">Budgetted</div>
-            <div class="value">${{$store.getters.budget.budgetted}}</div>
+            <div class="value">{{$store.getters.budget.budgetted}}</div>
           </div>
 
           <div class="summary-item">
             <div class="title">Used</div>
-            <div class="value">${{$store.getters.budget.used}}</div>
+            <div class="value">{{$store.getters.budget.used}}</div>
           </div>
 
           <div class="summary-item">
             <div class="title">Available</div>
-            <div class="value">${{$store.getters.budget.available}}</div>
+            <div class="value">{{$store.getters.budget.available}}</div>
           </div>
         </div>
       </div>
@@ -63,13 +63,6 @@
 <script>
 import Dashboard from '../layouts/dashboard';
 import moment from 'moment';
-
-const moneyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0
-});
 
 export default {
   name: 'Budget',
@@ -117,9 +110,6 @@ export default {
 
       // close input
       this.clearCategoryCreation(true);
-    },
-    formatMoney(value){
-      return moneyFormatter.format(value);
     },
     setCategoryCreation(id){
       // add listeners to remove creation input

@@ -24,7 +24,7 @@
             </select>
 
             <label for="amount">Amount</label>
-            <input class="input" type="tel" name="amount" id="amount" v-model.lazy="selectedDetail.amount" v-money required/>
+            <input class="input" type="tel" name="amount" required/>
 
             <label for="date">Date</label>
             <v-date-picker mode="single" v-model="selectedDetail.date" update-on-input :input-props="{ class: 'input', required: true, name: 'date' }"/>
@@ -60,7 +60,6 @@ export default {
     return {
       sidebarOpen: false,
       selectedDetail: {
-        amount: 0,
         date: null
       }
     }

@@ -6,6 +6,26 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    budget: [
+      {
+        month: 11,
+        year: 2018,
+        category: 2425467916,
+        amount: 1000
+      },
+      {
+        month: 10,
+        year: 2018,
+        category: 2425467916,
+        amount: 900
+      },
+      {
+        month: 0,
+        year: 2019,
+        category: 2425467916,
+        amount: 400
+      }
+    ],
     categories: [
       {
         name: 'Rent',
@@ -142,6 +162,30 @@ export default new Vuex.Store({
       state.date.month = timeObj.month();
       state.date.prettyMonth = timeObj.format('MMM');
       state.date.year = timeObj.year();
+    },
+    setBudget: (state, { category, amount }) => {
+      // find budget category
+      const budget = state.budget.find(b => b.category === category && b.month === state.date.month && b.year === state.date.year);
+
+      // parse budget amount
+      amount = parseInt(amount.replace(/[^0-9.]/g, ''), 10);
+
+      if(isNaN(amount)){
+        amount = 0;
+      }
+
+      if(budget){
+        // update budget
+        budget.amount = amount;
+      }else{
+        // create new budget
+        state.budget.push({
+          month: state.date.month,
+          year: state.date.year,
+          category,
+          amount
+        });
+      }
     }
   },
   getters: {
@@ -172,23 +216,33 @@ export default new Vuex.Store({
         return acc;
       }, {
         cat: {},
-        used: 0,
-        budgetted: 0
+        used: 0
       });
 
+      const budgetted = state.budget.reduce((acc, cur) => {
+        if(cur.year === state.date.year && cur.month === state.date.month){
+          acc += cur.amount;
+        }
+
+        return acc;
+      }, 0);
+
       return {
-        available: (totals.budgetted - totals.used).toFixed(0),
-        budgetted: totals.budgetted.toFixed(0),
-        used: totals.used.toFixed(0),
+        available: budgetted - totals.used,
+        budgetted,
+        used: totals.used,
         groups: state.groups.map(group => {
           return {
             ...group,
             categories: state.categories.reduce((acc, cur) => {
               // skip categories not in group
               if(cur.parent !== group.id) return acc;
+              
+              const budget = state.budget.find(b => b.category === cur.id && b.year === state.date.year && b.month === state.date.month);
   
               acc.push({
                 ...cur,
+                budget: budget ? budget.amount : 0,
                 expenses: totals.cat[cur.id.toString()] || 0
               });
   
