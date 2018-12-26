@@ -20,7 +20,7 @@
           <div class="category" v-for="category in group.categories" :key="category.id">
             <div class="title">{{category.name}}</div>
             <div class="amount">
-              <input v-model.number="category.budget" @change="$store.commit('setBudget', { category: category.id, amount: $event.target.value })"/>
+              <Money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
             </div>
             <div class="amount">{{category.expenses}}</div>
           </div>
@@ -62,12 +62,14 @@
 
 <script>
 import Dashboard from '../layouts/dashboard';
+import Money from '../components/money';
 import moment from 'moment';
 
 export default {
   name: 'Budget',
   components: {
-    Dashboard
+    Dashboard,
+    Money
   },
   data(){
     return {
@@ -116,6 +118,9 @@ export default {
       window.addEventListener('keydown', this.clearCategoryCreation);
       window.addEventListener('click', this.clearCategoryCreation);
       this.categoryCreation = id;
+    },
+    setBudget({ category, amount }){
+      this.$store.commit('setBudget', { category, amount });
     }
   }
 }

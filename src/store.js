@@ -168,7 +168,7 @@ export default new Vuex.Store({
       const budget = state.budget.find(b => b.category === category && b.month === state.date.month && b.year === state.date.year);
 
       // parse budget amount
-      amount = parseInt(amount.replace(/[^0-9.]/g, ''), 10);
+      amount = parseInt(amount.toString().replace(/[^\d\.]/g, ''), 10);
 
       if(isNaN(amount)){
         amount = 0;
