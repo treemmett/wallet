@@ -4,7 +4,7 @@
       <div class="transaction" v-for="item in $store.getters.transactions" :key="item.id">
         <div class="description">{{item.description}}</div>
         <div class="category">{{item.categoryName}}</div>
-        <div class="amount" :class="{ positive: item.amount > 0 }">{{item.amount}}</div>
+        <div class="amount" :class="{ positive: item.amount > 0 }">{{formatCurrency(item.amount)}}</div>
       </div>
     </div>
 

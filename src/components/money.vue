@@ -3,13 +3,6 @@
 </template>
 
 <script>
-const MoneyParser = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0
-});
-
 export default {
   props: ['value'],
   data(){
@@ -37,7 +30,7 @@ export default {
   computed: {
     displayValue: {
       get(){
-        return this.inputFocused ? this.computedValue.toString() : MoneyParser.format(this.computedValue);
+        return this.inputFocused ? this.computedValue.toString() : this.formatCurrency(this.computedValue);
         // return this.inputFocused ? this.computedValue.toString() : '$' + this.computedValue.toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
       },
       set(modifiedValue){
