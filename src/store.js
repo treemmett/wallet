@@ -5,6 +5,7 @@ import moment from 'moment';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  strict: true,
   state: {
     budget: [
       {
@@ -89,6 +90,21 @@ export default new Vuex.Store({
       {
         name: 'Quality of Life',
         id: 2649871691
+      }
+    ],
+    income: [
+      {
+        type: 'salary',
+        description: 'Work',
+        rate: 52000,
+        id: 6481398561
+      },
+      {
+        type: 'hourly',
+        description: 'Side Job',
+        rate: 12,
+        hours: 20,
+        id: 4284024853
       }
     ],
     transactions: [
@@ -185,6 +201,23 @@ export default new Vuex.Store({
           category,
           amount
         });
+      }
+    },
+    setIncome: (state, { id, description, type, rate, hours }) => {
+      // find income
+      const income = state.income.find(i => i.id === id);
+
+      if(description){
+        income.description = description;
+      }
+      if(type){
+        income.type = type;
+      }
+      if(rate){
+        income.rate = rate;
+      }
+      if(hours){
+        income.hours = hours;
       }
     }
   },

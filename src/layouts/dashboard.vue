@@ -4,7 +4,7 @@
       <nav>
         <router-link :to="{ name: 'budget' }" exact><span class="icon-wallet"/>Budget</router-link>
         <router-link :to="{ name: 'transactions' }"><span class="icon-receipt"/>Transactions</router-link>
-        <a href="#"><span class="icon-money-check"/>Income</a>
+        <router-link :to="{ name: 'income' }"><span class="icon-money-check"/>Income</router-link>
         <a href="#"><span class="icon-piggy-bank"/>Goals</a>
         <a href="#"><span class="icon-account"/>Tax</a>
         <a href="#"><span class="icon-analytics"/>Reports</a>
@@ -88,7 +88,6 @@
   }
 
   *{
-    color: #333;
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     -webkit-overflow-scrolling: touch;
   }
