@@ -43,6 +43,93 @@
           </div>
         </div>
       </section>
+
+      <section>
+        <div class="header">
+          <div class="title">Tax</div>
+        </div>
+        <div class="table">
+          <div class="row">
+            <div class="col">State</div>
+            <div class="col">
+              <select>
+                <option>Alabama</option>
+                <option>Alaska</option>
+                <option>Arizona</option>
+                <option>Arkansas</option>
+                <option>California</option>
+                <option>Colorado</option>
+                <option>Connecticut</option>
+                <option>Delaware</option>
+                <option>Florida</option>
+                <option>Georgia</option>
+                <option>Hawaii</option>
+                <option>Idaho</option>
+                <option>Illinois</option>
+                <option>Indiana</option>
+                <option>Iowa</option>
+                <option>Kansas</option>
+                <option>Kentucky</option>
+                <option>Louisiana</option>
+                <option>Maine</option>
+                <option>Maryland</option>
+                <option>Massachusetts</option>
+                <option>Michigan</option>
+                <option>Minnesota</option>
+                <option>Mississippi</option>
+                <option>Missouri</option>
+                <option>Montana</option>
+                <option>Nebraska</option>
+                <option>Nevada</option>
+                <option>New Hampshire</option>
+                <option>New Jersey</option>
+                <option>New Mexico</option>
+                <option>New York</option>
+                <option>North Carolina</option>
+                <option>North Dakota</option>
+                <option>Ohio</option>
+                <option>Oklahoma</option>
+                <option>Oregon</option>
+                <option>Pennsylvania</option>
+                <option>Rhode Island</option>
+                <option>South Carolina</option>
+                <option>South Dakota</option>
+                <option>Tennessee</option>
+                <option>Texas</option>
+                <option>Utah</option>
+                <option>Vermont</option>
+                <option>Virginia</option>
+                <option>Washington</option>
+                <option>West Virginia</option>
+                <option>Wisconsin</option>
+                <option>Whyoming</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">Filing Status</div>
+            <div class="col">
+              <select>
+                <option>Single</option>
+                <option>Maried</option>
+                <option>Head of Household</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">Age on Dec 31</div>
+            <div class="col"><input type="number" min="13"/></div>
+          </div>
+          <div class="row">
+            <div class="col">Number of Dependents</div>
+            <div class="col"><input type="number" min="0"/></div>
+          </div>
+          <div class="row">
+            <div class="col">Do you have health insurance?</div>
+            <div class="col"><input type="checkbox"/></div>
+          </div>
+        </div>
+      </section>
     </div>
   </Dashboard>
 </template>
@@ -152,13 +239,7 @@ export default {
     }
 
     .row{
-      &:hover{
-        input, select{
-          border-color: #aaa;
-        }
-      }
-
-      input, select{
+      input:not([type=checkbox]), select{
         background-color: transparent;
         border: 1px solid transparent;
         font-size: 16px;
@@ -173,8 +254,10 @@ export default {
         }
       }
 
-      select::after{
-        content: '\e913';
+      &:hover{
+        input, select{
+          border-color: #aaa;
+        }
       }
     }
   }
