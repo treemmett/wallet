@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  props: ['value'],
+  props: ['value', 'precission'],
   data(){
     return {
       inputFocused: false,
@@ -31,11 +31,11 @@ export default {
     displayValue: {
       get(){
         return this.inputFocused ? this.computedValue.toString() : this.formatCurrency(this.computedValue);
-        // return this.inputFocused ? this.computedValue.toString() : '$' + this.computedValue.toFixed(2).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
       },
       set(modifiedValue){
         // remove all non digit and decimal characters
-        let newValue = parseInt(modifiedValue.replace(/[^\d\.]/g, ''), 10);
+        let cleanedValue = modifiedValue.replace(/[^\d\.]/g, '');
+        let newValue = this.precission ? parseFloat(parseFloat(cleanedValue).toFixed(2)) : parseInt(cleanedValue, 10);
         if(isNaN(newValue)){
           newValue = 0;
         }

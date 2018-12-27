@@ -3,6 +3,19 @@
     <div class="income">
       <section>
         <div class="header">
+          <div class="title">Summary</div>
+        </div>
+
+        <div class="summary">
+          <div class="item">
+            <div class="label">Gross Income</div>
+            <div class="value">{{formatCurrency($store.getters.income)}}</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="header">
           <div class="title">
             Recurring Income
             <div class="click-icon icon-plus"/>
@@ -21,12 +34,12 @@
             <div class="col"><input :value="incomeSource.description" @change="setIncome(incomeSource.id, { description: $event.target.value })"/></div>
             <div class="col">
               <select :value="incomeSource.type" @change="setIncome(incomeSource.id, { type: $event.target.value })">
-                <option value="hourly">Hourly Work</option>
-                <option value="salary">Salary Work</option>
+                <option value="hourly">Hourly</option>
+                <option value="salary">Salary</option>
               </select>
             </div>
-            <div class="col"><Money :value="incomeSource.rate" @change="setIncome(incomeSource.id, { rate: arguments[0] })"/></div>
-            <div class="col" v-if="incomeSource.type === 'hourly'"><input :value="incomeSource.hours" min="0" type="number" @change="setIncome(incomeSource.id, { hours: $event.target.value })"/></div>
+            <div class="col"><Money :value="incomeSource.rate" @change="setIncome(incomeSource.id, { rate: arguments[0] })" :precission="incomeSource.type === 'hourly'"/></div>
+            <div class="col" v-if="incomeSource.type === 'hourly'"><input :value="incomeSource.hours" min="0" type="number" @input="setIncome(incomeSource.id, { hours: parseInt($event.target.value, 10) })"/></div>
           </div>
         </div>
       </section>
@@ -89,6 +102,12 @@ export default {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ddd;
+  }
+
+  .summary{
+    display: flex;
+    justify-content: space-between;
+    padding: 1em 0;
   }
 
   .click-icon{

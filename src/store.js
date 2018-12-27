@@ -203,21 +203,34 @@ export default new Vuex.Store({
         });
       }
     },
-    setIncome: (state, { id, description, type, rate, hours }) => {
+    setIncome: (state, { id, rate, hours, description, type }) => {
       // find income
-      const income = state.income.find(i => i.id === id);
+      let income = state.income.find(i => i.id === id);
 
-      if(description){
-        income.description = description;
+      if(rate !== undefined){
+        Vue.set(income, 'rate', rate);
       }
-      if(type){
-        income.type = type;
+
+      if(hours !== undefined){
+        Vue.set(income, 'hours', hours);
       }
-      if(rate){
-        income.rate = rate;
+
+      if(description !== undefined){
+        Vue.set(income, 'description', description);
       }
-      if(hours){
-        income.hours = hours;
+
+      if(type !== undefined){
+        Vue.set(income, 'type', type);
+
+        // remove floats from rate
+        if(income.rate){
+          Vue.set(income, 'rate', parseInt(income.rate, 10));
+        }
+      }
+
+      // set hours if needed
+      if(income.type === 'hourly' && !income.hours){
+        Vue.set(income, 'hours', 0);
       }
     }
   },
@@ -284,6 +297,35 @@ export default new Vuex.Store({
           }
         })
       }
+    },
+    income(state){
+      return state.income.reduce((acc, cur) => {
+        let returnValue = 0;
+
+        switch(cur.type){
+          case 'salary': {
+            returnValue = cur.rate;
+            break;
+          }
+
+          case 'hourly': {
+            const regHours = cur.hours > 40 ? 40 : cur.hours || 0;
+            returnValue = regHours * cur.rate;
+
+            if(cur.hours > 40){
+              const otHours = cur.hours - 40;
+              returnValue += otHours * cur.rate * 1.5;
+            }
+
+            returnValue *= 52;
+
+            break;
+          }
+        }
+
+        return acc + returnValue;
+
+      }, 0);
     },
     transactions(state){
       // seperate categories from groups
