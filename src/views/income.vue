@@ -9,7 +9,22 @@
         <div class="summary">
           <div class="item">
             <div class="label">Gross Income</div>
-            <div class="value">{{formatCurrency($store.getters.income)}}</div>
+            <div class="value">{{formatCurrency($store.getters.income.gross)}}</div>
+          </div>
+
+          <div class="item">
+            <div class="label">Est. Fed Tax</div>
+            <div class="value">{{formatCurrency($store.getters.income.tax.federal)}}</div>
+          </div>
+
+          <div class="item">
+            <div class="label">Est. {{tax.state.toUpperCase()}} Tax</div>
+            <div class="value">{{formatCurrency($store.getters.income.tax.state)}}</div>
+          </div>
+
+          <div class="item">
+            <div class="label">Net Income</div>
+            <div class="value">{{formatCurrency($store.getters.income.net)}}</div>
           </div>
         </div>
       </section>
@@ -53,7 +68,6 @@
             <div class="col">State</div>
             <div class="col">
               <select :value="tax.state" @change="$store.commit('setTax', { state: $event.target.value })">
-                <option value="ca">California</option>
                 <option value="ut">Utah</option>
               </select>
             </div>
@@ -63,8 +77,8 @@
             <div class="col">
               <select :value="tax.status" @change="$store.commit('setTax', { status: $event.target.value })">
                 <option value="single">Single</option>
-                <option value="maried">Maried</option>
-                <option value="marriedSeparately">Maried - Filing Seperately</option>
+                <option value="married">Married</option>
+                <option value="marriedSeparately">Married - Filing Seperately</option>
                 <option value="headOfHousehold">Head of Household</option>
               </select>
             </div>
@@ -139,6 +153,11 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 1em 0;
+
+    .label{
+      color: #888;
+      margin-bottom: 0.25em;
+    }
   }
 
   .click-icon{

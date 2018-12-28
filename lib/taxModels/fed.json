@@ -1,0 +1,154 @@
+{
+  "single": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 10
+      },
+      {
+        "bracket": 9525,
+        "rate": 12
+      },
+      {
+        "bracket": 38700,
+        "rate": 22
+      },
+      {
+        "bracket": 82500,
+        "rate": 24
+      },
+      {
+        "bracket": 157500,
+        "rate": 32
+      },
+      {
+        "bracket": 200000,
+        "rate": 35
+      },
+      {
+        "bracket": 500000,
+        "rate": 37
+      }
+    ],
+    "deductions": [
+      {
+        "name": "Standard Deduction",
+        "amount": 12000
+      }
+    ]
+  },
+  "married": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 10
+      },
+      {
+        "bracket": 19050,
+        "rate": 12
+      },
+      {
+        "bracket": 77400,
+        "rate": 22
+      },
+      {
+        "bracket": 165000,
+        "rate": 24
+      },
+      {
+        "bracket": 315000,
+        "rate": 32
+      },
+      {
+        "bracket": 400000,
+        "rate": 35
+      },
+      {
+        "bracket": 600000,
+        "rate": 37
+      }
+    ],
+    "deductions": [
+      {
+        "name": "Standard Deduction",
+        "amount": 24000
+      }
+    ]
+  },
+  "marriedSeparately": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 10
+      },
+      {
+        "bracket": 9525,
+        "rate": 12
+      },
+      {
+        "bracket": 38700,
+        "rate": 22
+      },
+      {
+        "bracket": 82500,
+        "rate": 24
+      },
+      {
+        "bracket": 157500,
+        "rate": 32
+      },
+      {
+        "bracket": 200000,
+        "rate": 35
+      },
+      {
+        "bracket": 300000,
+        "rate": 37
+      }
+    ],
+    "deductions": [
+      {
+        "name": "Standard Deduction",
+        "amount": 12000
+      }
+    ]
+  },
+  "headOfHousehold": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 10
+      },
+      {
+        "bracket": 13600,
+        "rate": 12
+      },
+      {
+        "bracket": 51800,
+        "rate": 22
+      },
+      {
+        "bracket": 82500,
+        "rate": 24
+      },
+      {
+        "bracket": 157500,
+        "rate": 32
+      },
+      {
+        "bracket": 200000,
+        "rate": 35
+      },
+      {
+        "bracket": 500000,
+        "rate": 37
+      }
+    ],
+    "deductions": [
+      {
+        "name": "Standard Deduction",
+        "amount": 18000
+      }
+    ]
+  }
+}

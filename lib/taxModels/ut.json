@@ -1,0 +1,38 @@
+{
+  "single": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 5
+      }
+    ],
+    "deductions": []
+  },
+  "married": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 5
+      }
+    ],
+    "deductions": []
+  },
+  "marriedSeparately": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 5
+      }
+    ],
+    "deductions": []
+  },
+  "headOfHousehold": {
+    "brackets": [
+      {
+        "bracket": 0,
+        "rate": 5
+      }
+    ],
+    "deductions": []
+  }
+}

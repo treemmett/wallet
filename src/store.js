@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import moment from 'moment';
 
+// import getters
+import incomeGetter from './ducks/getters/income';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -306,35 +309,7 @@ export default new Vuex.Store({
         })
       }
     },
-    income(state){
-      return state.income.reduce((acc, cur) => {
-        let returnValue = 0;
-
-        switch(cur.type){
-          case 'salary': {
-            returnValue = cur.rate;
-            break;
-          }
-
-          case 'hourly': {
-            const regHours = cur.hours > 40 ? 40 : cur.hours || 0;
-            returnValue = regHours * cur.rate;
-
-            if(cur.hours > 40){
-              const otHours = cur.hours - 40;
-              returnValue += otHours * cur.rate * 1.5;
-            }
-
-            returnValue *= 52;
-
-            break;
-          }
-        }
-
-        return acc + returnValue;
-
-      }, 0);
-    },
+    income: incomeGetter,
     transactions(state){
       // seperate categories from groups
 
