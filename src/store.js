@@ -107,6 +107,10 @@ export default new Vuex.Store({
         id: 4284024853
       }
     ],
+    tax: {
+      state: 'ut',
+      status: 'single'
+    },
     transactions: [
       {
         description: 'McDonalds',
@@ -232,6 +236,10 @@ export default new Vuex.Store({
       if(income.type === 'hourly' && !income.hours){
         Vue.set(income, 'hours', 0);
       }
+    },
+    setTax: (theRealState, { state, status }) => {
+      theRealState.tax.state = state || theRealState.tax.state;
+      theRealState.tax.status = status|| theRealState.tax.status;
     }
   },
   getters: {
