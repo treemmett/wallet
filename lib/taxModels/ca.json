@@ -1,0 +1,206 @@
+{
+  "single": {
+    "taxes": [
+      {
+        "name": "California Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 8015,
+            "rate": 2
+          },
+          {
+            "bracket": 19001,
+            "rate": 4
+          },
+          {
+            "bracket": 29989,
+            "rate": 6
+          },
+          {
+            "bracket": 41629,
+            "rate": 8
+          },
+          {
+            "bracket": 52612,
+            "rate": 9.3
+          },
+          {
+            "bracket": 268750,
+            "rate": 10.3
+          },
+          {
+            "bracket": 322499,
+            "rate": 11.3
+          },
+          {
+            "bracket": 537498,
+            "rate": 12.3
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 3992
+          }
+        ]
+      }
+    ]
+  },
+  "married": {
+    "taxes": [
+      {
+        "name": "California Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 16030,
+            "rate": 2
+          },
+          {
+            "bracket": 38002,
+            "rate": 4
+          },
+          {
+            "bracket": 59978,
+            "rate": 6
+          },
+          {
+            "bracket": 83258,
+            "rate": 8
+          },
+          {
+            "bracket": 105224,
+            "rate": 9.3
+          },
+          {
+            "bracket": 537500,
+            "rate": 10.3
+          },
+          {
+            "bracket": 644998,
+            "rate": 11.3
+          },
+          {
+            "bracket": 1074996,
+            "rate": 12.3
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 7984
+          }
+        ]
+      }
+    ]
+  },
+  "marriedSeparately": {
+    "taxes": [
+      {
+        "name": "California Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 8015,
+            "rate": 2
+          },
+          {
+            "bracket": 19001,
+            "rate": 4
+          },
+          {
+            "bracket": 29989,
+            "rate": 6
+          },
+          {
+            "bracket": 41629,
+            "rate": 8
+          },
+          {
+            "bracket": 52612,
+            "rate": 9.3
+          },
+          {
+            "bracket": 268750,
+            "rate": 10.3
+          },
+          {
+            "bracket": 322499,
+            "rate": 11.3
+          },
+          {
+            "bracket": 537498,
+            "rate": 12.3
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 3992
+          }
+        ]
+      }
+    ]
+  },
+  "headOfHousehold": {
+    "taxes": [
+      {
+        "name": "California Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 16040,
+            "rate": 2
+          },
+          {
+            "bracket": 38003,
+            "rate": 4
+          },
+          {
+            "bracket": 48990,
+            "rate": 6
+          },
+          {
+            "bracket": 60630,
+            "rate": 8
+          },
+          {
+            "bracket": 71615,
+            "rate": 9.3
+          },
+          {
+            "bracket": 365499,
+            "rate": 10.3
+          },
+          {
+            "bracket": 438599,
+            "rate": 11.3
+          },
+          {
+            "bracket": 730997,
+            "rate": 12.3
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 3992
+          }
+        ]
+      }
+    ]
+  }
+}

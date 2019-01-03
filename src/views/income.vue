@@ -68,6 +68,15 @@
             <div class="col">State</div>
             <div class="col">
               <select :value="tax.state" @change="$store.commit('setTax', { state: $event.target.value })">
+                <option value="al">Alabama</option>
+                <option value="ak">Alaska</option>
+                <option value="az">Arizona</option>
+                <option value="ar">Arkansas</option>
+                <option value="ca">California</option>
+                <option value="co">Colorado</option>
+                <option value="ct">Connecticut</option>
+                <option value="de">Delaware</option>
+                <option value="fl">Florida</option>
                 <option value="ut">Utah</option>
               </select>
             </div>

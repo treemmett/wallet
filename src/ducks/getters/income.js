@@ -1,8 +1,29 @@
 // import tax brackets
 import fed from '../../../lib/taxModels/fed';
+import al from '../../../lib/taxModels/al';
+import ak from '../../../lib/taxModels/ak';
+import az from '../../../lib/taxModels/az';
+import ar from '../../../lib/taxModels/ar';
+import ca from '../../../lib/taxModels/ca';
+import co from '../../../lib/taxModels/co';
+import ct from '../../../lib/taxModels/ct';
+import de from '../../../lib/taxModels/de';
+import fl from '../../../lib/taxModels/fl';
 import ut from '../../../lib/taxModels/ut';
 
-const taxBrackets = {ut, fed}
+const taxBrackets = {
+  fed,
+  al,
+  ak,
+  az,
+  ar,
+  ca,
+  co,
+  ct,
+  de,
+  fl,
+  ut
+}
 
 export default function income(state){
   const grossIncome =  state.income.reduce((acc, cur) => {

@@ -1,0 +1,58 @@
+{
+  "single": {
+    "taxes": [
+      {
+        "name": "Colorado Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 4.63
+          }
+        ],
+        "deductions": []
+      }
+    ]
+  },
+  "married": {
+    "taxes": [
+      {
+        "name": "Colorado Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 4.63
+          }
+        ],
+        "deductions": []
+      }
+    ]
+  },
+  "marriedSeparately": {
+    "taxes": [
+      {
+        "name": "Colorado Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 4.63
+          }
+        ],
+        "deductions": []
+      }
+    ]
+  },
+  "headOfHousehold": {
+    "taxes": [
+      {
+        "name": "Colorado Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 4.63
+          }
+        ],
+        "deductions": []
+      }
+    ]
+  }
+}

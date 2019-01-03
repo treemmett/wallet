@@ -1,0 +1,110 @@
+{
+  "single": {
+    "taxes": [
+      {
+        "name": "Alabama Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 2
+          },
+          {
+            "bracket": 500,
+            "rate": 4
+          },
+          {
+            "bracket": 3000,
+            "rate": 5
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 2500
+          }
+        ]
+      }
+    ]
+  },
+  "married": {
+    "taxes": [
+      {
+        "name": "Alabama Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 2
+          },
+          {
+            "bracket": 1000,
+            "rate": 4
+          },
+          {
+            "bracket": 6000,
+            "rate": 5
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 7500
+          }
+        ]
+      }
+    ]
+  },
+  "marriedSeparately": {
+    "taxes": [
+      {
+        "name": "Alabama Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 2
+          },
+          {
+            "bracket": 500,
+            "rate": 4
+          },
+          {
+            "bracket": 3000,
+            "rate": 5
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 2500
+          }
+        ]
+      }
+    ]
+  },
+  "headOfHousehold": {
+    "taxes": [
+      {
+        "name": "Alabama Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 2
+          },
+          {
+            "bracket": 500,
+            "rate": 4
+          },
+          {
+            "bracket": 3000,
+            "rate": 5
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 2500
+          }
+        ]
+      }
+    ]
+  }
+}
