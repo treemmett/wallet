@@ -32,21 +32,65 @@ export default function income(state){
     return acc + returnValue;
   }, 0);
 
-  // calculate state and federal taxes
-  const fedTax = calculateTax({ income: grossIncome, taxModel: taxBrackets.fed[state.tax.status] });
-  const stateTax = calculateTax({ income: grossIncome, taxModel: taxBrackets[state.tax.state][state.tax.status] });
+  // calculate fed and state taxes
+  const fedTax = calculateTax({ grossIncome, taxModel: taxBrackets.fed[state.tax.status].taxes });
+  const stateTax = calculateTax({ grossIncome, taxModel: taxBrackets[state.tax.state][state.tax.status].taxes });
+
+  const tax = {
+    federal: fedTax.reduce((acc, cur) => acc + cur.tax, 0),
+    state: stateTax.reduce((acc, cur) => acc + cur.tax, 0)
+  }
 
   return {
-    tax: {
-      federal: fedTax,
-      state: stateTax
-    },
+    tax,
     gross: grossIncome,
-    net: grossIncome - (fedTax + stateTax)
+    net: grossIncome - (tax.federal + tax.state)
   }
 }
 
-function calculateTax({ income, taxModel }){
+function calculateTax({ grossIncome, taxModel }){
+  const breakdown =  taxModel.reduce((calculatedTax, model) => {
+    // calculate deductions
+    const deductions = model.deductions.reduce((acc, cur) => acc + cur.amount, 0);
+
+    // skip if gross income is less than deductions
+    if(grossIncome < deductions){
+      return calculatedTax.concat( [ { name: model.name, deductions, adjustedGross: 0, tax: 0 } ] );
+    }
+
+    // calculate adjusted gross income
+    let agi = grossIncome - deductions;
+
+    // sort brackets
+    const brackets = model.brackets.sort((a, b) => {
+      if(a.bracket < b.bracket) return 1;
+      if(a.bracket > b.bracket) return -1;
+      return 0;
+    });
+
+    const tax = brackets.reduce((acc, cur) => {
+      // skip bracket if it's outside our income
+      if(agi < cur.bracket) return acc;
+      
+      // calculate how much is taxed at this bracket
+      const rangeToTax = agi - cur.bracket;
+  
+      // apply tax magic
+      const tax = parseFloat((rangeToTax * (cur.rate / 100)).toFixed(2));
+  
+      // remove dollars that have already been taxed
+      agi -= rangeToTax;
+  
+      return acc + tax;
+    }, 0);
+
+    return calculatedTax.concat([{ name: model.name, deductions, tax }]);
+  }, []);
+
+  return breakdown;
+}
+
+function calculateTaxOld({ income, taxModel }){
   // calculate deductions
   const deductions = taxModel.deductions.reduce((acc, cur) => acc + cur.amount, 0);
 
@@ -55,7 +99,7 @@ function calculateTax({ income, taxModel }){
     return 0;
   }
 
-  // remove deduductions from gross
+  // remove deductions from gross
   let taxableIncome = income - deductions;
 
   // sort brackets
