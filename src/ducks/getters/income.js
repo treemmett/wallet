@@ -9,6 +9,9 @@ import co from '../../../lib/taxModels/co';
 import ct from '../../../lib/taxModels/ct';
 import de from '../../../lib/taxModels/de';
 import fl from '../../../lib/taxModels/fl';
+import ga from '../../../lib/taxModels/ga';
+import hi from '../../../lib/taxModels/hi';
+import id from '../../../lib/taxModels/id';
 import ut from '../../../lib/taxModels/ut';
 
 const taxBrackets = {
@@ -22,6 +25,9 @@ const taxBrackets = {
   ct,
   de,
   fl,
+  ga,
+  hi,
+  id,
   ut
 }
 

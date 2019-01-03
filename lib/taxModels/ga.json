@@ -1,0 +1,158 @@
+{
+  "single": {
+    "taxes": [
+      {
+        "name": "Georgia Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 750,
+            "rate": 2
+          },
+          {
+            "bracket": 2250,
+            "rate": 3
+          },
+          {
+            "bracket": 3750,
+            "rate": 4
+          },
+          {
+            "bracket": 5250,
+            "rate": 5
+          },
+          {
+            "bracket": 7000,
+            "rate": 6
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 2300
+          }
+        ]
+      }
+    ]
+  },
+  "married": {
+    "taxes": [
+      {
+        "name": "Georgia Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 1000,
+            "rate": 2
+          },
+          {
+            "bracket": 3000,
+            "rate": 3
+          },
+          {
+            "bracket": 5000,
+            "rate": 4
+          },
+          {
+            "bracket": 7000,
+            "rate": 5
+          },
+          {
+            "bracket": 10000,
+            "rate": 6
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 3000
+          }
+        ]
+      }
+    ]
+  },
+  "marriedSeparately": {
+    "taxes": [
+      {
+        "name": "Georgia Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 750,
+            "rate": 2
+          },
+          {
+            "bracket": 2250,
+            "rate": 3
+          },
+          {
+            "bracket": 3750,
+            "rate": 4
+          },
+          {
+            "bracket": 5250,
+            "rate": 5
+          },
+          {
+            "bracket": 7000,
+            "rate": 6
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 3000
+          }
+        ]
+      }
+    ]
+  },
+  "headOfHousehold": {
+    "taxes": [
+      {
+        "name": "Georgia Income Tax",
+        "brackets": [
+          {
+            "bracket": 0,
+            "rate": 1
+          },
+          {
+            "bracket": 1000,
+            "rate": 2
+          },
+          {
+            "bracket": 3000,
+            "rate": 3
+          },
+          {
+            "bracket": 5000,
+            "rate": 4
+          },
+          {
+            "bracket": 7000,
+            "rate": 5
+          },
+          {
+            "bracket": 10000,
+            "rate": 6
+          }
+        ],
+        "deductions": [
+          {
+            "name": "Standard Deduction",
+            "amount": 2300
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -77,6 +77,9 @@
                 <option value="ct">Connecticut</option>
                 <option value="de">Delaware</option>
                 <option value="fl">Florida</option>
+                <option value="ga">Georgia</option>
+                <option value="hi">Hawaii</option>
+                <option value="id">Idaho</option>
                 <option value="ut">Utah</option>
               </select>
             </div>
