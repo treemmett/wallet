@@ -17,13 +17,15 @@
         </div>
 
         <div class="categories">
-          <div class="category" v-for="category in group.categories" :key="category.id">
-            <div class="title">{{category.name}}</div>
-            <div class="amount">
-              <Money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
+          <draggable :list="group.categories" :options="{ animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @end="sortCategory">
+            <div class="category" v-for="category in group.categories" :key="category.id">
+              <div class="title">{{category.name}}</div>
+              <div class="amount">
+                <Money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
+              </div>
+              <div class="amount">{{formatCurrency(category.expenses)}}</div>
             </div>
-            <div class="amount">{{formatCurrency(category.expenses)}}</div>
-          </div>
+          </draggable>
         </div>
       </div>
     </div>
@@ -65,11 +67,13 @@ import { mapGetters } from 'vuex';
 import Dashboard from '../layouts/dashboard';
 import Money from '../components/money';
 import moment from 'moment';
+import draggable from 'vuedraggable';
 
 export default {
   name: 'Budget',
   components: {
     Dashboard,
+    draggable,
     Money
   },
   data(){
@@ -122,6 +126,9 @@ export default {
     },
     setBudget({ category, amount }){
       this.$store.commit('setBudget', { category, amount });
+    },
+    sortCategory(e){
+      console.log(e);
     }
   },
   computed: {
@@ -233,6 +240,10 @@ export default {
     }
 
     &.collapsed{
+      .head{
+        border-bottom-color: transparent;
+      }
+
       .carot{
         opacity: 1;
         transform: rotate(180deg);
@@ -240,7 +251,6 @@ export default {
 
       .categories{
         max-height: 0;
-        border-top-color: rgba(#ddd, 0);
         transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), border-top-color 0.2s ease-in-out;
       }
     }
@@ -248,9 +258,12 @@ export default {
 
   .head{
     font-size: 20px;
-    padding: 1em;
+    padding: 1em 0;
+    margin: 0 1em;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid #ddd;
+    transition: border-bottom-color 0.2s ease-in-out;
 
     .amount{
       font-size: 12px;
@@ -313,10 +326,8 @@ export default {
   }
 
   .categories{
-    border-top: 1px solid #ddd;
-    margin: 0 1em;
     font-size: 18px;
-    transition: max-height 1s ease-in-out, border-top-color 0.2s ease-in-out;
+    transition: max-height 1s ease-in-out;
     overflow: hidden;
     max-height: 1000px;
   }
@@ -324,11 +335,21 @@ export default {
   .category{
     display: flex;
     align-items: center;
-    padding: 1em 0;
+    padding: 1em;
 
     &:hover{
       input{
         border-color: $blue;
+      }
+    }
+
+    &.ghost{
+      opacity: 0;
+    }
+
+    &.dragging{
+      input{
+        border-color: transparent;
       }
     }
   }
