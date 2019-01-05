@@ -128,7 +128,11 @@ export default {
       this.$store.commit('setBudget', { category, amount });
     },
     sortCategory(e){
-      console.log(e);
+      this.$store.commit('sortCategory', {
+        parent: e.item._underlying_vm_.parent,
+        oldIndex: e.oldIndex,
+        newIndex: e.newIndex
+      });
     }
   },
   computed: {

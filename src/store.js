@@ -34,42 +34,50 @@ export default new Vuex.Store({
       {
         name: 'Rent',
         id: 2425467916,
-        parent: 4179322703
+        parent: 4179322703,
+        sort: 0
       },
       {
         name: 'Electric Bill',
         id: 1836338723,
-        parent: 4179322703
+        parent: 4179322703,
+        sort: 1
       },
       {
         name: 'Auto Loan',
         id: 3462203473,
-        parent: 9716634112
+        parent: 9716634112,
+        sort: 0
       },
       {
         name: 'Fuel',
         id: 4096856227,
-        parent: 9716634112
+        parent: 9716634112,
+        sort: 1
       },
       {
         name: 'Insurance',
         id: 9401003545,
-        parent: 9716634112
+        parent: 9716634112,
+        sort: 2
       },
       {
         name: 'Groceries',
         id: 3224896798,
-        parent: 1868312036
+        parent: 1868312036,
+        sort: 0
       },
       {
         name: 'Dining',
         id: 5305833339,
-        parent: 1868312036
+        parent: 1868312036,
+        sort: 1
       },
       {
         name: 'Personal Care',
         id: 6948027125,
-        parent: 2649871691
+        parent: 2649871691,
+        sort: 0
       }
     ],
     date: { 
@@ -243,6 +251,36 @@ export default new Vuex.Store({
     setTax: (theRealState, { state, status }) => {
       theRealState.tax.state = state || theRealState.tax.state;
       theRealState.tax.status = status|| theRealState.tax.status;
+    },
+    sortCategory: (state, { parent, oldIndex, newIndex }) => {
+      // separate categories, finding siblings
+      const categories = state.categories.reduce((acc, cur) => {
+
+        if(cur.parent === parent){
+          acc.new.push(cur);
+        }else{
+          acc.existing.push(cur);
+        }
+
+        return acc;
+      }, { new: [], existing: [] });
+
+      // sort categories using old order
+      categories.new.sort((a, b) => {
+        if(a.sort > b.sort) return 1;
+        if(a.sort < b.sort) return -1;
+        return 0;
+      });
+
+      // move element to new position
+      const out = categories.new.splice(oldIndex, 1)[0];
+      categories.new.splice(newIndex, 0, out);
+
+      // generate new order
+      categories.new = categories.new.map((obj, i) => ({...obj, sort: i}));
+
+      // replace state
+      state.categories = categories.existing.concat(categories.new);
     }
   },
   getters: {
@@ -291,7 +329,11 @@ export default new Vuex.Store({
         groups: state.groups.map(group => {
           return {
             ...group,
-            categories: state.categories.reduce((acc, cur) => {
+            categories: state.categories.slice().sort((a, b) => {
+              if(a.sort > b.sort) return 1;
+              if(a.sort < b.sort) return -1;
+              return 0;
+            }).reduce((acc, cur) => {
               // skip categories not in group
               if(cur.parent !== group.id) return acc;
               
