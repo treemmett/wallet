@@ -1,33 +1,7 @@
 <template>
-  <Dashboard>
+  <dashboard>
     <div class="budget">
-      <div class="group" :class="{ collapsed: collapsedGroups.indexOf(group.id) > -1}" v-for="group in budget.groups" :key="group.id">
-        <div class="head">
-          <div class="title">
-            {{group.name}}
-            <div class="click-icon icon-plus" :class="{ visible: categoryCreation === group.id }" @click.stop="setCategoryCreation(group.id)">
-              <div class="tooltip" v-if="categoryCreation === group.id">
-                <input v-focus placeholder="New Category Name" @keypress.enter="createCategory($event, group.id)"/>
-              </div>
-            </div>
-          </div>
-          <div class="amount">Budgeted</div>
-          <div class="amount">Used</div>
-          <div class="click-icon carot icon-angle-down" @click="collapseGroup(group.id)"/>
-        </div>
-
-        <div class="categories">
-          <draggable :list="group.categories" :options="{ animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @end="sortCategory">
-            <div class="category" v-for="category in group.categories" :key="category.id">
-              <div class="title">{{category.name}}</div>
-              <div class="amount">
-                <Money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
-              </div>
-              <div class="amount">{{formatCurrency(category.expenses)}}</div>
-            </div>
-          </draggable>
-        </div>
-      </div>
+      <budget-group v-for="group in budget.groups" :group="group" :key="group.id"/>
     </div>
 
     <div class="sidebar">
@@ -59,81 +33,19 @@
         </div>
       </div>
     </div>
-  </Dashboard>
+  </dashboard>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import Dashboard from '../layouts/dashboard';
-import Money from '../components/money';
-import moment from 'moment';
-import draggable from 'vuedraggable';
+import group from '../components/budget/group';
+import dashboard from '../layouts/dashboard';
 
 export default {
   name: 'Budget',
   components: {
-    Dashboard,
-    draggable,
-    Money
-  },
-  data(){
-    return {
-      collapsedGroups: [],
-      categoryCreation: undefined,
-    }
-  },
-  methods: {
-    clearCategoryCreation(e){
-      if(e.code === 'Escape' || e.type === 'click' || e === true){
-        // remove cancel function and unset creation
-        this.categoryCreation = undefined;
-        window.removeEventListener('keydown', this.clearCategoryCreation);
-        window.removeEventListener('click', this.clearCategoryCreation);
-      }
-    },
-    collapseGroup(id){
-      // check if group is already collapsed
-      const index = this.collapsedGroups.indexOf(id);
-      if(index > -1){
-        this.collapsedGroups.splice(index, 1);
-      }else{
-        this.collapsedGroups.push(id);
-      }
-    },
-    createCategory(e, id){
-      // clear if value is empty
-      if(!e.target.value){
-        return this.clearCategoryCreation(true);
-      }
-
-      this.$store.commit('addCategory', {
-        categoryName: e.target.value,
-        groupId: id
-      });
-
-      // uncollapse group if needed
-      const index = this.collapsedGroups.indexOf(id);
-      if(index > -1) this.collapsedGroups.splice(index, 1);
-
-      // close input
-      this.clearCategoryCreation(true);
-    },
-    setCategoryCreation(id){
-      // add listeners to remove creation input
-      window.addEventListener('keydown', this.clearCategoryCreation);
-      window.addEventListener('click', this.clearCategoryCreation);
-      this.categoryCreation = id;
-    },
-    setBudget({ category, amount }){
-      this.$store.commit('setBudget', { category, amount });
-    },
-    sortCategory(e){
-      this.$store.commit('sortCategory', {
-        parent: e.item._underlying_vm_.parent,
-        oldIndex: e.oldIndex,
-        newIndex: e.newIndex
-      });
-    }
+    'budget-group': group,
+    dashboard
   },
   computed: {
     ...mapGetters(['budget'])
@@ -224,161 +136,7 @@ export default {
 
       .title{
         font-size: 18px;
-      }
-    }
-  }
-
-  .group{
-    background-color: #fff;
-    box-shadow: 0 5px 20px rgba(#000, 0.1);
-    border-radius: 6px;
-    margin-bottom: 1em;
-    position: relative;
-
-    &:last-child{
-      margin-bottom: 0;
-    }
-
-    &:hover .click-icon{
-      opacity: 1;
-    }
-
-    &.collapsed{
-      .head{
-        border-bottom-color: transparent;
-      }
-
-      .carot{
-        opacity: 1;
-        transform: rotate(180deg);
-      }
-
-      .categories{
-        max-height: 0;
-        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), border-top-color 0.2s ease-in-out;
-      }
-    }
-  }
-
-  .head{
-    font-size: 20px;
-    padding: 1em 0;
-    margin: 0 1em;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    transition: border-bottom-color 0.2s ease-in-out;
-
-    .amount{
-      font-size: 12px;
-    }
-
-    .carot{
-      position: absolute;
-      right: 1rem;
-    }
-  }
-
-  .tooltip{
-    position: absolute;
-    top: calc(100% + 10px);
-    border-radius: 6px;
-    left: -2em;
-    box-shadow: 0 0 20px 5px rgba(#000, 0.1);
-    cursor: default;
-    font-weight: 500;
-    white-space: nowrap;
-    background: $orange-gradient;
-    z-index: 5;
-
-    input{
-      border: none;
-      outline: none;
-      padding: 1em;
-      font-size: 16px;
-      background-color: transparent;
-      font-weight: 500;
-      color: #fff;
-
-      &::placeholder{
-        color: #fff;
-      }
-    }
-  }
-
-  .click-icon{
-    position: relative;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 1.75rem;
-    height: 1.75rem;
-    color: #aaa;
-    opacity: 0;
-    font-size: 16px;
-    transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out, opacity 0.1s ease-in-out;
-    cursor: pointer;
-
-    &:hover{
-      background-color: #eee;
-    }
-
-    &.visible{
-      opacity: 1 !important;
-    }
-  }
-
-  .categories{
-    font-size: 18px;
-    transition: max-height 1s ease-in-out;
-    overflow: hidden;
-    max-height: 1000px;
-  }
-
-  .category{
-    display: flex;
-    align-items: center;
-    padding: 1em;
-
-    &:hover{
-      input{
-        border-color: $blue;
-      }
-    }
-
-    &.ghost{
-      opacity: 0;
-    }
-
-    &.dragging{
-      input{
-        border-color: transparent;
-      }
-    }
-  }
-
-  .title{
-    margin-right: auto;
-  }
-
-  .amount{
-    color: #888;
-    width: 100px;
-    margin-left: 1em;
-
-    input{
-      color: inherit;
-      font-size: inherit;
-      width: 100%;
-      outline: none;
-      border-radius: 5px;
-      border: 1px solid transparent;
-      text-overflow: ellipsis;
-
-      &:focus{
-        border-color: $blue;
-        box-shadow: 0 0 1px $blue;
+        margin-right: auto;
       }
     }
   }
