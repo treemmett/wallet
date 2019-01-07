@@ -252,35 +252,32 @@ export default new Vuex.Store({
       theRealState.tax.state = state || theRealState.tax.state;
       theRealState.tax.status = status|| theRealState.tax.status;
     },
-    sortCategory: (state, { parent, oldIndex, newIndex }) => {
-      // separate categories, finding siblings
-      const categories = state.categories.reduce((acc, cur) => {
-
-        if(cur.parent === parent){
-          acc.new.push(cur);
-        }else{
-          acc.existing.push(cur);
-        }
-
+    sortCategory: (state, { fromGroup, toGroup, fromIndex, toIndex }) => {
+      const groups = state.groups.reduce((acc, cur) => {
+        acc[cur.id] = state.categories.filter(obj => obj.parent === cur.id)
         return acc;
-      }, { new: [], existing: [] });
+      }, {});
 
-      // sort categories using old order
-      categories.new.sort((a, b) => {
-        if(a.sort > b.sort) return 1;
-        if(a.sort < b.sort) return -1;
-        return 0;
-      });
+      // remove category from group
+      const category = groups[fromGroup].splice(fromIndex, 1)[0];
 
-      // move element to new position
-      const out = categories.new.splice(oldIndex, 1)[0];
-      categories.new.splice(newIndex, 0, out);
+      // add category to new group
+      groups[toGroup].splice(toIndex, 0, category);
 
-      // generate new order
-      categories.new = categories.new.map((obj, i) => ({...obj, sort: i}));
+      // regenerate sorting for old and new category
+      groups[fromGroup] = groups[fromGroup].map((obj, index) => ({
+        ...obj,
+        sort: index
+      }));
 
-      // replace state
-      state.categories = categories.existing.concat(categories.new);
+      groups[toGroup] = groups[toGroup].map((obj, index) => ({
+        ...obj,
+        sort: index,
+        parent: toGroup
+      }));
+
+      // flatten object to state
+      state.categories = Object.keys(groups).reduce((acc, cur) => acc.concat(groups[cur]), []);
     }
   },
   getters: {

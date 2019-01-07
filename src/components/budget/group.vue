@@ -14,17 +14,15 @@
       <div class="click-icon carot icon-angle-down" @click="collapsed = !collapsed"/>
     </div>
 
-    <div class="categories">
-      <draggable :list="group.categories" :options="{ animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @end="sortCategory">
-        <div class="category" v-for="category in group.categories" :key="category.id">
-          <div class="title">{{category.name}}</div>
-          <div class="amount">
-            <money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
-          </div>
-          <div class="amount">{{formatCurrency(category.expenses)}}</div>
+    <draggable class="categories" :list="group.categories" :options="{ group: 'categories', animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @add="sortCategory" @update="sortCategory">
+      <div class="category" v-for="category in group.categories" :key="category.id">
+        <div class="title">{{category.name}}</div>
+        <div class="amount">
+          <money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
         </div>
-      </draggable>
-    </div>
+        <div class="amount">{{formatCurrency(category.expenses)}}</div>
+      </div>
+    </draggable>
   </div>
 </template>
 
@@ -81,9 +79,10 @@ export default {
     },
     sortCategory(e){
       this.$store.commit('sortCategory', {
-        parent: e.item._underlying_vm_.parent,
-        oldIndex: e.oldIndex,
-        newIndex: e.newIndex
+        fromGroup: e.from.parentNode.__vue__.group.id,
+        toGroup: e.to.parentNode.__vue__.group.id,
+        fromIndex: e.oldIndex,
+        toIndex: e.newIndex
       });
     }
   }
