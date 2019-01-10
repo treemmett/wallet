@@ -14,15 +14,17 @@
       <div class="click-icon carot icon-angle-down" @click="collapsed = !collapsed"/>
     </div>
 
-    <draggable class="categories" :options="{ group: 'categories', animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @add="sortCategory" @update="sortCategory">
-      <div class="category" v-for="category in group.categories" :key="category.id">
-        <div class="title">{{category.name}}</div>
-        <div class="amount">
-          <money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
+    <transition name="collapse" @before-leave="beforeLeave" @enter="enter" @after-enter="afterEnter">
+      <draggable v-if="!collapsed" class="categories" :options="{ group: 'categories', animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @add="sortCategory" @update="sortCategory">
+        <div class="category" v-for="category in group.categories" :key="category.id">
+          <div class="title">{{category.name}}</div>
+          <div class="amount">
+            <money v-model="category.budget" @change="setBudget({ amount: arguments[0], category: category.id })"/>
+          </div>
+          <div class="amount">{{formatCurrency(category.expenses)}}</div>
         </div>
-        <div class="amount">{{formatCurrency(category.expenses)}}</div>
-      </div>
-    </draggable>
+      </draggable>
+    </transition>
   </div>
 </template>
 
@@ -46,6 +48,19 @@ export default {
     }
   },
   methods: {
+    afterEnter(el){
+      el.style.removeProperty('height');
+    },
+    beforeLeave(el){
+      const { height } = getComputedStyle(el);
+
+      el.style.height = height;
+
+      // force repaint
+      getComputedStyle(el).height;
+
+      el.style.height = 0;
+    },
     closeCategoryModal(e){
       if(e.code === 'Escape' || e.type === 'mousedown' || e === true){
         // remove cancel function and unset creation
@@ -67,6 +82,22 @@ export default {
 
       // close input
       this.closeCategoryModal(true);
+    },
+    enter(el){
+      // set height to automatic to calculate
+      el.style.height = 'auto';
+
+      // save rendered height to memory
+      const { height } = getComputedStyle(el);
+
+      // reset height to 0
+      el.style.height = 0;
+
+      // force re-render
+      getComputedStyle(el).height;
+
+      // manually set height to the automatic value to trigger transition
+      el.style.height = height;
     },
     openCategoryModal(){
       // add listeners to remove creation input
@@ -115,11 +146,6 @@ export default {
       .carot{
         opacity: 1;
         transform: rotate(180deg);
-      }
-
-      .categories{
-        max-height: 0;
-        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), border-top-color 0.2s ease-in-out;
       }
     }
 
@@ -220,9 +246,20 @@ export default {
 
   .categories{
     font-size: 18px;
-    transition: max-height 1s ease-in-out;
     overflow: hidden;
-    max-height: 1000px;
+    border-radius: 0 0 6px 6px;
+
+    &.collapse{
+      &-enter-active,
+      &-leave-active {
+        transition: height 0.4s ease-in-out;
+      }
+
+      &-enter,
+      &-leave-to {
+        height: 0;
+      }
+    }
 
     .category{
       display: flex;
