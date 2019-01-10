@@ -1,8 +1,8 @@
 <template>
   <dashboard>
-    <div class="budget">
+    <draggable class="budget" :options="{ animation: 100, ghostClass: 'ghost' }" @sort="sort">
       <budget-group v-for="group in budget.groups" :group="group" :key="group.id"/>
-    </div>
+    </draggable>
 
     <div class="sidebar">
       <div class="card">
@@ -38,6 +38,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import draggable from 'vuedraggable';
 import group from '../components/budget/group';
 import dashboard from '../layouts/dashboard';
 
@@ -45,7 +46,16 @@ export default {
   name: 'Budget',
   components: {
     'budget-group': group,
-    dashboard
+    dashboard,
+    draggable
+  },
+  methods: {
+    sort(e){
+      this.$store.commit('sortGroup', {
+        from: e.oldIndex,
+        to: e.newIndex
+      });
+    }
   },
   computed: {
     ...mapGetters(['budget'])
@@ -62,6 +72,10 @@ export default {
     box-sizing: border-box;
     overflow: auto;
     height: 100%;
+
+    /deep/ .ghost{
+      opacity: 0;
+    }
   }
 
   .sidebar{

@@ -278,6 +278,23 @@ export default new Vuex.Store({
 
       // flatten object to state
       state.categories = Object.keys(groups).reduce((acc, cur) => acc.concat(groups[cur]), []);
+    },
+    sortGroup: (state, { from, to }) => {
+      // sort groups using previous order
+      state.groups.sort((a, b) => {
+        if(a.sort > b.sort) return 1;
+        if(a.sort < b.sort) return -1;
+        return 0;
+      });
+
+      // remove group
+      const out = state.groups.splice(from, 1)[0];
+
+      // add group to new index
+      state.groups.splice(to, 0, out);
+
+      // regenerate sorting index
+      state.groups = state.groups.map((group, sort) => ({ ...group, sort }));
     }
   },
   getters: {

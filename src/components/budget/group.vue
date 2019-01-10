@@ -14,7 +14,7 @@
       <div class="click-icon carot icon-angle-down" @click="collapsed = !collapsed"/>
     </div>
 
-    <draggable class="categories" :list="group.categories" :options="{ group: 'categories', animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @add="sortCategory" @update="sortCategory">
+    <draggable class="categories" :options="{ group: 'categories', animation: 100, ghostClass: 'ghost', dragClass: 'dragging' }" @add="sortCategory" @update="sortCategory">
       <div class="category" v-for="category in group.categories" :key="category.id">
         <div class="title">{{category.name}}</div>
         <div class="amount">
@@ -228,6 +228,8 @@ export default {
       display: flex;
       align-items: center;
       padding: 1em;
+      background-color: #fff;
+      border-radius: 6px;
 
       &:hover{
         input{
