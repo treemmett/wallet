@@ -50,11 +50,13 @@ export default {
   methods: {
     afterEnter(el){
       el.style.removeProperty('height');
+      el.style.removeProperty('min-height');
     },
     beforeLeave(el){
       const { height } = getComputedStyle(el);
 
       el.style.height = height;
+      el.style.minHeight = 0;
 
       // force repaint
       getComputedStyle(el).height;
@@ -86,12 +88,14 @@ export default {
     enter(el){
       // set height to automatic to calculate
       el.style.height = 'auto';
+      el.style.minHeight = '1em';
 
       // save rendered height to memory
       const { height } = getComputedStyle(el);
 
       // reset height to 0
       el.style.height = 0;
+      el.style.minHeight = 0;
 
       // force re-render
       getComputedStyle(el).height;
@@ -248,6 +252,7 @@ export default {
     font-size: 18px;
     overflow: hidden;
     border-radius: 0 0 6px 6px;
+    min-height: 1em;
 
     &.collapse{
       &-enter-active,
