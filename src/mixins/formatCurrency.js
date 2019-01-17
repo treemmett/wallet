@@ -1,6 +1,6 @@
 export default {
   methods: {
-    formatCurrency(value){
+    formatCurrency(value) {
       const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
@@ -11,4 +11,4 @@ export default {
       return formatter.format(value);
     }
   }
-}
+};

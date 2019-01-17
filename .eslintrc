@@ -9,6 +9,8 @@
   "plugins": ["vue", "prettier"],
   "rules": {
     "import/no-unresolved": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": [2, { "allow": ["__vue__"] }],
     "prettier/prettier": "error"
   }
 }
