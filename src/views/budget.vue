@@ -169,3 +169,17 @@ export default {
   }
 }
 </style>
+
+<style lang="scss" scoped>
+@import '../colors';
+
+@media (max-width: $break) {
+  .sidebar {
+    display: none;
+  }
+
+  .budget {
+    padding: 2em;
+  }
+}
+</style>

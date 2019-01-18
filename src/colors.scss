@@ -2,5 +2,15 @@ $blue: #00c6ff;
 $orange: #ff6400;
 $orange-red: #ed6a5e;
 
+$gray-text: hsl(0, 0, 45%);
+
 $orange-gradient: linear-gradient(-60deg, #ff824c 0%,#ed6a5e 80%);
 $blue-gradient: linear-gradient(120deg, #00c6ff 0%, #00f2fe 100%);
+
+$break: 900px;
+
+@mixin card{
+  box-shadow: 0 5px 20px rgba(#000, 0.1);
+  background-color: #fff;
+  border-radius: 6px;
+}

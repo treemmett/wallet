@@ -4,25 +4,21 @@
       <div class="title">
         {{ group.name }}
         <div
-          class="click-icon icon-plus"
+          class="icon-plus"
           :class="{ visible: creatingCategory }"
           @click="openCategoryModal"
-        >
-          <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
-            <input
-              v-focus
-              placeholder="New Category Name"
-              @keypress.enter="createCategory"
-            />
-          </div>
-        </div>
+        />
       </div>
       <div class="amount">Budgeted</div>
       <div class="amount">Used</div>
-      <div
-        class="click-icon carot icon-angle-down"
-        @click="collapsed = !collapsed"
-      />
+      <div class="icon-angle-down caret" @click="collapsed = !collapsed" />
+      <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
+        <input
+          v-focus
+          placeholder="New Category Name"
+          @keypress.enter="createCategory"
+        />
+      </div>
     </div>
 
     <transition
@@ -169,44 +165,69 @@ export default {
 @import '../../colors';
 
 .group {
-  background-color: #fff;
-  box-shadow: 0 5px 20px rgba(#000, 0.1);
-  border-radius: 6px;
+  @include card;
   margin-bottom: 1em;
+  overflow: scroll;
+  white-space: nowrap;
   position: relative;
 
-  &:last-child {
-    margin-bottom: 0;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  &:hover .click-icon {
-    opacity: 1;
-  }
-
-  &.collapsed {
-    .head {
-      border-bottom-color: transparent;
-    }
-
-    .carot {
+  &:hover {
+    .head [class*='icon'] {
       opacity: 1;
-      transform: rotate(180deg);
     }
+  }
+
+  &.collapsed .head {
+    border-bottom-color: transparent;
+
+    .caret {
+      opacity: 1;
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+}
+
+.head,
+.category {
+  padding: 1em;
+  display: flex;
+  align-items: center;
+  position: relative;
+  min-width: fit-content;
+
+  .title,
+  .amount {
+    display: inline-block;
   }
 
   .title {
-    margin-right: auto;
+    margin-right: 1rem;
+    min-width: 10rem;
   }
 
   .amount {
-    color: #888;
-    width: 100px;
-    margin-left: 1em;
+    width: 6rem;
+    min-width: 6rem;
+    margin-left: auto;
+
+    & ~ .amount {
+      margin-left: 1rem;
+      width: 4rem;
+    }
+
+    &,
+    input {
+      font-size: inherit;
+      color: $gray-text;
+    }
 
     input {
-      color: inherit;
-      font-size: inherit;
-      width: 100%;
+      width: inherit;
+      box-sizing: border-box;
       outline: none;
       border-radius: 5px;
       border: 1px solid transparent;
@@ -218,88 +239,68 @@ export default {
       }
     }
   }
+
+  &:hover .amount input {
+    border-color: $blue;
+  }
 }
 
 .head {
   font-size: 20px;
-  padding: 1em 0;
+  border-bottom: 1px solid #ccc;
   margin: 0 1em;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #ddd;
-  transition: border-bottom-color 0.2s ease-in-out;
-
-  .tooltip {
-    position: absolute;
-    top: calc(100% + 10px);
-    border-radius: 6px;
-    left: -2em;
-    box-shadow: 0 0 20px 5px rgba(#000, 0.1);
-    cursor: default;
-    font-weight: 500;
-    white-space: nowrap;
-    background: $orange-gradient;
-    z-index: 5;
-
-    input {
-      border: none;
-      outline: none;
-      padding: 1em;
-      font-size: 16px;
-      background-color: transparent;
-      font-weight: 500;
-      color: #fff;
-
-      &::placeholder {
-        color: #fff;
-      }
-    }
-  }
+  padding: 1em 0;
+  transition: border-color 0.2s ease-in-out;
 
   .amount {
     font-size: 12px;
   }
 
-  .carot {
+  [class*='icon-'] {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: #aaa;
+    opacity: 0;
+    font-size: 16px;
+    transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out,
+      opacity 0.1s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eee;
+    }
+
+    &.visible {
+      opacity: 1 !important;
+    }
+  }
+
+  .caret {
     position: absolute;
-    right: 1rem;
-  }
-}
-
-.click-icon {
-  position: relative;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: 1.75rem;
-  height: 1.75rem;
-  color: #aaa;
-  opacity: 0;
-  font-size: 16px;
-  transition: background-color 0.15s ease-in-out, transform 0.15s ease-in-out,
-    opacity 0.1s ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #eee;
-  }
-
-  &.visible {
-    opacity: 1 !important;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
 
 .categories {
-  font-size: 18px;
-  overflow: hidden;
-  border-radius: 0 0 6px 6px;
+  position: relative;
+  min-width: fit-content;
   min-height: 1em;
+
+  .category {
+    font-size: 18px;
+  }
 
   &.collapse {
     &-enter-active,
     &-leave-active {
-      transition: height 0.4s ease-in-out;
+      transition: height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     &-enter,
@@ -307,28 +308,33 @@ export default {
       height: 0;
     }
   }
+}
 
-  .category {
-    display: flex;
-    align-items: center;
+.tooltip {
+  position: absolute;
+  left: 2em;
+  width: inherit;
+  top: 3em;
+
+  input {
+    position: fixed;
+    background: $orange-gradient;
+    border: none;
+    outline: none;
+    cursor: default;
     padding: 1em;
-    background-color: #fff;
+    font-size: 16px;
+    background-color: transparent;
+    font-weight: 500;
+    color: #fff;
+    z-index: 5;
+    box-shadow: 0 0 20px 5px rgba(#000, 0.1);
     border-radius: 6px;
+    font-weight: 500;
+    white-space: nowrap;
 
-    &:hover {
-      input {
-        border-color: $blue;
-      }
-    }
-
-    &.ghost {
-      opacity: 0;
-    }
-
-    &.dragging {
-      input {
-        border-color: transparent;
-      }
+    &::placeholder {
+      color: #fff;
     }
   }
 }
