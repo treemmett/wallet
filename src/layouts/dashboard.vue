@@ -1,7 +1,9 @@
 <template>
   <div class="layout">
-    <header>
-      <nav>
+    <div class="appbar" />
+
+    <div class="sidebar">
+      <div class="nav">
         <router-link :to="{ name: 'budget' }" exact>
           <span class="icon-wallet" /> Budget
         </router-link>
@@ -14,9 +16,13 @@
         <a href="#"><span class="icon-piggy-bank" />Goals</a>
         <a href="#"><span class="icon-account" />Tax</a>
         <a href="#"><span class="icon-analytics" />Reports</a>
+      </div>
+
+      <div class="nav account">
+        <div class="title">Account</div>
         <a href="#"><span class="icon-settings" />Settings</a>
-      </nav>
-    </header>
+      </div>
+    </div>
 
     <div class="view"><slot /></div>
   </div>
@@ -27,46 +33,89 @@
 
 .layout {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 100%;
+  grid-template-columns: 14em 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas: 'header header' 'nav view';
   height: 100%;
   max-height: 100%;
 }
 
-header {
-  position: relative;
+.appbar {
+  grid-area: header;
+  height: 3em;
   background-color: #fff;
-  box-shadow: 0 5px 20px rgba(#000, 0.1);
-  height: 5em;
+  box-shadow: 0 1px 10px rgba(#000, 0.1);
+  position: relative;
   z-index: 1;
-  overflow-x: auto;
+}
 
-  nav {
-    height: 100%;
-    display: flex;
+.sidebar {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+}
 
-    a {
-      display: flex;
-      align-items: center;
-      margin: 0 auto;
-      padding: 0 1.5em;
-      text-decoration: none;
-      color: #777;
-      transition: color 0.15s ease;
+.nav {
+  padding: 1em 0;
+  position: relative;
+  z-index: 10;
 
-      &:hover {
-        color: #3a3a3a;
-      }
+  &.account {
+    margin-top: auto;
+  }
 
-      &.router-link-active {
-        color: $orange;
-      }
+  a {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    align-items: center;
+    margin: 0 auto;
+    text-decoration: none;
+    color: #777;
+    transition: color 0.15s ease;
+    padding: 0.75em 0 0.75em 2em;
+    margin-bottom: 0.25em;
 
-      [class^='icon-'] {
-        margin-right: 0.5em;
-        color: inherit;
+    &::before {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 0;
+      top: 0;
+      left: 0;
+      background-color: $orange;
+      transition: width 0.2s ease-in-out;
+    }
+
+    span[class*='icon'] {
+      display: inline-block;
+      text-align: center;
+      width: 1.5em;
+      margin-right: 0.5em;
+    }
+
+    &:hover,
+    &.router-link-active {
+      &::before {
+        width: 5px;
       }
     }
+
+    &:hover {
+      color: #3a3a3a;
+    }
+
+    &.router-link-active {
+      color: $orange;
+    }
+  }
+
+  .title {
+    text-align: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #846a6a;
+    letter-spacing: 0.75px;
   }
 }
 
@@ -74,6 +123,21 @@ header {
   position: relative;
   overflow-y: auto;
   max-height: 100%;
+  grid-area: view;
+}
+</style>
+
+<style lang="scss" scoped>
+@import '../colors';
+
+@media (max-width: $break) {
+  .layout {
+    grid-template-columns: 0 1fr;
+
+    .sidebar {
+      display: none;
+    }
+  }
 }
 </style>
 

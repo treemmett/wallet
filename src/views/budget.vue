@@ -81,7 +81,7 @@ export default {
 @import '../colors';
 
 .budget {
-  padding: 2em;
+  padding: 1em;
   padding-right: 25em;
   box-sizing: border-box;
   overflow: auto;
@@ -98,7 +98,7 @@ export default {
   right: 0;
   width: 25em;
   height: 100%;
-  padding: 0 2em;
+  padding: 0 1em;
   box-sizing: border-box;
   pointer-events: none;
   overflow-y: auto;
@@ -108,7 +108,7 @@ export default {
     width: 100%;
     border-radius: 6px;
     padding: 1em;
-    margin: 2em 0;
+    margin: 1em 0;
     box-sizing: border-box;
     pointer-events: auto;
     box-shadow: 0 5px 20px rgba(#000, 0.1);
@@ -179,7 +179,7 @@ export default {
   }
 
   .budget {
-    padding: 2em;
+    padding: 1em;
   }
 }
 </style>

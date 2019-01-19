@@ -129,7 +129,7 @@ export default {
   width: 100%;
   left: 0;
   top: 0;
-  padding: 2em;
+  padding: 1em;
   padding-right: 25em;
   box-sizing: border-box;
   overflow: auto;
@@ -236,9 +236,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: $break) {
   .list {
-    padding-right: 2em;
+    padding-right: 1em;
   }
 
   .sidebar {

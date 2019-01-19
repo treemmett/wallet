@@ -181,6 +181,10 @@ export default {
     }
   }
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   &.collapsed .head {
     border-bottom-color: transparent;
 

@@ -177,7 +177,7 @@ export default {
 @import '../colors';
 
 .income {
-  padding: 2em;
+  padding: 1em;
   box-sizing: border-box;
   overflow: auto;
   height: 100%;
@@ -259,6 +259,11 @@ section {
     .col {
       display: table-cell;
       text-align: left;
+      position: relative;
+
+      &:not(:first-child) {
+        padding-left: 0.25em;
+      }
     }
   }
 
@@ -272,6 +277,8 @@ section {
       border-radius: 5px;
       padding: 2px;
       appearance: none;
+      width: 100%;
+      box-sizing: border-box;
 
       &:focus {
         border-color: $blue;
