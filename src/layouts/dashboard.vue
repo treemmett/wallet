@@ -2,25 +2,33 @@
   <div class="layout">
     <div class="appbar" />
 
-    <div class="sidebar">
+    <div class="navigation">
       <div class="nav">
         <router-link :to="{ name: 'budget' }" exact>
-          <span class="icon-wallet" /> Budget
+          <span class="icon-wallet" /><span class="label">Budget</span>
         </router-link>
         <router-link :to="{ name: 'transactions' }">
-          <span class="icon-receipt" /> Transactions
+          <span class="icon-receipt" /><span class="label">Transactions</span>
         </router-link>
         <router-link :to="{ name: 'income' }">
-          <span class="icon-money-check" /> Income
+          <span class="icon-money-check" /><span class="label">Income</span>
         </router-link>
-        <a href="#"><span class="icon-piggy-bank" />Goals</a>
-        <a href="#"><span class="icon-account" />Tax</a>
-        <a href="#"><span class="icon-analytics" />Reports</a>
+        <a href="#">
+          <span class="icon-piggy-bank" /><span class="label">Goals</span>
+        </a>
+        <a href="#">
+          <span class="icon-account" /><span class="label">Tax</span>
+        </a>
+        <a href="#">
+          <span class="icon-analytics" /><span class="label">Reports</span>
+        </a>
       </div>
 
       <div class="nav account">
         <div class="title">Account</div>
-        <a href="#"><span class="icon-settings" />Settings</a>
+        <a href="#">
+          <span class="icon-settings" /><span class="label">Settings</span>
+        </a>
       </div>
     </div>
 
@@ -49,7 +57,7 @@
   z-index: 1;
 }
 
-.sidebar {
+.navigation {
   grid-area: nav;
   display: flex;
   flex-direction: column;
@@ -132,9 +140,73 @@
 
 @media (max-width: $break) {
   .layout {
-    grid-template-columns: 0 1fr;
+    grid-template-rows: min-content 1fr min-content;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'header' 'view' 'nav';
+    overflow: hidden;
+  }
 
-    .sidebar {
+  .navigation {
+    display: block;
+
+    .nav {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0;
+      background-color: #fff;
+      box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      position: relative;
+      font-size: 20px;
+      height: 3.25em;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        flex-grow: 1;
+        height: 100%;
+        -webkit-tap-highlight-color: transparent;
+
+        .label {
+          display: none;
+        }
+
+        [class*='icon'] {
+          margin: 0;
+        }
+
+        &::before {
+          all: unset;
+        }
+
+        &.router-link-active {
+          &::before {
+            content: '';
+            position: absolute;
+            height: 4px;
+            width: 4px;
+            top: unset;
+            bottom: 0.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 100vh;
+            background-color: $orange;
+          }
+        }
+
+        &:nth-child(n + 5) {
+          display: none;
+        }
+      }
+    }
+
+    .account {
       display: none;
     }
   }
