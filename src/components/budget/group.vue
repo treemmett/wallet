@@ -1,62 +1,67 @@
 <template>
   <div class="group" :class="{ collapsed }">
-    <div class="head">
-      <div class="title">
-        {{ group.name }}
-        <div
-          class="icon-plus"
-          :class="{ visible: creatingCategory }"
-          @click="openCategoryModal"
-        />
+    <div class="content">
+      <div class="head">
+        <div class="title">
+          {{ group.name }}
+          <div
+            class="icon-plus"
+            :class="{ visible: creatingCategory }"
+            @click="openCategoryModal"
+          />
+        </div>
+        <div class="amount">Budgeted</div>
+        <div class="amount">Used</div>
+        <div class="icon-angle-down caret" @click="collapsed = !collapsed" />
+        <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
+          <input
+            v-focus
+            placeholder="New Category Name"
+            @keypress.enter="createCategory"
+          />
+        </div>
       </div>
-      <div class="amount">Budgeted</div>
-      <div class="amount">Used</div>
-      <div class="icon-angle-down caret" @click="collapsed = !collapsed" />
-      <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
-        <input
-          v-focus
-          placeholder="New Category Name"
-          @keypress.enter="createCategory"
-        />
-      </div>
+
+      <transition
+        name="collapse"
+        @before-leave="beforeLeave"
+        @enter="enter"
+        @after-enter="afterEnter"
+      >
+        <draggable
+          v-if="!collapsed"
+          class="categories"
+          :options="{
+            group: 'categories',
+            animation: 100,
+            ghostClass: 'ghost',
+            dragClass: 'dragging'
+          }"
+          @add="sortCategory"
+          @update="sortCategory"
+        >
+          <div
+            v-for="category in group.categories"
+            :key="category.id"
+            class="category"
+          >
+            <div class="title">{{ category.name }}</div>
+            <div class="amount">
+              <money
+                v-model="category.budget"
+                @change="
+                  setBudget({ amount: arguments[0], category: category.id })
+                "
+              />
+            </div>
+            <div class="amount">{{ formatCurrency(category.expenses) }}</div>
+          </div>
+        </draggable>
+      </transition>
     </div>
 
-    <transition
-      name="collapse"
-      @before-leave="beforeLeave"
-      @enter="enter"
-      @after-enter="afterEnter"
-    >
-      <draggable
-        v-if="!collapsed"
-        class="categories"
-        :options="{
-          group: 'categories',
-          animation: 100,
-          ghostClass: 'ghost',
-          dragClass: 'dragging'
-        }"
-        @add="sortCategory"
-        @update="sortCategory"
-      >
-        <div
-          v-for="category in group.categories"
-          :key="category.id"
-          class="category"
-        >
-          <div class="title">{{ category.name }}</div>
-          <div class="amount">
-            <money
-              v-model="category.budget"
-              @change="
-                setBudget({ amount: arguments[0], category: category.id })
-              "
-            />
-          </div>
-          <div class="amount">{{ formatCurrency(category.expenses) }}</div>
-        </div>
-      </draggable>
-    </transition>
+    <div class="glow" />
+    <div class="glow start" />
   </div>
 </template>
 
@@ -167,9 +172,9 @@ export default {
 .group {
   @include card;
   margin-bottom: 1em;
-  overflow: scroll;
   white-space: nowrap;
   position: relative;
+  overflow: hidden;
 
   &::-webkit-scrollbar {
     display: none;
@@ -193,6 +198,24 @@ export default {
       transform: translateY(-50%) rotate(180deg);
     }
   }
+}
+
+.glow {
+  position: absolute;
+  width: 1em;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background: linear-gradient(to right, rgba(#fff, 0), #fff);
+
+  &.start {
+    left: 0;
+    background: linear-gradient(to left, rgba(#fff, 0), #fff);
+  }
+}
+
+.content {
+  overflow: scroll;
 }
 
 .head,
