@@ -18,8 +18,12 @@
       <div v-if="sidebarOpen" class="sidebar" @click.self="sidebarOpen = false">
         <div class="card">
           <form @submit.prevent="addTransaction">
-            <label for="description">Description</label>
-            <input id="description" class="input" name="description" required />
+            <form-input
+              type="text"
+              name="description"
+              label="Description"
+              :required="true"
+            />
 
             <label for="category">Category</label>
             <select id="category" class="input" name="category" required>
@@ -38,8 +42,7 @@
               </optgroup>
             </select>
 
-            <label for="amount">Amount</label>
-            <input class="input" type="tel" name="amount" required />
+            <form-input name="amount" type="number" label="Amount" />
 
             <label for="date">Date</label>
             <v-date-picker
@@ -84,12 +87,14 @@
 import moment from 'moment';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
+import FormInput from '../components/FormInput';
 
 export default {
   name: 'Transactions',
   components: {
     Dashboard,
-    Fab
+    Fab,
+    FormInput
   },
   data() {
     return {
@@ -130,7 +135,7 @@ export default {
   left: 0;
   top: 0;
   padding: 1em;
-  padding-right: 25em;
+  padding-right: 20em;
   box-sizing: border-box;
   overflow: auto;
   height: 100%;
@@ -140,9 +145,9 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
-  width: 25em;
+  width: 20em;
   height: 100%;
-  padding: 0 2em;
+  padding: 0 1em;
   box-sizing: border-box;
   pointer-events: none;
   overflow-y: auto;
@@ -151,10 +156,14 @@ export default {
     background-color: #fff;
     border-radius: 6px;
     padding: 1em;
-    margin: 2em 0;
+    margin: 1em 0;
     box-sizing: border-box;
     pointer-events: auto;
     box-shadow: 0 5px 20px rgba(#000, 0.1);
+
+    select {
+      margin-bottom: 1em;
+    }
   }
 
   label:not(.radio-selector) {
