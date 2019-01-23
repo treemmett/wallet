@@ -25,22 +25,11 @@
               :required="true"
             />
 
-            <label for="category">Category</label>
-            <select id="category" class="input" name="category" required>
-              <option disabled selected />
-              <optgroup
-                v-for="group in $store.getters.budget.groups"
-                :key="group.id"
-                :label="group.name"
-              >
-                <option
-                  v-for="category in group.categories"
-                  :key="category.id"
-                  :value="category.id"
-                  >{{ category.name }}</option
-                >
-              </optgroup>
-            </select>
+            <form-input type="select" name="category" label="Category" required>
+              <option value="test1">Label 1</option>
+              <option value="test2">Label 2</option>
+              <option value="test3">Label 3</option>
+            </form-input>
 
             <form-input name="amount" type="number" label="Amount" />
 
