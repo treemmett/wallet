@@ -7,8 +7,25 @@
     <div v-if="label" class="label">{{ label }}</div>
     <input ref="input" v-bind="$props" @blur="blur" @focus="focused = true" />
     <div v-if="type === 'select'" class="dropdown">
-      <div v-for="option in renderOptions" :key="option.value" class="option">
-        {{ option.label }}
+      <div
+        v-for="child in renderChildren"
+        :key="child.value"
+        :class="{
+          option: child.tag === 'option',
+          optgroup: child.tag === 'optgroup'
+        }"
+      >
+        <div :class="`${child.tag}-label`">{{ child.label }}</div>
+
+        <div v-if="child.tag === 'optgroup'" class="optgroup-list">
+          <div
+            v-for="nestedChild in child.children"
+            :key="nestedChild.value"
+            class="option"
+          >
+            <div class="option-label">{{ nestedChild.label }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -65,40 +82,87 @@ export default {
     };
   },
   computed: {
-    renderOptions() {
-      return this.$slots.default.reduce((acc, cur) => {
+    renderChildren() {
+      if (this.type !== 'select') {
+        return null;
+      }
+
+      const optionRenderer = el => {
         // only option should be allowed as root element
-        if (cur.tag !== 'option') {
-          return acc;
+        if (el.tag !== 'option') {
+          return false;
         }
 
         // skip option that doesn't have value
-        if (!cur.data || !cur.data.attrs || !cur.data.attrs.value) {
-          return acc;
+        if (!el.data || !el.data.attrs || !el.data.attrs.value) {
+          return false;
         }
 
         // skip options that don't contain any children
-        if (!cur.children || !cur.children.length) {
-          return acc;
+        if (!el.children || !el.children.length) {
+          return false;
         }
 
         // remove elements
         const option = {
-          ...cur,
-          children: cur.children.filter(child => !child.tag && !!child.text)
+          ...el,
+          children: el.children.filter(child => !child.tag && !!child.text)
         };
 
-        // skip options that don't contain any children
+        // double check options have children after filter
         if (!option.children || !option.children.length) {
-          return acc;
+          return false;
         }
 
         option.label = option.children.map(c => c.text).join(' ');
-        option.value = cur.data.attrs.value;
+        option.value = el.data.attrs.value;
 
-        acc.push(option);
+        return option;
+      };
+
+      const optgroupRenderer = (acc, cur) => {
+        // the only children can be an option or optgroup
+        if (cur.tag !== 'option' && cur.tag !== 'optgroup') {
+          return acc;
+        }
+
+        switch (cur.tag) {
+          case 'option': {
+            acc.push(optionRenderer(cur));
+            break;
+          }
+
+          case 'optgroup': {
+            // require label to be set
+            if (!cur.data || !cur.data.attrs || !cur.data.attrs.label) {
+              break;
+            }
+
+            const optgroup = {
+              ...cur,
+              children: cur.children.reduce((acc, cur) => {
+                const child = optionRenderer(cur);
+
+                if (child) {
+                  acc.push(child);
+                }
+
+                return acc;
+              }, []),
+              label: cur.data.attrs.label
+            };
+            acc.push(optgroup);
+            break;
+          }
+
+          default:
+            break;
+        }
+
         return acc;
-      }, []);
+      };
+
+      return this.$slots.default.reduce(optgroupRenderer, []);
     }
   },
   methods: {
@@ -197,6 +261,19 @@ select {
   .option {
     padding: 0.25em 0.5em;
     cursor: default;
+  }
+
+  .optgroup {
+    padding-top: 0.75em;
+
+    .optgroup-label {
+      padding: 0.25em 0.5em;
+      color: #727272;
+    }
+
+    .option {
+      padding-left: 1em;
+    }
   }
 }
 </style>

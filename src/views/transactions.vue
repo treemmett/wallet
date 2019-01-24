@@ -26,9 +26,18 @@
             />
 
             <form-input type="select" name="category" label="Category" required>
-              <option value="test1">Label 1</option>
-              <option value="test2">Label 2</option>
-              <option value="test3">Label 3</option>
+              <option value="test1">Option 1</option>
+              <option value="test2">Option 2</option>
+              <option value="test3">Option 3</option>
+              <optgroup label="Group 1">
+                <option value="test4">Option 1-1</option>
+                <option value="test5">Option 1-2</option>
+              </optgroup>
+              <optgroup label="Group 2">
+                <option value="test4">Option 2-1</option>
+                <option value="test5">Option 2-2</option>
+                <option value="test6">Option 2-3</option>
+              </optgroup>
             </form-input>
 
             <form-input name="amount" type="number" label="Amount" />
