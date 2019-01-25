@@ -215,7 +215,7 @@ export default {
 }
 
 .content {
-  overflow: scroll;
+  overflow: auto;
 }
 
 .head,
