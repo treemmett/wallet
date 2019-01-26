@@ -22,7 +22,7 @@
               type="text"
               name="description"
               label="Description"
-              :required="true"
+              required
             />
 
             <form-input type="select" name="category" label="Category" required>
@@ -40,7 +40,7 @@
               </optgroup>
             </form-input>
 
-            <form-input name="amount" type="number" label="Amount" />
+            <form-input name="amount" type="number" label="Amount" required />
 
             <label for="date">Date</label>
             <v-date-picker

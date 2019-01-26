@@ -5,29 +5,48 @@
     @mousedown="focus"
   >
     <div v-if="label" class="label">{{ label }}</div>
-    <input ref="input" v-bind="$props" @blur="blur" @focus="focused = true" />
-    <div v-if="type === 'select'" class="dropdown">
-      <div
-        v-for="child in renderChildren"
-        :key="child.value"
-        :class="{
-          option: child.tag === 'option',
-          optgroup: child.tag === 'optgroup'
-        }"
-      >
-        <div :class="`${child.tag}-label`">{{ child.label }}</div>
+    <template v-if="type === 'select'">
+      <input
+        ref="input"
+        :value="displayValue"
+        :required="$attrs.hasOwnProperty('required')"
+        @focus="focus"
+        @blur="blur"
+      />
+      <input
+        ref="hiddenInput"
+        type="hidden"
+        :value="hiddenValue"
+        v-bind="$attrs"
+      />
 
-        <div v-if="child.tag === 'optgroup'" class="optgroup-list">
-          <div
-            v-for="nestedChild in child.children"
-            :key="nestedChild.value"
-            class="option"
-          >
-            <div class="option-label">{{ nestedChild.label }}</div>
+      <div v-if="dropdown" class="dropdown">
+        <div
+          v-for="child in renderChildren"
+          :key="child.value"
+          :class="{
+            option: child.tag === 'option',
+            optgroup: child.tag === 'optgroup'
+          }"
+          @click="selectHandler(child)"
+        >
+          <div :class="`${child.tag}-label`">{{ child.label }}</div>
+
+          <div v-if="child.tag === 'optgroup'" class="optgroup-list">
+            <div
+              v-for="nestedChild in child.children"
+              :key="nestedChild.value"
+              class="option"
+              @click="selectHandler(nestedChild)"
+            >
+              <div class="option-label">{{ nestedChild.label }}</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </template>
+
+    <input v-else ref="input" v-bind="$attrs" @blur="blur" @focus="focus" />
   </div>
 </template>
 
@@ -35,15 +54,7 @@
 export default {
   name: 'FormInput',
   props: {
-    id: {
-      type: [String, Boolean],
-      default: false
-    },
     label: {
-      type: [String, Boolean],
-      default: false
-    },
-    name: {
       type: [String, Boolean],
       default: false
     },
@@ -51,7 +62,6 @@ export default {
       type: [String, Boolean],
       default: false
     },
-    required: Boolean,
     type: {
       type: String,
       required: true,
@@ -78,7 +88,10 @@ export default {
   },
   data() {
     return {
-      focused: false
+      focused: false,
+      dropdown: false,
+      displayValue: '',
+      hiddenValue: ''
     };
   },
   computed: {
@@ -165,18 +178,60 @@ export default {
       return this.$slots.default.reduce(optgroupRenderer, []);
     }
   },
+  mounted() {
+    // set validity
+    if (this.type === 'select') {
+      this.$refs.input.setCustomValidity('Please select an item in the list.');
+    }
+  },
   methods: {
     blur(e) {
+      if (this.type === 'select') {
+        // close dropdown if focus is outside the dropdown
+        if (!document.activeElement.closest('.dropdown')) {
+          this.dropdown = false;
+        }
+
+        // unfocus if true value is empty
+        this.focused = !!this.displayValue;
+        return;
+      }
+
       this.focused = !!e.target.value;
     },
     focus() {
+      // open dropdown if select
+      this.focused = true;
+
+      if (this.type === 'select') {
+        this.dropdown = true;
+      }
+
       this.$nextTick(() => this.$refs.input.focus());
+    },
+    selectHandler({ value, label, tag }) {
+      // don't do anything if clicking on a group
+      if (tag !== 'option') {
+        return;
+      }
+
+      // set label value
+      this.displayValue = label;
+
+      // set hidden value
+      this.hiddenValue = value;
+
+      this.$refs.input.setCustomValidity('');
+
+      this.dropdown = false;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+@import '../colors';
+
 .input-wrapper {
   position: relative;
   box-shadow: 0 1px 2px 1px rgba(#000, 0.15);
@@ -187,21 +242,11 @@ export default {
   cursor: text;
 
   &.focused {
-    &.select:focus-within {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
-
-      .dropdown {
-        display: block;
-      }
-    }
-
     .label {
       transform: translateY(-120%) translateX(0.25em);
       font-size: 12px;
 
-      & + input,
-      & + select {
+      & + input {
         transform: translateY(-10%);
       }
     }
@@ -247,20 +292,25 @@ select {
 }
 
 .dropdown {
-  display: none;
   position: absolute;
   width: 100%;
   left: 0;
   top: 100%;
+  margin-top: 0.5em;
+  padding: 0.5em 0;
   background-color: #fff;
   z-index: 1;
   box-shadow: inherit;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-radius: 6px;
 
   .option {
     padding: 0.25em 0.5em;
     cursor: default;
+
+    &:hover {
+      background: $blue-gradient;
+      color: #444;
+    }
   }
 
   .optgroup {
