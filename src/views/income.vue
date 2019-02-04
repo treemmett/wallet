@@ -2,7 +2,9 @@
   <Dashboard>
     <div class="income">
       <section>
-        <div class="header"><div class="title">Summary</div></div>
+        <div class="header">
+          <div class="title">Summary</div>
+        </div>
 
         <div class="summary">
           <div class="item">
@@ -101,7 +103,9 @@
       </section>
 
       <section>
-        <div class="header"><div class="title">Tax</div></div>
+        <div class="header">
+          <div class="title">Tax</div>
+        </div>
         <div class="table">
           <div class="row">
             <div class="col">State</div>

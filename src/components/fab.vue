@@ -1,5 +1,7 @@
 <template>
-  <div class="fab"><slot /></div>
+  <div class="fab">
+    <slot />
+  </div>
 </template>
 
 <style lang="scss" scoped>

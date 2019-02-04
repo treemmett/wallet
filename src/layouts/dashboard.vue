@@ -5,34 +5,43 @@
     <div class="navigation">
       <div class="nav">
         <router-link :to="{ name: 'budget' }" exact>
-          <span class="icon-wallet" /><span class="label">Budget</span>
+          <span class="icon-wallet" />
+          <span class="label">Budget</span>
         </router-link>
         <router-link :to="{ name: 'transactions' }">
-          <span class="icon-receipt" /><span class="label">Transactions</span>
+          <span class="icon-receipt" />
+          <span class="label">Transactions</span>
         </router-link>
         <router-link :to="{ name: 'income' }">
-          <span class="icon-money-check" /><span class="label">Income</span>
+          <span class="icon-money-check" />
+          <span class="label">Income</span>
         </router-link>
         <a href="#">
-          <span class="icon-piggy-bank" /><span class="label">Goals</span>
+          <span class="icon-piggy-bank" />
+          <span class="label">Goals</span>
         </a>
         <a href="#">
-          <span class="icon-account" /><span class="label">Tax</span>
+          <span class="icon-account" />
+          <span class="label">Tax</span>
         </a>
         <a href="#">
-          <span class="icon-analytics" /><span class="label">Reports</span>
+          <span class="icon-analytics" />
+          <span class="label">Reports</span>
         </a>
       </div>
 
       <div class="nav account">
         <div class="title">Account</div>
         <a href="#">
-          <span class="icon-settings" /><span class="label">Settings</span>
+          <span class="icon-settings" />
+          <span class="label">Settings</span>
         </a>
       </div>
     </div>
 
-    <div class="view"><slot /></div>
+    <div class="view">
+      <slot />
+    </div>
   </div>
 </template>
 
