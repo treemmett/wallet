@@ -153,14 +153,14 @@ export default {
 
             const optgroup = {
               ...cur,
-              children: cur.children.reduce((acc, cur) => {
-                const child = optionRenderer(cur);
+              children: cur.children.reduce((acc1, cur1) => {
+                const child = optionRenderer(cur1);
 
                 if (child) {
-                  acc.push(child);
+                  acc1.push(child);
                 }
 
-                return acc;
+                return acc1;
               }, []),
               label: cur.data.attrs.label
             };

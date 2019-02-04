@@ -2,6 +2,7 @@ const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const htmlWebpackTemplate = require('html-webpack-template');
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 
@@ -13,9 +14,7 @@ module.exports = {
 
   resolve: {
     extensions: ['.js', '.json', '.vue'],
-    modules: [
-      path.join(__dirname, 'node_modules')
-    ],
+    modules: [path.join(__dirname, 'node_modules')],
     alias: {
       vue: 'vue/dist/vue.js'
     }
@@ -23,6 +22,12 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.(vue|js)$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader'
+      },
       {
         test: /\.vue$/,
         use: 'vue-loader'
@@ -35,9 +40,7 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: [
-                autoprefixer()
-              ]
+              plugins: [autoprefixer()]
             }
           },
           'sass-loader'
@@ -58,7 +61,7 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       inject: false,
-      template: require('html-webpack-template'),
+      template: htmlWebpackTemplate,
 
       appMountId: 'app',
       mobile: true,
@@ -81,4 +84,4 @@ module.exports = {
       }
     }
   }
-}
+};
