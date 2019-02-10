@@ -106,8 +106,13 @@ export default {
           return false;
         }
 
+        const props = {
+          ...el.data.attrs,
+          ...el.data.domProps
+        };
+
         // skip option that doesn't have value
-        if (!el.data || !el.data.attrs || !el.data.attrs.value) {
+        if (!props.value) {
           return false;
         }
 
@@ -128,7 +133,7 @@ export default {
         }
 
         option.label = option.children.map(c => c.text).join(' ');
-        option.value = el.data.attrs.value;
+        option.value = props.value;
 
         return option;
       };
@@ -199,7 +204,12 @@ export default {
 
       this.focused = !!e.target.value;
     },
-    focus() {
+    focus(e) {
+      // stop if we're clicking on an option
+      if (e.target && e.target.closest('.option')) {
+        return;
+      }
+
       // open dropdown if select
       this.focused = true;
 
@@ -216,12 +226,17 @@ export default {
       }
 
       // set label value
-      this.displayValue = label;
+      this.displayValue = label.trim();
 
       // set hidden value
       this.hiddenValue = value;
 
       this.$refs.input.setCustomValidity('');
+
+      // focus input
+      this.focused = !!label.trim();
+
+      this.$refs.input.blur();
 
       this.dropdown = false;
     }
@@ -302,6 +317,8 @@ select {
   z-index: 1;
   box-shadow: inherit;
   border-radius: 6px;
+  overflow-y: auto;
+  max-height: 50vh;
 
   .option {
     padding: 0.25em 0.5em;
@@ -315,6 +332,10 @@ select {
 
   .optgroup {
     padding-top: 0.75em;
+
+    &:first-child {
+      padding-top: 0;
+    }
 
     .optgroup-label {
       padding: 0.25em 0.5em;
