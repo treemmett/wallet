@@ -143,9 +143,9 @@
               >
                 <option value="single">Single</option>
                 <option value="married">Married</option>
-                <option value="marriedSeparately"
-                  >Married - Filing Seperately</option
-                >
+                <option value="marriedSeparately">
+                  Married - Filing Seperately
+                </option>
                 <option value="headOfHousehold">Head of Household</option>
               </select>
             </div>

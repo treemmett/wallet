@@ -11,11 +11,10 @@ module.exports = {
   extends: [
     'airbnb-base',
     'plugin:vue/recommended',
-    'plugin:vue-a11y/base',
     'prettier',
     'prettier/vue'
   ],
-  plugins: ['vue-a11y', 'vue', 'prettier'],
+  plugins: ['vue', 'prettier'],
   rules: {
     'no-param-reassign': 0,
     'no-underscore-dangle': [
