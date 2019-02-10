@@ -13,13 +13,9 @@ module.exports = {
     'plugin:vue/recommended',
     'plugin:vue-a11y/base',
     'prettier',
-    'prettier/vue',
+    'prettier/vue'
   ],
-  plugins: [
-    'vue-a11y',
-    'vue',
-    'prettier'
-  ],
+  plugins: ['vue-a11y', 'vue', 'prettier'],
   rules: {
     'no-param-reassign': 0,
     'no-underscore-dangle': [
@@ -28,12 +24,7 @@ module.exports = {
         allow: ['__vue__']
       }
     ],
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true
-      }
-    ],
+    'prettier/prettier': 'error',
     quotes: [
       'error',
       'single',
@@ -46,10 +37,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       node: {
-        extensions: [
-          '.js',
-          '.vue'
-        ]
+        extensions: ['.js', '.vue']
       }
     }
   }
