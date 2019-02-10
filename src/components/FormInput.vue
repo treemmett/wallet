@@ -10,6 +10,7 @@
         ref="input"
         :value="displayValue"
         :required="$attrs.hasOwnProperty('required')"
+        @input="displayValue = $event.target.value"
         @focus="focus"
         @blur="blur"
       />
@@ -180,7 +181,62 @@ export default {
         return acc;
       };
 
-      return this.$slots.default.reduce(optgroupRenderer, []);
+      const children = this.$slots.default.reduce(optgroupRenderer, []);
+
+      // return unfiltered children if no text
+      if (!this.displayValue) {
+        return children;
+      }
+
+      const regex = new RegExp(this.displayValue, 'i');
+
+      return children.reduce((acc, cur) => {
+        switch (cur.tag) {
+          case 'option': {
+            // get inner text of option
+            const tag = cur.children[0].text.trim();
+
+            // get if tag matches search
+            if (regex.test(tag)) {
+              acc.push(cur);
+            }
+            break;
+          }
+
+          case 'optgroup': {
+            // get label of group
+            const label = cur.data.attrs.label.trim();
+
+            // check if group label matches search
+            if (regex.test(label)) {
+              acc.push(cur);
+              break;
+            }
+
+            const group = {
+              ...cur,
+              children: cur.children.filter(option => {
+                const { label: optionLabel } = option;
+
+                // check if option label matches search
+                return regex.test(optionLabel.trim());
+              })
+            };
+
+            // add group to output if any children matched
+            if (group.children.length) {
+              acc.push(group);
+            }
+
+            break;
+          }
+
+          default:
+            break;
+        }
+
+        return acc;
+      }, []);
     }
   },
   mounted() {
