@@ -2,6 +2,7 @@
   <div class="group" :class="{ collapsed }">
     <div class="content">
       <div class="head">
+        <div class="handle" />
         <div class="title">
           {{ group.name }}
           <div
@@ -40,7 +41,8 @@
             group: 'categories',
             animation: 100,
             ghostClass: 'ghost',
-            dragClass: 'dragging'
+            dragClass: 'dragging',
+            handle: '.handle'
           }"
           @add="sortCategory"
           @update="sortCategory"
@@ -50,6 +52,7 @@
             :key="category.id"
             class="category"
           >
+            <div class="handle" />
             <div class="title">{{ category.name }}</div>
             <div class="amount">
               <money
@@ -165,8 +168,8 @@ export default {
     },
     sortCategory(e) {
       this.$store.commit('sortCategory', {
-        fromGroup: e.from.parentNode.__vue__.group.id,
-        toGroup: e.to.parentNode.__vue__.group.id,
+        fromGroup: e.from.parentNode.parentNode.__vue__.group.id,
+        toGroup: e.to.parentNode.parentNode.__vue__.group.id,
         fromIndex: e.oldIndex,
         toIndex: e.newIndex
       });
@@ -238,6 +241,36 @@ export default {
   position: relative;
   min-width: fit-content;
 
+  .handle {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 1rem;
+    left: 0;
+    z-index: 1;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 80%;
+      background-color: transparent;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    &::before {
+      transform: translateX(-1px);
+    }
+
+    &::after {
+      transform: translateX(1px);
+    }
+  }
+
   .title,
   .amount {
     display: inline-block;
@@ -279,8 +312,17 @@ export default {
     }
   }
 
-  &:hover .amount input {
-    border-color: $blue;
+  &:hover {
+    .handle {
+      &::before,
+      &::after {
+        background-color: #aaa;
+      }
+    }
+
+    .amount input {
+      border-color: $blue;
+    }
   }
 }
 

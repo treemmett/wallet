@@ -2,7 +2,7 @@
   <dashboard>
     <draggable
       class="budget"
-      :options="{ animation: 100, ghostClass: 'ghost' }"
+      :options="{ animation: 100, ghostClass: 'ghost', handle: '.handle' }"
       @sort="sort"
     >
       <budget-group
