@@ -24,6 +24,7 @@
             @keypress.enter="createCategory"
           />
         </div>
+        <div class="border" />
       </div>
 
       <transition
@@ -199,7 +200,9 @@ export default {
   }
 
   &.collapsed .head {
-    border-bottom-color: transparent;
+    .border {
+      border-bottom-color: transparent;
+    }
 
     .caret {
       opacity: 1;
@@ -215,6 +218,7 @@ export default {
   top: 0;
   right: 0;
   background: linear-gradient(to right, rgba(#fff, 0), #fff);
+  pointer-events: none;
 
   &.start {
     left: 0;
@@ -282,10 +286,15 @@ export default {
 
 .head {
   font-size: 20px;
-  border-bottom: 1px solid #ccc;
-  margin: 0 1em;
-  padding: 1em 0;
-  transition: border-color 0.2s ease-in-out;
+
+  .border {
+    position: absolute;
+    width: calc(100% - 2em);
+    bottom: 0;
+    left: 1em;
+    border-bottom: 1px solid #ccc;
+    transition: border-color 0.2s ease-in-out;
+  }
 
   .amount {
     font-size: 12px;
@@ -317,7 +326,7 @@ export default {
 
   .caret {
     position: absolute;
-    right: 0;
+    right: 1em;
     top: 50%;
     transform: translateY(-50%);
   }
