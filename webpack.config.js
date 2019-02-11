@@ -75,6 +75,7 @@ module.exports = {
     historyApiFallback: true,
     host: '0.0.0.0',
     port: 3000,
+    clientLogLevel: 'none',
     proxy: {
       '/api': {
         target: 'http://localhost:8080',

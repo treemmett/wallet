@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="input-wrapper"
-    :class="{ focused, select: type === 'select' }"
-    @mousedown="focus"
-  >
+  <div class="input-wrapper" :class="{ focused, select: type === 'select' }">
     <div v-if="label" class="label">{{ label }}</div>
     <template v-if="type === 'select'">
       <input
@@ -21,7 +17,12 @@
         v-bind="$attrs"
       />
 
-      <div v-if="dropdown" class="dropdown">
+      <div
+        v-if="dropdown"
+        class="dropdown"
+        @mouseenter="mouseOver = true"
+        @mouseleave="mouseOver = false"
+      >
         <div
           v-for="child in renderChildren"
           :key="child.value"
@@ -91,6 +92,7 @@ export default {
     return {
       focused: false,
       dropdown: false,
+      mouseOver: false,
       displayValue: '',
       hiddenValue: ''
     };
@@ -247,6 +249,13 @@ export default {
   },
   methods: {
     blur(e) {
+      if (this.mouseOver) {
+        return;
+      }
+
+      // reset mouse position
+      this.mouseOver = false;
+
       if (this.type === 'select') {
         // close dropdown if focus is outside the dropdown
         if (!document.activeElement.closest('.dropdown')) {
@@ -260,12 +269,7 @@ export default {
 
       this.focused = !!e.target.value;
     },
-    focus(e) {
-      // stop if we're clicking on an option
-      if (e.target && e.target.closest('.option')) {
-        return;
-      }
-
+    focus() {
       // open dropdown if select
       this.focused = true;
 
