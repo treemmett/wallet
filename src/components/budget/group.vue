@@ -5,14 +5,18 @@
         <div class="title">
           {{ group.name }}
           <div
-            class="icon-plus"
+            class="icon"
             :class="{ visible: creatingCategory }"
             @click="openCategoryModal"
-          />
+          >
+            <icon-plus />
+          </div>
         </div>
         <div class="amount">Budgeted</div>
         <div class="amount">Used</div>
-        <div class="icon-angle-down caret" @click="collapsed = !collapsed" />
+        <div class="icon caret" @click="collapsed = !collapsed">
+          <icon-angle-down />
+        </div>
         <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
           <input
             v-focus
@@ -68,11 +72,15 @@
 <script>
 import draggable from 'vuedraggable';
 import money from '../money';
+import IconAngleDown from '../icons/IconAngleDown';
+import IconPlus from '../icons/IconPlus';
 
 export default {
   name: 'BudgetGroup',
   components: {
     draggable,
+    IconAngleDown,
+    IconPlus,
     money
   },
   props: {
@@ -181,7 +189,7 @@ export default {
   }
 
   &:hover {
-    .head [class*='icon'] {
+    .head .icon {
       opacity: 1;
     }
   }
@@ -283,7 +291,7 @@ export default {
     font-size: 12px;
   }
 
-  [class*='icon-'] {
+  .icon {
     position: relative;
     display: inline-flex;
     justify-content: center;

@@ -1,6 +1,5 @@
 const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const htmlWebpackTemplate = require('html-webpack-template');
 const path = require('path');
@@ -51,13 +50,6 @@ module.exports = {
 
   plugins: [
     new CleanWebpackPlugin(['build']),
-
-    new CopyWebpackPlugin([
-      {
-        from: 'src/static',
-        to: 'static'
-      }
-    ]),
 
     new HtmlWebpackPlugin({
       inject: false,

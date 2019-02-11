@@ -5,27 +5,27 @@
     <div class="navigation">
       <div class="nav">
         <router-link :to="{ name: 'budget' }" exact>
-          <span class="icon-wallet" />
+          <span class="icon"><icon-wallet /></span>
           <span class="label">Budget</span>
         </router-link>
         <router-link :to="{ name: 'transactions' }">
-          <span class="icon-receipt" />
+          <span class="icon"><icon-receipt /></span>
           <span class="label">Transactions</span>
         </router-link>
         <router-link :to="{ name: 'income' }">
-          <span class="icon-money-check" />
+          <span class="icon"><icon-check /></span>
           <span class="label">Income</span>
         </router-link>
         <a href="#">
-          <span class="icon-piggy-bank" />
+          <span class="icon"><icon-piggy-bank /></span>
           <span class="label">Goals</span>
         </a>
         <a href="#">
-          <span class="icon-account" />
+          <span class="icon"><icon-bank /></span>
           <span class="label">Tax</span>
         </a>
         <a href="#">
-          <span class="icon-analytics" />
+          <span class="icon"><icon-analytics /></span>
           <span class="label">Reports</span>
         </a>
       </div>
@@ -33,7 +33,7 @@
       <div class="nav account">
         <div class="title">Account</div>
         <a href="#">
-          <span class="icon-settings" />
+          <span class="icon"><icon-settings /></span>
           <span class="label">Settings</span>
         </a>
       </div>
@@ -44,6 +44,29 @@
     </div>
   </div>
 </template>
+
+<script>
+import IconAnalytics from '../components/icons/IconAnalytics';
+import IconBank from '../components/icons/IconBank';
+import IconCheck from '../components/icons/IconCheck';
+import IconPiggyBank from '../components/icons/IconPiggyBank';
+import IconReceipt from '../components/icons/IconReceipt';
+import IconSettings from '../components/icons/IconSettings';
+import IconWallet from '../components/icons/IconWallet';
+
+export default {
+  name: 'Dashboard',
+  components: {
+    IconAnalytics,
+    IconBank,
+    IconCheck,
+    IconPiggyBank,
+    IconReceipt,
+    IconSettings,
+    IconWallet
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 @import '../colors';
@@ -83,7 +106,7 @@
 
   a {
     position: relative;
-    display: block;
+    display: flex;
     text-decoration: none;
     align-items: center;
     margin: 0 auto;
@@ -104,7 +127,7 @@
       transition: width 0.2s ease-in-out;
     }
 
-    span[class*='icon'] {
+    .icon {
       display: inline-block;
       text-align: center;
       width: 1.5em;
@@ -186,7 +209,7 @@
           display: none;
         }
 
-        [class*='icon'] {
+        .icon {
           margin: 0;
         }
 
@@ -224,7 +247,6 @@
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500');
-@import url('/static/fonts/icons.css');
 @import '../colors';
 
 html,

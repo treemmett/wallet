@@ -78,7 +78,7 @@
         </div>
       </div>
     </transition>
-    <Fab @click.native="sidebarOpen = true">+</Fab>
+    <Fab @click.native="sidebarOpen = true"><IconPlus /></Fab>
   </Dashboard>
 </template>
 
@@ -87,13 +87,15 @@ import moment from 'moment';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
 import FormInput from '../components/FormInput';
+import IconPlus from '../components/icons/IconPlus';
 
 export default {
   name: 'Transactions',
   components: {
     Dashboard,
     Fab,
-    FormInput
+    FormInput,
+    IconPlus
   },
   data() {
     return {

@@ -41,7 +41,7 @@
         <div class="header">
           <div class="title">
             Recurring Income
-            <div class="click-icon icon-plus" />
+            <div class="icon"><icon-plus /></div>
           </div>
         </div>
 
@@ -160,10 +160,12 @@
 import { mapState } from 'vuex';
 import Dashboard from '../layouts/dashboard';
 import Money from '../components/money';
+import IconPlus from '../components/icons/IconPlus';
 
 export default {
   components: {
     Dashboard,
+    IconPlus,
     Money
   },
   computed: {
@@ -199,7 +201,7 @@ section {
     margin-bottom: 0;
   }
 
-  &:hover .click-icon {
+  &:hover .icon {
     opacity: 1;
   }
 }
@@ -223,7 +225,7 @@ section {
   }
 }
 
-.click-icon {
+.icon {
   position: relative;
   display: inline-flex;
   justify-content: center;

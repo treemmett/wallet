@@ -16,17 +16,21 @@
       <div class="card">
         <div class="date">
           <span
-            class="icon-angle-left"
+            class="icon"
             @click="$store.commit('changeDate', { direction: -1 })"
-          />
+          >
+            <icon-angle-left />
+          </span>
           <div class="selector">
             <div class="month">{{ $store.state.date.prettyMonth }}</div>
             <div class="year">{{ $store.state.date.year }}</div>
           </div>
           <span
-            class="icon-angle-right"
+            class="icon"
             @click="$store.commit('changeDate', { direction: 1 })"
-          />
+          >
+            <icon-angle-right />
+          </span>
         </div>
 
         <div class="summary">
@@ -55,13 +59,17 @@ import { mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
 import group from '../components/budget/group';
 import dashboard from '../layouts/dashboard';
+import IconAngleLeft from '../components/icons/IconAngleLeft';
+import IconAngleRight from '../components/icons/IconAngleRight';
 
 export default {
   name: 'Budget',
   components: {
     'budget-group': group,
     dashboard,
-    draggable
+    draggable,
+    IconAngleLeft,
+    IconAngleRight
   },
   computed: {
     ...mapGetters(['budget'])
@@ -123,13 +131,14 @@ export default {
     font-weight: 500;
     user-select: none;
 
-    > span {
+    .icon {
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 30px;
       color: #aaa;
       width: 1em;
+      height: 1em;
       border-radius: 50%;
       transition: color 0.15s ease, background-color 0.15s ease-in-out;
       cursor: pointer;
