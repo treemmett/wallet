@@ -5,6 +5,8 @@
         v-for="item in $store.getters.transactions"
         :key="item.id"
         class="transaction"
+        :class="{ selected: selected === item.id }"
+        @click="selected = item.id"
       >
         <div class="description">{{ item.description }}</div>
         <div class="category">{{ item.categoryName }}</div>
@@ -78,7 +80,20 @@
         </div>
       </div>
     </transition>
-    <Fab @click.native="sidebarOpen = true"><IconPlus /></Fab>
+    <Fab @click="sidebarOpen = true">
+      <icon-plus />
+      <template v-if="selected" slot="menu">
+        <div class="icon" @click="selected = null">
+          <icon-check />
+        </div>
+        <div class="icon">
+          <icon-edit />
+        </div>
+        <div class="icon">
+          <icon-trash />
+        </div>
+      </template>
+    </Fab>
   </Dashboard>
 </template>
 
@@ -87,19 +102,26 @@ import moment from 'moment';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
 import FormInput from '../components/FormInput';
+import IconCheck from '../components/icons/IconCheck';
+import IconEdit from '../components/icons/IconEdit';
 import IconPlus from '../components/icons/IconPlus';
+import IconTrash from '../components/icons/IconTrash';
 
 export default {
   name: 'Transactions',
   components: {
     Dashboard,
     Fab,
+    IconCheck,
     FormInput,
-    IconPlus
+    IconEdit,
+    IconPlus,
+    IconTrash
   },
   data() {
     return {
       sidebarOpen: false,
+      selected: null,
       selectedDetail: {
         date: null
       }
@@ -217,12 +239,19 @@ export default {
   position: relative;
   padding: 1em;
   background-color: #fff;
-  box-shadow: 0 5px 20px rgba(#000, 0.1);
+  box-shadow: 0 1px 5px rgba(#000, 0.1);
   border-radius: 6px;
   margin-bottom: 1em;
+  transition: box-shadow 0.15s ease-in-out;
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  &.selected,
+  &:hover {
+    box-shadow: 0 5px 20px rgba(#000, 0.1);
+    cursor: pointer;
   }
 
   .category {

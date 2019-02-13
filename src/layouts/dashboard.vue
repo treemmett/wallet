@@ -13,7 +13,7 @@
           <span class="label">Transactions</span>
         </router-link>
         <router-link :to="{ name: 'income' }">
-          <span class="icon"><icon-check /></span>
+          <span class="icon"><icon-money-check /></span>
           <span class="label">Income</span>
         </router-link>
         <a href="#">
@@ -48,7 +48,7 @@
 <script>
 import IconAnalytics from '../components/icons/IconAnalytics';
 import IconBank from '../components/icons/IconBank';
-import IconCheck from '../components/icons/IconCheck';
+import IconMoneyCheck from '../components/icons/IconMoneyCheck';
 import IconPiggyBank from '../components/icons/IconPiggyBank';
 import IconReceipt from '../components/icons/IconReceipt';
 import IconSettings from '../components/icons/IconSettings';
@@ -59,7 +59,7 @@ export default {
   components: {
     IconAnalytics,
     IconBank,
-    IconCheck,
+    IconMoneyCheck,
     IconPiggyBank,
     IconReceipt,
     IconSettings,
@@ -93,6 +93,7 @@ export default {
   grid-area: nav;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 }
 
 .nav {
