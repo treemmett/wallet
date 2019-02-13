@@ -42,10 +42,13 @@
     <div class="view">
       <slot />
     </div>
+
+    <alert />
   </div>
 </template>
 
 <script>
+import Alert from '../components/Alert';
 import IconAnalytics from '../components/icons/IconAnalytics';
 import IconBank from '../components/icons/IconBank';
 import IconMoneyCheck from '../components/icons/IconMoneyCheck';
@@ -57,6 +60,7 @@ import IconWallet from '../components/icons/IconWallet';
 export default {
   name: 'Dashboard',
   components: {
+    Alert,
     IconAnalytics,
     IconBank,
     IconMoneyCheck,

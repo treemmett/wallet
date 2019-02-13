@@ -14,6 +14,12 @@
   </svg>
 </template>
 
+<style scoped>
+svg {
+  vertical-align: top;
+}
+</style>
+
 <script>
 export default {
   name: 'IconBase',
