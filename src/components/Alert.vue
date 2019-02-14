@@ -1,5 +1,5 @@
 <template>
-  <transition-group class="alert-wrapper">
+  <transition-group class="alert-wrapper" tag="div">
     <div
       v-for="a in alerts"
       :key="a.id"
@@ -39,7 +39,9 @@ export default {
   right: 0;
   z-index: 1000;
   overflow: auto;
-  max-height: 100%;
+  height: 100%;
+  width: 17.5em;
+  pointer-events: none;
 }
 
 .card {
@@ -48,11 +50,13 @@ export default {
   background-color: #fff;
   box-shadow: 0 5px 20px rgba(#000, 0.1), 0 10px 40px rgba(#000, 0.1);
   margin: 1.5em;
+  margin-bottom: 0;
   border-radius: 6px;
   overflow: hidden;
   pointer-events: auto;
   width: 12.5em;
   max-width: 100vw;
+  transition: all 0.5s ease-in-out;
 
   &::before {
     content: '';
@@ -75,6 +79,20 @@ export default {
     &::before {
       background: $orange-gradient;
     }
+  }
+
+  &.v-enter {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+
+  &.v-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  &.v-leave-active {
+    position: absolute;
   }
 
   h5 {
