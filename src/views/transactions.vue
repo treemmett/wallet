@@ -2,7 +2,7 @@
   <Dashboard>
     <div class="list">
       <div
-        v-for="item in $store.getters.transactions"
+        v-for="item in transactions"
         :key="item.id"
         class="transaction"
         :class="{ selected: selected === item.id }"
@@ -19,7 +19,7 @@
     <transition name="animation">
       <div v-if="sidebarOpen" class="sidebar" @click.self="sidebarOpen = false">
         <div class="card">
-          <form @submit.prevent="addTransaction">
+          <form @submit.prevent="add">
             <form-input
               type="text"
               name="description"
@@ -89,7 +89,7 @@
         <div class="icon">
           <icon-edit />
         </div>
-        <div class="icon">
+        <div class="icon" @click="remove">
           <icon-trash />
         </div>
       </template>
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex';
 import moment from 'moment';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
@@ -127,15 +128,19 @@ export default {
       }
     };
   },
+  computed: {
+    ...mapGetters(['transactions'])
+  },
   methods: {
-    addTransaction(e) {
+    ...mapMutations(['addTransaction', 'removeTransaction']),
+    add(e) {
       // parse date object
       const date = moment(
         e.target.elements.date.value,
         'MM/DD/YYYY'
       ).toISOString();
 
-      this.$store.commit('addTransaction', {
+      this.addTransaction({
         description: e.target.elements.description.value.trim(),
         category: e.target.elements.category.value.trim(),
         amount: e.target.elements.amount.value.trim(),
@@ -145,6 +150,11 @@ export default {
 
       // close sidebar
       this.sidebarOpen = false;
+    },
+    remove() {
+      this.removeTransaction(this.selected);
+
+      this.selected = null;
     }
   }
 };

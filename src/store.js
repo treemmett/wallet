@@ -315,7 +315,17 @@ export default new Vuex.Store({
     },
     removeAlert: ({ alerts }, id) => {
       const index = alerts.findIndex(a => a.id === id);
-      alerts.splice(index, 1);
+
+      if (index > -1) {
+        alerts.splice(index, 1);
+      }
+    },
+    removeTransaction: ({ transactions }, id) => {
+      const index = transactions.findIndex(t => t.id === id);
+
+      if (index > -1) {
+        transactions.splice(index, 1);
+      }
     }
   },
   getters: {
