@@ -15,7 +15,7 @@
         </div>
         <div class="amount">Budgeted</div>
         <div class="amount">Used</div>
-        <div class="icon caret" @click="collapsed = !collapsed">
+        <div class="icon caret" @click="toggleCollapse">
           <icon-angle-down />
         </div>
         <div v-if="creatingCategory" class="tooltip" @mousedown.stop>
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 import money from '../money';
 import IconAngleDown from '../icons/IconAngleDown';
@@ -100,6 +101,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['sendAlert']),
     afterEnter(el) {
       el.style.removeProperty('height');
       el.style.removeProperty('min-height');
@@ -173,6 +175,10 @@ export default {
         fromIndex: e.oldIndex,
         toIndex: e.newIndex
       });
+    },
+    toggleCollapse() {
+      this.sendAlert({ msg: this.group.name, title: 'Collapsing group!' });
+      this.collapsed = !this.collapsed;
     }
   }
 };

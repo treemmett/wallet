@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   state: {
+    alerts: [],
     budget: [
       {
         month: 11,
@@ -161,6 +162,9 @@ export default new Vuex.Store({
     ]
   },
   mutations: {
+    addAlert: ({ alerts }, opts) => {
+      alerts.push(opts);
+    },
     addCategory: (state, { categoryName, groupId }) => {
       state.categories.push({
         name: categoryName,
@@ -308,6 +312,10 @@ export default new Vuex.Store({
 
       // regenerate sorting index
       state.groups = state.groups.map((group, sort) => ({ ...group, sort }));
+    },
+    removeAlert: ({ alerts }, id) => {
+      const index = alerts.findIndex(a => a.id === id);
+      alerts.splice(index, 1);
     }
   },
   getters: {
@@ -412,6 +420,37 @@ export default new Vuex.Store({
           if (a.date > b.date) return -1;
           return 0;
         });
+    }
+  },
+  actions: {
+    dismissAlert: ({ commit, state }, id) => {
+      const { alerts } = state;
+      const alert = alerts.find(a => a.id === id);
+
+      // check if timeout is still pending
+      if (alert.timeout) {
+        clearTimeout(alert.timeout);
+      }
+
+      commit('removeAlert', id);
+    },
+    sendAlert: ({ commit, dispatch }, opt) => {
+      const alert = {};
+
+      if (!opt) return;
+
+      if (typeof opt === 'string') {
+        alert.msg = opt;
+      } else if (typeof opt === 'object') {
+        alert.msg = opt.msg;
+        alert.title = opt.title;
+        alert.error = opt.error;
+      }
+
+      alert.id = Math.floor(Math.random() * 10000);
+      alert.timeout = setTimeout(dispatch, 5000, 'dismissAlert', alert.id);
+
+      commit('addAlert', alert);
     }
   }
 });

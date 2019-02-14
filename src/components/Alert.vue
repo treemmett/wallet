@@ -6,7 +6,7 @@
       class="card"
       :class="{ error: a.error }"
     >
-      <div class="close">
+      <div class="close" @click="dismissAlert(a.id)">
         <icon-close />
       </div>
       <h5 v-if="a.title">{{ a.title }}</h5>
@@ -16,23 +16,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 import IconClose from './icons/IconClose';
 
 export default {
   components: {
     IconClose
   },
-  data() {
-    return {
-      alerts: [
-        {
-          msg: 'An info message',
-          id: 54533
-        },
-        { title: 'Error', msg: 'An error occured', error: true, id: 43413 }
-      ]
-    };
-  }
+  computed: mapState({
+    alerts: 'alerts'
+  }),
+  methods: mapActions(['dismissAlert'])
 };
 </script>
 
