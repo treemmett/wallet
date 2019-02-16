@@ -50,10 +50,12 @@
             :class="{ selected: selected === item.id }"
             @click="selected = item.id"
           >
-            <div class="description">{{ item.description }}</div>
-            <div class="category">{{ item.categoryName }}</div>
-            <div class="amount" :class="{ positive: item.amount > 0 }">
-              {{ formatCurrency(item.amount) }}
+            <div class="card">
+              <div class="description">{{ item.description }}</div>
+              <div class="category">{{ item.categoryName }}</div>
+              <div class="amount" :class="{ positive: item.amount > 0 }">
+                {{ formatCurrency(item.amount) }}
+              </div>
             </div>
           </div>
         </div>
@@ -302,6 +304,10 @@ export default {
 .transaction-group {
   display: flex;
   margin-bottom: 1em;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .sticky-date {
@@ -320,13 +326,30 @@ export default {
 
 .transaction {
   position: relative;
-  padding: 1em;
-  background-color: #fff;
   box-shadow: 0 1px 5px rgba(#000, 0.1);
   border-radius: 6px;
   margin-bottom: 1em;
-  // margin-left: 6em;
   transition: box-shadow 0.15s ease-in-out;
+
+  .card {
+    position: relative;
+    padding: 1em;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      transform: translateX(-50%);
+      top: 0;
+      left: 50%;
+      background: $blue-gradient;
+      transition: width 0.2s ease-in-out;
+    }
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -336,6 +359,10 @@ export default {
   &:hover {
     box-shadow: 0 5px 20px rgba(#000, 0.1);
     cursor: pointer;
+  }
+
+  &.selected .card::before {
+    width: 100%;
   }
 
   .category {
