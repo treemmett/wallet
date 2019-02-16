@@ -1,6 +1,6 @@
 <template>
   <Dashboard>
-    <div class="list">
+    <div v-if="false" class="list">
       <div
         v-for="item in transactions"
         :key="item.id"
@@ -12,6 +12,50 @@
         <div class="category">{{ item.categoryName }}</div>
         <div class="amount" :class="{ positive: item.amount > 0 }">
           {{ formatCurrency(item.amount) }}
+        </div>
+      </div>
+    </div>
+
+    <div v-if="false" class="list">
+      <template v-for="(transactions, date) in transactionsByDate">
+        <div :key="date" class="sticky-date">{{ date }}</div>
+        <div
+          v-for="item in transactions"
+          :key="item.id"
+          class="transaction"
+          :class="{ selected: selected === item.id }"
+          @click="selected = item.id"
+        >
+          <div class="description">{{ item.description }}</div>
+          <div class="category">{{ item.categoryName }}</div>
+          <div class="amount" :class="{ positive: item.amount > 0 }">
+            {{ formatCurrency(item.amount) }}
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="list">
+      <div
+        v-for="(transactions, date) in transactionsByDate"
+        :key="date"
+        class="transaction-group"
+      >
+        <div class="sticky-date">{{ date }}</div>
+        <div class="transactions">
+          <div
+            v-for="item in transactions"
+            :key="item.id"
+            class="transaction"
+            :class="{ selected: selected === item.id }"
+            @click="selected = item.id"
+          >
+            <div class="description">{{ item.description }}</div>
+            <div class="category">{{ item.categoryName }}</div>
+            <div class="amount" :class="{ positive: item.amount > 0 }">
+              {{ formatCurrency(item.amount) }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -98,8 +142,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
-import moment from 'moment';
+import { mapMutations } from 'vuex';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
 import FormInput from '../components/FormInput';
@@ -129,16 +172,27 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['transactions'])
+    transactionsByDate() {
+      const ts = this.$store.getters.transactions;
+      const dt = {};
+
+      ts.forEach(t => {
+        // create array if it doesn't exist
+        if (!dt[t.date]) dt[t.date] = [];
+
+        dt[t.date].push(t);
+      });
+
+      return dt;
+    }
   },
   methods: {
     ...mapMutations(['addTransaction', 'removeTransaction']),
     add(e) {
       // parse date object
-      const date = moment(
-        e.target.elements.date.value,
-        'MM/DD/YYYY'
-      ).toISOString();
+      const date = new Date(e.target.elements.date.value)
+        .toISOString()
+        .substring(0, 10);
 
       this.addTransaction({
         description: e.target.elements.description.value.trim(),
@@ -245,6 +299,25 @@ export default {
   }
 }
 
+.transaction-group {
+  display: flex;
+  margin-bottom: 1em;
+}
+
+.sticky-date {
+  position: sticky;
+  top: 0;
+  flex: 0 0 6.5em;
+  align-self: flex-start;
+  text-align: right;
+  margin-right: 1em;
+  color: #777;
+}
+
+.transactions {
+  flex-grow: 1;
+}
+
 .transaction {
   position: relative;
   padding: 1em;
@@ -252,6 +325,7 @@ export default {
   box-shadow: 0 1px 5px rgba(#000, 0.1);
   border-radius: 6px;
   margin-bottom: 1em;
+  // margin-left: 6em;
   transition: box-shadow 0.15s ease-in-out;
 
   &:last-child {
@@ -286,8 +360,34 @@ export default {
 }
 
 @media screen and (max-width: $break) {
+  .transaction-group {
+    display: block;
+    margin-bottom: 0;
+    padding-bottom: 1px;
+  }
+
+  .transaction {
+    margin: 1em;
+
+    &:first-child {
+      margin-top: 0.25em;
+    }
+
+    &:last-child {
+      margin-bottom: 1em;
+    }
+  }
+
+  .sticky-date {
+    margin: 0;
+    padding: 0.75em 0;
+    text-align: center;
+    z-index: 1;
+    background-color: #f8f8f8;
+  }
+
   .list {
-    padding-right: 1em;
+    padding: 0;
   }
 
   .sidebar {

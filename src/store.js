@@ -127,37 +127,121 @@ export default new Vuex.Store({
       {
         description: 'McDonalds',
         category: 5305833339,
-        date: '2018-11-19T01:36:30',
+        date: '2018-11-17',
         amount: -10.42,
         id: 3555507652
       },
       {
         description: "Dan's Barber",
         category: 6948027125,
-        date: '2018-11-18T01:36:30',
+        date: '2018-11-18',
         amount: -15.67,
         id: 9302307536
       },
       {
         description: 'Work',
         category: 6977591710,
-        date: '2018-11-18T01:36:30',
+        date: '2018-11-18',
         amount: 2189.45,
         id: 2385943903
       },
       {
         description: 'Starbucks',
         category: 5305833339,
-        date: '2018-11-18T01:36:30',
+        date: '2018-11-18',
         amount: -6.45,
         id: 4836377084
       },
       {
         description: 'Whole Foods',
         category: 3224896798,
-        date: '2018-11-18T01:36:30',
+        date: '2018-11-01',
         amount: -45.42,
         id: 4809125196
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-01',
+        amount: -45.42,
+        id: 4809125197
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-01',
+        amount: -45.42,
+        id: 4809125198
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-01',
+        amount: -45.42,
+        id: 4809125199
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-01',
+        amount: -45.42,
+        id: 4809125200
+      },
+      {
+        description: 'Whole Foods',
+        category: 3224896798,
+        date: '2018-11-16',
+        amount: -45.42,
+        id: 4809125201
+      },
+      {
+        description: 'Something in october',
+        category: 3224896798,
+        date: '2018-10-16',
+        amount: -45.42,
+        id: 4809125202
+      },
+      {
+        description: 'Something in october',
+        category: 3224896798,
+        date: '2018-10-16',
+        amount: -45.42,
+        id: 4809125203
+      },
+      {
+        description: 'Something in october',
+        category: 3224896798,
+        date: '2018-10-16',
+        amount: -45.42,
+        id: 4809125204
+      },
+      {
+        description: 'Something in october',
+        category: 3224896798,
+        date: '2018-10-16',
+        amount: -45.42,
+        id: 4809125205
+      },
+      {
+        description: 'Something in feb',
+        category: 3224896798,
+        date: '2019-02-16',
+        amount: -45.42,
+        id: 4809125206
+      },
+      {
+        description: 'Something in feb',
+        category: 3224896798,
+        date: '2019-02-16',
+        amount: -45.42,
+        id: 4809125207
+      },
+      {
+        description: 'Something in feb',
+        category: 3224896798,
+        date: '2019-02-16',
+        amount: -45.42,
+        id: 4809125208
       }
     ]
   },

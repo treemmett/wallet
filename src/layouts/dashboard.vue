@@ -90,7 +90,7 @@ export default {
   background-color: #fff;
   box-shadow: 0 1px 10px rgba(#000, 0.1);
   position: relative;
-  z-index: 1;
+  z-index: 5;
 }
 
 .navigation {
@@ -185,6 +185,7 @@ export default {
 
   .navigation {
     display: block;
+    overflow: visible;
 
     .nav {
       display: flex;
