@@ -1,40 +1,5 @@
 <template>
   <Dashboard>
-    <div v-if="false" class="list">
-      <div
-        v-for="item in transactions"
-        :key="item.id"
-        class="transaction"
-        :class="{ selected: selected === item.id }"
-        @click="selected = item.id"
-      >
-        <div class="description">{{ item.description }}</div>
-        <div class="category">{{ item.categoryName }}</div>
-        <div class="amount" :class="{ positive: item.amount > 0 }">
-          {{ formatCurrency(item.amount) }}
-        </div>
-      </div>
-    </div>
-
-    <div v-if="false" class="list">
-      <template v-for="(transactions, date) in transactionsByDate">
-        <div :key="date" class="sticky-date">{{ date }}</div>
-        <div
-          v-for="item in transactions"
-          :key="item.id"
-          class="transaction"
-          :class="{ selected: selected === item.id }"
-          @click="selected = item.id"
-        >
-          <div class="description">{{ item.description }}</div>
-          <div class="category">{{ item.categoryName }}</div>
-          <div class="amount" :class="{ positive: item.amount > 0 }">
-            {{ formatCurrency(item.amount) }}
-          </div>
-        </div>
-      </template>
-    </div>
-
     <div class="list">
       <div
         v-for="(transactions, date) in transactionsByDate"
@@ -91,13 +56,7 @@
 
             <form-input name="amount" type="number" label="Amount" required />
 
-            <label for="date">Date</label>
-            <v-date-picker
-              v-model="selectedDetail.date"
-              mode="single"
-              update-on-input
-              :input-props="{ class: 'input', required: true, name: 'date' }"
-            />
+            <form-input name="date" type="date" label="Date" required />
 
             <label>Type</label>
             <div class="radio">

@@ -1,5 +1,9 @@
 <template>
-  <div class="input-wrapper" :class="{ focused, select: type === 'select' }">
+  <div
+    class="input-wrapper"
+    :class="{ focused, select: type === 'select' }"
+    @mousedown="focus"
+  >
     <div v-if="label" class="label">{{ label }}</div>
     <template v-if="type === 'select'">
       <input
@@ -22,6 +26,7 @@
         class="dropdown"
         @mouseenter="mouseOver = true"
         @mouseleave="mouseOver = false"
+        @mousedown.stop
       >
         <div
           v-for="child in renderChildren"
@@ -48,7 +53,14 @@
       </div>
     </template>
 
-    <input v-else ref="input" v-bind="$attrs" @blur="blur" @focus="focus" />
+    <input
+      v-else
+      ref="input"
+      :type="type"
+      v-bind="$attrs"
+      @blur="blur"
+      @focus="focus"
+    />
   </div>
 </template>
 
@@ -267,7 +279,7 @@ export default {
         return;
       }
 
-      this.focused = !!e.target.value;
+      this.focused = !!e.target.value || e.target.validity.badInput;
     },
     focus() {
       // open dropdown if select
@@ -326,8 +338,17 @@ export default {
       }
     }
 
-    input::placeholder {
-      opacity: 1;
+    input {
+      &::placeholder {
+        opacity: 1;
+      }
+
+      &::-webkit-datetime-edit,
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button,
+      &::-webkit-calendar-picker-indicator {
+        display: initial;
+      }
     }
   }
 }
@@ -353,6 +374,13 @@ select {
   outline: none;
   border: none;
   font-size: 16px;
+
+  &::-webkit-datetime-edit,
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button,
+  &::-webkit-calendar-picker-indicator {
+    display: none;
+  }
 
   &::placeholder {
     opacity: 0;

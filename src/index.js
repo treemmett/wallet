@@ -1,9 +1,7 @@
 import Vue from 'vue';
-import Calendar from 'v-calendar';
 import router from './router';
 import store from './store';
 import formatCurrency from './mixins/formatCurrency';
-import 'v-calendar/lib/v-calendar.min.css';
 
 Vue.directive('focus', {
   bind(el) {
@@ -12,8 +10,6 @@ Vue.directive('focus', {
     });
   }
 });
-
-Vue.use(Calendar);
 
 // Load mixins
 Vue.mixin(formatCurrency);
