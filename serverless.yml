@@ -1,0 +1,32 @@
+service: rudget-api # NOTE: update this with your service name
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+
+custom:
+  serverless-offline:
+    port: 4000
+
+  webpack:
+    webpackConfig: webpack.api.js
+    includeModules: false
+    packager: yarn
+
+package:
+  individually: true
+  exclude:
+    - src/**
+
+functions:
+  getAlert:
+    handler: api/handler.hello
+    events:
+      - http:
+          method: GET
+          path: /hello

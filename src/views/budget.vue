@@ -74,6 +74,12 @@ export default {
   computed: {
     ...mapGetters(['budget'])
   },
+  mounted() {
+    fetch('/api/hello')
+      .then(res => res.json())
+      .then(res => this.$store.dispatch('sendAlert', { msg: res.message }))
+      .catch(err => console.error('API Failed', err));
+  },
   methods: {
     sort(e) {
       this.$store.commit('sortGroup', {

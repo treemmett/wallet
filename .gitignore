@@ -1,9 +1,14 @@
 # dependencies
 /node_modules
+#jspm_packages
+
+# Serverless directories
+.serverless
 
 # production
 /build
 /dist
+.webpack
 
 # misc
 .DS_Store

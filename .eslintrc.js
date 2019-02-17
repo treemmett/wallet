@@ -16,6 +16,12 @@ module.exports = {
   ],
   plugins: ['vue', 'prettier'],
   rules: {
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['webpack.*.js']
+      }
+    ],
     'no-param-reassign': 0,
     'no-underscore-dangle': [
       'error',

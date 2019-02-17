@@ -70,7 +70,7 @@ module.exports = {
     clientLogLevel: 'none',
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:4000',
         pathRewrite: {
           '^/api': ''
         }
