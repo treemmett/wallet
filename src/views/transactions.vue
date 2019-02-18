@@ -13,7 +13,7 @@
             :key="item.id"
             class="transaction"
             :class="{ selected: selected === item.id }"
-            @click="selected = item.id"
+            @click="select(item.id)"
           >
             <div class="card">
               <div class="description">{{ item.description }}</div>
@@ -30,15 +30,25 @@
     <transition name="animation">
       <div v-if="sidebarOpen" class="sidebar" @click.self="sidebarOpen = false">
         <div class="card">
-          <form @submit.prevent="add">
+          <form name="transaction" @submit.prevent="saveTransaction">
             <form-input
+              :key="selectedDetail.description"
               type="text"
               name="description"
               label="Description"
+              :value="selectedDetail.description"
               required
             />
 
-            <form-input type="select" name="category" label="Category" required>
+            <form-input
+              :key="selectedDetail.category"
+              type="select"
+              name="category"
+              label="Category"
+              :value="selectedDetail.category"
+              :select-display-value="selectedDetail.categoryName"
+              required
+            >
               <optgroup
                 v-for="group in $store.getters.budget.groups"
                 :key="group.id"
@@ -54,9 +64,28 @@
               </optgroup>
             </form-input>
 
-            <form-input name="amount" type="number" label="Amount" required />
+            <form-input
+              :key="
+                selectedDetail.amount ? Math.abs(selectedDetail.amount) : ''
+              "
+              name="amount"
+              type="number"
+              step="0.01"
+              label="Amount"
+              :value="
+                selectedDetail.amount ? Math.abs(selectedDetail.amount) : ''
+              "
+              required
+            />
 
-            <form-input name="date" type="date" label="Date" required />
+            <form-input
+              :key="selectedDetail.date"
+              name="date"
+              type="date"
+              label="Date"
+              :value="selectedDetail.date"
+              required
+            />
 
             <label>Type</label>
             <div class="radio">
@@ -65,30 +94,33 @@
                 type="radio"
                 name="type"
                 value="expense"
-                checked
+                :checked="!selectedDetail.amount || selectedDetail.amount <= 0"
                 required
               />
               <label class="radio-selector" for="expense">Expense</label>
-              <input id="income" type="radio" name="type" value="income" />
+              <input
+                id="income"
+                type="radio"
+                name="type"
+                value="income"
+                :checked="selectedDetail.amount > 0"
+              />
               <label class="radio-selector" for="income">Income</label>
             </div>
 
             <div class="right">
-              <input
-                type="button"
-                value="Cancel"
-                @click="sidebarOpen = false"
-              />
+              <input type="button" value="Cancel" @click="deselect" />
               <input type="submit" value="Save" />
             </div>
           </form>
         </div>
       </div>
     </transition>
+
     <Fab @click="sidebarOpen = true">
       <icon-plus />
       <template v-if="selected" slot="menu">
-        <div class="icon" @click="selected = null">
+        <div class="icon" @click="saveTransaction">
           <icon-check />
         </div>
         <div class="icon">
@@ -103,7 +135,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import Dashboard from '../layouts/dashboard';
 import Fab from '../components/fab';
 import FormInput from '../components/FormInput';
@@ -127,14 +159,13 @@ export default {
     return {
       sidebarOpen: false,
       selected: null,
-      selectedDetail: {
-        date: null
-      }
+      selectedDetail: {}
     };
   },
   computed: {
+    ...mapGetters(['transactions']),
     transactionsByDate() {
-      const ts = this.$store.getters.transactions;
+      const ts = this.transactions;
       const dt = {};
 
       ts.forEach(t => {
@@ -148,7 +179,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['addTransaction', 'removeTransaction']),
+    ...mapMutations(['addTransaction', 'editTransaction', 'removeTransaction']),
     add(e) {
       // parse date object
       const date = new Date(e.target.elements.date.value)
@@ -164,12 +195,51 @@ export default {
       });
 
       // close sidebar
+      this.deselect();
+    },
+    deselect() {
+      this.selected = null;
       this.sidebarOpen = false;
+      this.selectedDetail = {};
     },
     remove() {
       this.removeTransaction(this.selected);
 
       this.selected = null;
+    },
+    saveTransaction() {
+      const { elements } = document.forms.transaction;
+
+      // parse date object
+      const date = new Date(elements.date.value).toISOString().substring(0, 10);
+
+      const transactionData = {
+        description: elements.description.value.trim(),
+        category: parseInt(elements.category.value.trim(), 10),
+        amount: elements.amount.value.trim(),
+        type: elements.type.value,
+        date
+      };
+
+      if (this.selectedDetail.id) {
+        this.editTransaction({
+          id: this.selectedDetail.id,
+          data: transactionData
+        });
+      } else {
+        this.addTransaction(transactionData);
+      }
+
+      this.deselect();
+    },
+    select(id) {
+      const selectedTransaction = this.transactions.find(t => t.id === id);
+
+      if (!selectedTransaction) return;
+
+      this.selected = id;
+      this.sidebarOpen = true;
+      this.selectedDetail = { ...selectedTransaction };
     }
   }
 };

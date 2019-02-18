@@ -57,6 +57,7 @@
       v-else
       ref="input"
       :type="type"
+      :value="value"
       v-bind="$attrs"
       @blur="blur"
       @focus="focus"
@@ -75,6 +76,10 @@ export default {
     placeholder: {
       type: [String, Boolean],
       default: false
+    },
+    selectDisplayValue: {
+      type: [String, Number],
+      default: ''
     },
     type: {
       type: String,
@@ -98,15 +103,19 @@ export default {
           ].indexOf(value) !== -1
         );
       }
+    },
+    value: {
+      type: [String, Number],
+      default: ''
     }
   },
   data() {
     return {
-      focused: false,
+      focused: Boolean(this.value),
       dropdown: false,
       mouseOver: false,
-      displayValue: '',
-      hiddenValue: ''
+      displayValue: this.selectDisplayValue,
+      hiddenValue: this.value
     };
   },
   computed: {
@@ -255,7 +264,7 @@ export default {
   },
   mounted() {
     // set validity
-    if (this.type === 'select') {
+    if (this.type === 'select' && !this.value) {
       this.$refs.input.setCustomValidity('Please select an item in the list.');
     }
   },

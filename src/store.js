@@ -267,7 +267,7 @@ export default new Vuex.Store({
       state.transactions.push({
         description,
         amount,
-        category: parseInt(category, 10),
+        category,
         date,
         id: Math.floor(Math.random() * 9999999) // random ID
       });
@@ -286,6 +286,23 @@ export default new Vuex.Store({
       state.date.month = timeObj.month();
       state.date.prettyMonth = timeObj.format('MMM');
       state.date.year = timeObj.year();
+    },
+    editTransaction: ({ transactions }, { id, data: { type, ...data } }) => {
+      const transactionToEdit = transactions.find(t => t.id === id);
+
+      if (data.amount) {
+        // parse value
+        data.amount = parseFloat(
+          data.amount.replace(/[^0-9.-]+/g, ''),
+          10
+        ).toFixed(2);
+        data.amount *= type === 'expense' ? -1 : 1;
+      }
+
+      Vue.set(transactions, transactions.indexOf(transactionToEdit), {
+        ...transactionToEdit,
+        ...data
+      });
     },
     setBudget: (state, { category, amount }) => {
       // find budget category
