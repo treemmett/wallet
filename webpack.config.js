@@ -1,71 +1,116 @@
-const autoprefixer = require('autoprefixer');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const htmlWebpackTemplate = require('html-webpack-template');
-const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const autoprefixer = require('autoprefixer');
+const path = require('path');
 
-module.exports = {
+module.exports = (env, { mode = 'development' }) => ({
+  mode,
+
+  devtool: mode === 'production' ? 'source-map' : 'eval-source-map',
+
+  entry: './src/index.js',
+
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: 'main.[hash:6].js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash:6].js'
   },
 
-  resolve: {
-    extensions: ['.js', '.json', '.vue'],
-    modules: [path.join(__dirname, 'node_modules')],
-    alias: {
-      vue: 'vue/dist/vue.js'
-    }
-  },
+  node: false,
 
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.(vue|js)$/,
+        test: /\.(js|vue)$/,
         exclude: /node_modules/,
         loader: 'eslint-loader'
       },
       {
         test: /\.vue$/,
-        use: 'vue-loader'
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.js$/,
+        exclude: /(node_modules|api)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       },
       {
         test: /\.s?css$/,
+        exclude: /\.module\.css/,
         use: [
           'vue-style-loader',
           'css-loader',
-          {
-            loader: 'postcss-loader',
-            options: {
-              plugins: [autoprefixer()]
-            }
-          },
+          { loader: 'postcss-loader', options: { plugins: [autoprefixer] } },
           'sass-loader'
         ]
       }
     ]
   },
 
+  resolve: {
+    extensions: ['.js', '.vue', '.json'],
+    alias: {
+      vue$: 'vue/dist/vue.esm.js',
+      '@': path.resolve(__dirname, 'src')
+    }
+  },
+
   plugins: [
-    new CleanWebpackPlugin(['build']),
-
+    new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
-      inject: false,
-      template: htmlWebpackTemplate,
-
-      appMountId: 'app',
-      mobile: true,
-      lang: 'en-US'
+      template: path.resolve(__dirname, 'static', 'index.html')
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, 'static'),
+        to: path.resolve(__dirname, 'dist'),
+        toType: 'dir'
+      }
+    ])
+  ].concat(
+    mode === 'production'
+      ? [new CleanWebpackPlugin(['dist'], { verbose: false })]
+      : []
+  ),
 
-    new VueLoaderPlugin()
-  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 30000,
+      maxSize: 0,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    },
+    runtimeChunk: {
+      name: entrypoint => `runtime~${entrypoint.name}`
+    },
+    mangleWasmImports: true,
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true
+  },
 
   devServer: {
+    compress: true,
     historyApiFallback: true,
     host: '0.0.0.0',
+    open: true,
     port: 3000,
     clientLogLevel: 'none',
     proxy: {
@@ -77,4 +122,4 @@ module.exports = {
       }
     }
   }
-};
+});
