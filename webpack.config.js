@@ -1,6 +1,7 @@
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ServiceWorkerPlugin = require('serviceworker-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const autoprefixer = require('autoprefixer');
 const path = require('path');
@@ -73,7 +74,11 @@ module.exports = (env, { mode = 'development' }) => ({
         to: path.resolve(__dirname, 'dist'),
         toType: 'dir'
       }
-    ])
+    ]),
+    new ServiceWorkerPlugin({
+      entry: path.join(__dirname, 'src/sw.js'),
+      exclude: ['**/.*', '**/*.map', '**/*.hot-update.json']
+    })
   ].concat(
     mode === 'production'
       ? [new CleanWebpackPlugin(['dist'], { verbose: false })]

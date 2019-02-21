@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import runtime from 'serviceworker-webpack-plugin/lib/runtime';
 import router from './router';
 import store from './store';
 import formatCurrency from './mixins/formatCurrency';
@@ -21,3 +22,8 @@ new Vue({
   el: '#app',
   template: '<router-view/>'
 });
+
+// register service worker
+if ('serviceWorker' in navigator) {
+  runtime.register();
+}
