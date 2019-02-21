@@ -1,0 +1,10 @@
+{
+  "name": "Rudget",
+  "short_name": "Rudget",
+  "background_color": "#fff",
+  "description": "Financial Independence and Retirement Budget",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "en-US",
+  "theme_color": "#ed6a5e"
+}
