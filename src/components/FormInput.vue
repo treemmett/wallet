@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="input-wrapper"
-    :class="{ focused, select: type === 'select' }"
-    @mousedown="focus"
-  >
+  <label class="input-wrapper" :class="{ focused, select: type === 'select' }">
     <div v-if="label" class="label">{{ label }}</div>
     <template v-if="type === 'select'">
       <input
@@ -26,7 +22,6 @@
         class="dropdown"
         @mouseenter="mouseOver = true"
         @mouseleave="mouseOver = false"
-        @mousedown.stop
       >
         <div
           v-for="child in renderChildren"
@@ -35,7 +30,7 @@
             option: child.tag === 'option',
             optgroup: child.tag === 'optgroup'
           }"
-          @click="selectHandler(child)"
+          @click="selectHandler($event, child)"
         >
           <div :class="`${child.tag}-label`">{{ child.label }}</div>
 
@@ -44,7 +39,7 @@
               v-for="nestedChild in child.children"
               :key="nestedChild.value"
               class="option"
-              @click="selectHandler(nestedChild)"
+              @click="selectHandler($event, nestedChild)"
             >
               <div class="option-label">{{ nestedChild.label }}</div>
             </div>
@@ -62,7 +57,7 @@
       @blur="blur"
       @focus="focus"
     />
-  </div>
+  </label>
 </template>
 
 <script>
@@ -300,11 +295,13 @@ export default {
 
       this.$nextTick(() => this.$refs.input.focus());
     },
-    selectHandler({ value, label, tag }) {
+    selectHandler(e, { value, label, tag }) {
       // don't do anything if clicking on a group
       if (tag !== 'option') {
         return;
       }
+
+      e.preventDefault();
 
       // set label value
       this.displayValue = label.trim();
@@ -329,22 +326,27 @@ export default {
 @import '../colors';
 
 .input-wrapper {
+  display: block;
   position: relative;
-  box-shadow: 0 1px 2px 1px rgba(#000, 0.15);
   margin-bottom: 1em;
-  border-radius: 6px;
+  border-radius: 5px;
   height: 2.5em;
   padding: 0 0.5em;
   cursor: text;
+  transition: 0.2s ease-in-out;
+  transition-property: box-shadow, border-color;
+  border: 1px solid #bbb;
+  // font-size: 16px;
 
   &.focused {
     .label {
-      transform: translateY(-120%) translateX(0.25em);
-      font-size: 12px;
-
-      & + input {
-        transform: translateY(-10%);
-      }
+      top: 0;
+      padding: 0 5px;
+      background-color: #fff;
+      box-sizing: border-box;
+      z-index: 1;
+      font-size: 14px;
+      cursor: default;
     }
 
     input {
@@ -359,29 +361,27 @@ export default {
         display: initial;
       }
     }
+
+    &:focus-within {
+      border-color: $blue;
+      box-shadow: 0 0 1px $blue;
+
+      .label {
+        color: $blue;
+      }
+    }
   }
 }
 
 input,
-select,
-.label {
-  position: absolute;
-  transition: 0.15s ease-in-out;
-  transition-property: transform, font-size;
-  box-sizing: border-box;
-  transform: translateY(-50%);
-  top: 50%;
-  padding: 0 0.5em;
-  width: 100%;
-  left: 0;
-}
-
-input,
 select {
-  appearance: none;
-  background-color: transparent;
-  outline: none;
+  height: 100%;
+  width: 100%;
   border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 0.7em;
+  box-sizing: border-box;
   font-size: 16px;
 
   &::-webkit-datetime-edit,
@@ -397,10 +397,17 @@ select {
 }
 
 .label {
-  color: #727272;
+  position: absolute;
+  top: 50%;
+  left: 0.7em;
+  transform: translateY(-50%);
+  color: #888;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  user-select: none;
+  cursor: text;
+  transition: all 0.15s ease-in-out;
 }
 
 .dropdown {
@@ -411,11 +418,12 @@ select {
   margin-top: 0.5em;
   padding: 0.5em 0;
   background-color: #fff;
-  z-index: 1;
-  box-shadow: inherit;
+  z-index: 3;
+  box-shadow: 0 1px 2px 1px rgba(#000, 0.15);
   border-radius: 6px;
   overflow-y: auto;
   max-height: 50vh;
+  color: #333;
 
   .option {
     padding: 0.25em 0.5em;

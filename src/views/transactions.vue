@@ -284,17 +284,6 @@ export default {
     }
   }
 
-  label:not(.radio-selector) {
-    display: block;
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 0.25em;
-
-    &:not(:first-of-type) {
-      margin-top: 0.75em;
-    }
-  }
-
   .right {
     margin-top: 0.75em;
     text-align: right;
