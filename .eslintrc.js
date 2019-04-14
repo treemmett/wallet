@@ -1,49 +1,18 @@
 module.exports = {
-  parserOptions: {
-    sourceType: 'module',
-    parser: 'babel-eslint'
-  },
+  root: true,
   env: {
-    browser: true,
-    es6: true,
-    node: true
+    node: true,
   },
   extends: [
-    'airbnb-base',
-    'plugin:vue/recommended',
-    'prettier',
-    'prettier/vue'
+    'plugin:vue/essential',
+    '@vue/airbnb',
+    '@vue/typescript',
   ],
-  plugins: ['vue', 'prettier'],
   rules: {
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['webpack.*.js']
-      }
-    ],
-    'no-param-reassign': 0,
-    'no-underscore-dangle': [
-      'error',
-      {
-        allow: ['__vue__']
-      }
-    ],
-    'prettier/prettier': 'error',
-    quotes: [
-      'error',
-      'single',
-      {
-        avoidEscape: true,
-        allowTemplateLiterals: false
-      }
-    ]
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   },
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.vue']
-      }
-    }
-  }
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+  },
 };

@@ -1,9 +1,0 @@
-[build]
-  publish = 'dist/'
-  command = 'sed -i s/API_URL_PLACEHOLDER/${API_URL}:splat/g netlify.toml && yarn build'
-
-[[redirects]]
-  from = '/api/*'
-  to = 'API_URL_PLACEHOLDER'
-  status = 200
-  force = true
