@@ -1,18 +1,29 @@
 module.exports = {
   root: true,
   env: {
-    node: true,
+    browser: true,
+    node: true
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     '@vue/airbnb',
     '@vue/typescript',
+    'plugin:prettier/recommended',
+    'prettier/vue'
   ],
   rules: {
+    'comma-dangle': ['error', 'never'],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        htmlWhitespaceSensitivity: 'ignore',
+        singleQuote: true
+      }
+    ]
   },
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-  },
+    parser: '@typescript-eslint/parser'
+  }
 };

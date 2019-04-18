@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss">
-@import "./global";
+@import './global';
 
 body {
   margin: 0;
