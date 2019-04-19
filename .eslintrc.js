@@ -12,6 +12,7 @@ module.exports = {
     'prettier/vue'
   ],
   rules: {
+    'class-methods-use-this': 'off',
     'comma-dangle': ['error', 'never'],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
