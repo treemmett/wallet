@@ -11,6 +11,10 @@
           <h2>Login</h2>
           <Input label="Email" />
           <Input label="Password" />
+          <div class="button-group">
+            <Button label="Register" color="green" />
+            <Button label="Login" solid color="blue" />
+          </div>
         </div>
       </div>
     </div>
@@ -20,9 +24,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Input from '@/components/Input.vue';
+import Button from '@/components/Button.vue';
 
 @Component({
   components: {
+    Button,
     Input
   }
 })
@@ -30,6 +36,8 @@ export default class Login extends Vue {}
 </script>
 
 <style lang="scss" scoped>
+@import 'src/global';
+
 .view {
   padding: 5em;
 }
@@ -52,7 +60,7 @@ export default class Login extends Vue {}
 
 .brand {
   text-align: center;
-  background-color: #297c45;
+  background-color: $brand-green;
   padding: 2em 1em;
   height: 100%;
 
@@ -68,6 +76,17 @@ export default class Login extends Vue {}
 
   h2 {
     margin: 0;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+
+    > *:only-child,
+    > *:not(:first-child) {
+      margin-left: auto;
+    }
   }
 }
 </style>
