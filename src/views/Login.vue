@@ -2,12 +2,16 @@
   <div class="view">
     <div class="card">
       <div class="half">
-        <div class="brand">Rudget</div>
+        <div class="brand">
+          <div class="logo">Rudget</div>
+        </div>
       </div>
       <div class="half">
-        <Input />
-        <Input />
-        <Input />
+        <div class="form">
+          <h2>Login</h2>
+          <Input label="Email" />
+          <Input label="Password" />
+        </div>
       </div>
     </div>
   </div>
@@ -41,22 +45,29 @@ export default class Login extends Vue {}
 }
 
 .half {
-  // float: left;
   position: relative;
-  // height: 100%;
-  padding: 2em 1em;
   width: 50%;
   box-sizing: border-box;
-
-  &:first-child {
-    background-color: #297c45;
-  }
 }
 
 .brand {
-  color: #fff;
-  font-size: 38px;
-  font-weight: 500;
   text-align: center;
+  background-color: #297c45;
+  padding: 2em 1em;
+  height: 100%;
+
+  .logo {
+    color: #fff;
+    font-size: 38px;
+    font-weight: 500;
+  }
+}
+
+.form {
+  padding: 2em 3em;
+
+  h2 {
+    margin: 0;
+  }
 }
 </style>

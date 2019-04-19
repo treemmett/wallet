@@ -1,17 +1,26 @@
 <template>
-  <label class="wrapper">
+  <label class="wrapper" :class="{ 'has-value': hasValue }">
     <div class="main">
-      <div class="label">Email</div>
-      <input class="input" />
+      <div class="label">{{ label }}</div>
+      <input class="input" @blur="blur" />
     </div>
   </label>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Input extends Vue {}
+export default class Input extends Vue {
+  hasValue: boolean = false;
+
+  @Prop(String)
+  readonly label!: string;
+
+  blur(e: Event) {
+    this.hasValue = !!(e.target as HTMLInputElement).value;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -21,7 +30,7 @@ $fontSize: 16px;
 
 .wrapper {
   display: block;
-  padding-top: 5px;
+  padding-top: 10px;
 }
 
 .main {
@@ -43,6 +52,7 @@ $fontSize: 16px;
   pointer-events: none;
   transition: 0.2s $curve;
   transition-property: background-color, color, transform;
+  transform-origin: 0 0 0;
 }
 
 .input {
@@ -56,17 +66,21 @@ $fontSize: 16px;
   border-radius: 4px;
 }
 
-.wrapper:focus-within,
-.wrapper.active {
+.wrapper:focus-within {
   .main {
     box-shadow: 0 0 3px 0 $blue;
     border-color: $blue;
   }
 
   .label {
-    transform: translateX(-1em) translateY(-1.5em) scale(0.8);
+    transform: translateY(-100%) scale(0.8);
     color: darken($blue, 5%);
     background-color: #fff;
   }
+}
+
+.wrapper.has-value .label {
+  transform: translateY(-100%) scale(0.8);
+  background-color: #fff;
 }
 </style>
