@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="{ outline, solid, [color]: color }" :type="type">
+  <button class="btn" :class="{ outline, solid, [color]: color }" :type="type" @click="toast">
     <div class="label">{{ label }}</div>
   </button>
 </template>
@@ -23,6 +23,10 @@ export default class Button extends Vue {
 
   @Prop(String)
   readonly label!: string;
+
+  toast() {
+    this.$toast({ message: this.label, title: 'button' });
+  }
 }
 </script>
 

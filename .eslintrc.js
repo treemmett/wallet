@@ -16,6 +16,7 @@ module.exports = {
     'comma-dangle': ['error', 'never'],
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-param-reassign': 'off',
     'prettier/prettier': [
       'error',
       {
