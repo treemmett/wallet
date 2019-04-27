@@ -1,6 +1,6 @@
 import vue from 'vue';
-import Toaster from './components/Toaster.vue';
-import toastEvents from './utils/toastEvents';
+import Toaster from '../../components/Toaster.vue';
+import toastEvents from '../toastEvents';
 
 export default {
   install(Vue: typeof vue) {

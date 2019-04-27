@@ -4,8 +4,8 @@
       <div class="label">{{ label }}</div>
       <input
         class="input"
-        :type="type"
         :value="value || privValue"
+        v-bind="$attrs"
         @blur="blur"
         @input="handleInput"
       />
@@ -16,13 +16,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, Model } from 'vue-property-decorator';
 
-@Component
+@Component({ inheritAttrs: false })
 export default class Input extends Vue {
   @Prop(String)
   readonly label!: string;
-
-  @Prop({ default: 'text', validator: v => ['text', 'password', 'email'].includes(v) })
-  readonly type!: string;
 
   @Model('input', { type: String })
   readonly value!: string;

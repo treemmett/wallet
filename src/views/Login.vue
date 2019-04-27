@@ -13,7 +13,7 @@
       </div>
       <div class="half">
         <transition>
-          <div v-if="$route.name === 'login'" key="login" class="form left">
+          <form v-if="$route.name === 'login'" key="login" class="form left">
             <h2>Login</h2>
             <Input v-model="email" label="Email" />
             <Input label="Password" />
@@ -25,21 +25,26 @@
               />
               <Button label="Login" solid color="blue" />
             </div>
-          </div>
-          <div v-else-if="$route.name === 'registration'" key="registration" class="form right">
+          </form>
+          <form
+            v-else-if="$route.name === 'registration'"
+            key="registration"
+            class="form right"
+            @submit.prevent="register"
+          >
             <h2>Registration</h2>
             <div class="split">
-              <Input label="First Name" />
-              <Input label="Last Name" />
+              <Input label="First Name" name="firstName" />
+              <Input label="Last Name" name="lastName" />
             </div>
-            <Input v-model="email" label="Email" />
-            <Input v-model="password" label="Password" type="password" />
-            <Input label="Confirm Password" type="password" />
+            <Input v-model="email" label="Email" name="email" />
+            <Input v-model="password" label="Password" type="password" name="password" />
+            <Input label="Confirm Password" type="password" name="confirmPassword" />
             <div class="button-group">
               <Button label="Login" color="green" @click.native="$router.push({ name: 'login' })" />
-              <Button label="Create Account" solid color="blue" />
+              <Button label="Create Account" solid color="blue" type="submit" />
             </div>
-          </div>
+          </form>
         </transition>
       </div>
     </div>
@@ -61,6 +66,42 @@ export default class Login extends Vue {
   private email: string = '';
 
   private password: string = '';
+
+  register(e: Event) {
+    const form = e.target as HTMLFormElement;
+    const { elements } = form as any;
+
+    // get form values
+    const values = {
+      email: elements.email.value,
+      password: elements.password.value,
+      firstName: elements.firstName.value,
+      lastName: elements.lastName.value
+    };
+
+    // check if passwords match
+    if (values.password !== elements.confirmPassword.value) {
+      this.$toast('Password do not match');
+      return;
+    }
+
+    this.$api({
+      method: 'POST',
+      url: '/user',
+      data: {
+        email: values.email,
+        password: values.password,
+        firstName: values.firstName,
+        lastName: values.lastName
+      }
+    })
+      .then(() => {
+        this.$toast('Account has been created.');
+      })
+      .catch(err => {
+        this.$toast({ message: err.response.data.message || 'Something went wrong', error: true });
+      });
+  }
 }
 </script>
 

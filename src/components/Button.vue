@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="{ outline, solid, [color]: color }" :type="type" @click="toast">
+  <button class="btn" :class="{ outline, solid, [color]: color }" :type="type">
     <div class="label">{{ label }}</div>
   </button>
 </template>
@@ -9,7 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
 export default class Button extends Vue {
-  @Prop({ default: 'button' })
+  @Prop({ default: 'button', validator: v => ['button', 'submit', 'reset'].includes(v) })
   readonly type!: 'button' | 'submit' | 'reset';
 
   @Prop(Boolean)
@@ -23,10 +23,6 @@ export default class Button extends Vue {
 
   @Prop(String)
   readonly label!: string;
-
-  toast() {
-    this.$toast({ message: this.label, title: 'button' });
-  }
 }
 </script>
 
