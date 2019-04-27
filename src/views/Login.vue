@@ -15,7 +15,7 @@
         <transition>
           <div v-if="$route.name === 'login'" key="login" class="form left">
             <h2>Login</h2>
-            <Input label="Email" />
+            <Input v-model="email" label="Email" />
             <Input label="Password" />
             <div class="button-group">
               <Button
@@ -32,9 +32,9 @@
               <Input label="First Name" />
               <Input label="Last Name" />
             </div>
-            <Input label="Email" />
-            <Input label="Password" />
-            <Input label="Confirm Password" />
+            <Input v-model="email" label="Email" />
+            <Input v-model="password" label="Password" type="password" />
+            <Input label="Confirm Password" type="password" />
             <div class="button-group">
               <Button label="Login" color="green" @click.native="$router.push({ name: 'login' })" />
               <Button label="Create Account" solid color="blue" />
@@ -57,7 +57,11 @@ import Button from '@/components/Button.vue';
     Input
   }
 })
-export default class Login extends Vue {}
+export default class Login extends Vue {
+  private email: string = '';
+
+  private password: string = '';
+}
 </script>
 
 <style lang="scss" scoped>

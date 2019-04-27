@@ -2,23 +2,42 @@
   <label class="wrapper" :class="{ 'has-value': hasValue }">
     <div class="main">
       <div class="label">{{ label }}</div>
-      <input class="input" @blur="blur" />
+      <input
+        class="input"
+        :type="type"
+        :value="value || privValue"
+        @blur="blur"
+        @input="handleInput"
+      />
     </div>
   </label>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Model } from 'vue-property-decorator';
 
 @Component
 export default class Input extends Vue {
-  hasValue: boolean = false;
-
   @Prop(String)
   readonly label!: string;
 
+  @Prop({ default: 'text', validator: v => ['text', 'password', 'email'].includes(v) })
+  readonly type!: string;
+
+  @Model('input', { type: String })
+  readonly value!: string;
+
+  private privValue: string = '';
+
+  hasValue: boolean = !!this.value;
+
   blur(e: Event) {
     this.hasValue = !!(e.target as HTMLInputElement).value;
+  }
+
+  handleInput(e: Event) {
+    this.privValue = (e.target as HTMLInputElement).value;
+    this.$emit('input', this.privValue);
   }
 }
 </script>
