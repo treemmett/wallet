@@ -36,18 +36,17 @@ import ChevronDown from './icons/ChevronDown.vue';
 export default class BudgetGroup extends Vue {
   private collapsed: boolean = false;
 
+  private renderedHeight: number = 0;
+
   @Prop(String)
   readonly groupName!: string;
 
   enter(el: HTMLElement) {
-    // check if we're in the middle of an exit transition
-    console.log(el.style);
-
     // store computed height of element
     const { height } = el.getBoundingClientRect();
 
     // force height to zero
-    el.style.height = '0px';
+    el.style.height = `${this.renderedHeight || 0}px`;
 
     // force repaint
     // eslint-disable-next-line no-unused-expressions
@@ -70,6 +69,16 @@ export default class BudgetGroup extends Vue {
     // force repaint
     // eslint-disable-next-line no-unused-expressions
     getComputedStyle(el).height;
+
+    const frame = () => {
+      this.renderedHeight = el.getBoundingClientRect().height;
+
+      if (this.renderedHeight && this.collapsed) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    frame();
   }
 
   leave(el: HTMLElement) {
@@ -99,6 +108,10 @@ export default class BudgetGroup extends Vue {
 
   &.collapsed {
     border-bottom-color: transparent;
+
+    svg {
+      transform: rotate(180deg);
+    }
   }
 
   .name {
@@ -110,11 +123,12 @@ export default class BudgetGroup extends Vue {
     width: 32px;
     cursor: pointer;
     color: #888;
+    transition: transform 0.4s $curve;
   }
 }
 
 .category-list {
-  transition: height 0.65s $curve;
+  transition: height 0.5s $curve;
   overflow: hidden;
 }
 
