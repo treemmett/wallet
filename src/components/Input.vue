@@ -49,6 +49,7 @@ $fontSize: 16px;
 .wrapper {
   display: block;
   padding-top: 10px;
+  cursor: text;
 }
 
 .main {

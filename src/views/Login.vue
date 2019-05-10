@@ -13,17 +13,22 @@
       </div>
       <div class="half">
         <transition>
-          <form v-if="$route.name === 'login'" key="login" class="form left">
+          <form
+            v-if="$route.name === 'login'"
+            key="login"
+            class="form left"
+            @submit.prevent="login"
+          >
             <h2>Login</h2>
-            <Input v-model="email" label="Email" />
-            <Input label="Password" />
+            <Input v-model="email" label="Email" name="email" />
+            <Input label="Password" type="password" name="password" />
             <div class="button-group">
               <Button
                 label="Register"
                 color="green"
                 @click.native="$router.push({ name: 'registration' })"
               />
-              <Button label="Login" solid color="blue" />
+              <Button label="Login" type="submit" solid color="blue" />
             </div>
           </form>
           <form
@@ -53,6 +58,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import Input from '@/components/Input.vue';
 import Button from '@/components/Button.vue';
 
@@ -66,6 +72,28 @@ export default class Login extends Vue {
   private email: string = '';
 
   private password: string = '';
+
+  @Action('login') private loginAct: (token: string) => void;
+
+  login(e: Event) {
+    const form = e.target as HTMLFormElement;
+    const { elements } = form as any;
+
+    this.$api
+      .post('/auth', {
+        email: elements.email.value,
+        password: elements.password.value
+      })
+      .then(({ data }) => {
+        this.loginAct(data.access_token);
+      })
+      .catch(err => {
+        this.$toast({
+          message: err.response.data.message || 'Something went wrong',
+          error: true
+        });
+      });
+  }
 
   register(e: Event) {
     const form = e.target as HTMLFormElement;
@@ -207,10 +235,9 @@ export default class Login extends Vue {
       flex-direction: column-reverse;
 
       > * {
-        margin-bottom: 1em;
-
         &:only-child,
         &:not(:first-child) {
+          margin-bottom: 1em;
           margin-left: 0;
         }
       }
