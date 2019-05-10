@@ -99,7 +99,10 @@ export default class Login extends Vue {
         this.$toast('Account has been created.');
       })
       .catch(err => {
-        this.$toast({ message: err.response.data.message || 'Something went wrong', error: true });
+        this.$toast({
+          message: err.response.data.message || 'Something went wrong',
+          error: true
+        });
       });
   }
 }
@@ -120,7 +123,10 @@ export default class Login extends Vue {
   box-sizing: border-box;
   border-radius: 5px;
   overflow: hidden;
-  height: 25em;
+  height: 27em;
+  max-width: 50em;
+  margin: 0 auto;
+  box-shadow: 0 5px 20px rgba(#000, 0.1);
 }
 
 .half {
@@ -128,6 +134,10 @@ export default class Login extends Vue {
   width: 50%;
   box-sizing: border-box;
   overflow: hidden;
+
+  &:first-child {
+    background-color: $brand-green;
+  }
 }
 
 .left,
@@ -155,7 +165,6 @@ export default class Login extends Vue {
 
 .brand {
   text-align: center;
-  background-color: $brand-green;
   padding: 2em 1em;
 
   .logo {
@@ -192,6 +201,19 @@ export default class Login extends Vue {
     > *:only-child,
     > *:not(:first-child) {
       margin-left: auto;
+    }
+
+    @media screen and (max-width: 885px) {
+      flex-direction: column-reverse;
+
+      > * {
+        margin-bottom: 1em;
+
+        &:only-child,
+        &:not(:first-child) {
+          margin-left: 0;
+        }
+      }
     }
   }
 }

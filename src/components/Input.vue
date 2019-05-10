@@ -1,7 +1,9 @@
 <template>
   <label class="wrapper" :class="{ 'has-value': hasValue }">
     <div class="main">
-      <div class="label">{{ label }}</div>
+      <div class="label-wrapper">
+        <div class="label">{{ label }}</div>
+      </div>
       <input
         class="input"
         :value="value || privValue"
@@ -56,6 +58,16 @@ $fontSize: 16px;
   transition: border-color 0.2s $curve, box-shadow 0.2s $curve;
 }
 
+.label-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 10px);
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
 .label {
   position: absolute;
   bottom: 0.8em;
@@ -69,6 +81,7 @@ $fontSize: 16px;
   transition: 0.2s $curve;
   transition-property: background-color, color, transform;
   transform-origin: 0 0 0;
+  white-space: nowrap;
 }
 
 .input {
