@@ -7,7 +7,13 @@ $blue: #2196f3;
 $green: #4caf50;
 $red: #f44336;
 
-$shadow: 0 5px 10px rgba(#000, 0.1);
+$shadow: 0 5px 20px rgba(#000, 0.1);
 
 $red-gradient: linear-gradient(to bottom left, #ff4747, #ff8b4c);
 $blue-gradient: linear-gradient(120deg, #00c6ff 0%, #00f2fe 100%);
+
+@mixin card {
+  box-shadow: $shadow;
+  border-radius: 6px;
+  background-color: #fff;
+}

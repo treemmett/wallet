@@ -154,7 +154,7 @@ export default class Login extends Vue {
   height: 27em;
   max-width: 50em;
   margin: 0 auto;
-  box-shadow: 0 5px 20px rgba(#000, 0.1);
+  box-shadow: $shadow;
 }
 
 .half {
