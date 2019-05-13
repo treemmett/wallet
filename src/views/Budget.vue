@@ -1,11 +1,12 @@
 <template>
   <div class="budget">
-    <budget-group group-name="Housing" />
+    <budget-group v-for="group in budget" :key="group.id" :group-name="group.name" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Getter } from 'vuex-class';
 import BudgetGroup from '@/components/BudgetGroup.vue';
 
 @Component({
@@ -13,7 +14,14 @@ import BudgetGroup from '@/components/BudgetGroup.vue';
     BudgetGroup
   }
 })
-export default class Budget extends Vue {}
+export default class Budget extends Vue {
+  @Getter('budget')
+  budget: Rudget.BudgetGroup[];
+
+  created() {
+    this.$store.dispatch('loadBudget');
+  }
+}
 </script>
 
 <style lang="scss" scoped>
