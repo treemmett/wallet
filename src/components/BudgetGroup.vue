@@ -8,20 +8,10 @@
     </div>
     <transition @before-leave="beforeLeave" @leave="leave" @enter="enter" @after-enter="afterEnter">
       <div v-if="!collapsed" class="category-list">
-        <div class="category">
-          <div class="name">Rent</div>
-          <input />
-          <div class="used">$1000.00</div>
-        </div>
-        <div class="category">
-          <div class="name">Insurance</div>
-          <input />
-          <div class="used">$74.32</div>
-        </div>
-        <div class="category">
-          <div class="name">Utilities</div>
-          <input />
-          <div class="used">$103.43</div>
+        <div v-for="category in categories" :key="category.id" class="category">
+          <div class="name">{{ category.name }}</div>
+          <input :value="category.amount" />
+          <div class="used">{{ category.amount }}</div>
         </div>
       </div>
     </transition>
@@ -40,6 +30,9 @@ export default class BudgetGroup extends Vue {
 
   @Prop(String)
   readonly groupName!: string;
+
+  @Prop()
+  readonly categories!: Rudget.BudgetCategory[];
 
   enter(el: HTMLElement) {
     // store computed height of element

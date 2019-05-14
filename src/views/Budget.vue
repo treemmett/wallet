@@ -1,6 +1,11 @@
 <template>
   <div class="budget">
-    <budget-group v-for="group in budget" :key="group.id" :group-name="group.name" />
+    <budget-group
+      v-for="group in budget"
+      :key="group.id"
+      :group-name="group.name"
+      :categories="group.categories"
+    />
   </div>
 </template>
 
