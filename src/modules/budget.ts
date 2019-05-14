@@ -22,12 +22,35 @@ const module: Module<BudgetState, Rudget.RootState> = {
     }
   },
   mutations: {
+    renameGroup(state, payload) {
+      state.groups[payload.index].name = payload.name;
+    },
     setBudget(state, payload) {
       state.categories = payload.categories;
       state.groups = payload.groups;
     }
   },
   actions: {
+    async renameGroup(context, payload: { id: string; name: string }) {
+      api
+        .put(`/group/${payload.id}`, {
+          name: payload.name
+        })
+        .then(() => {
+          // find index of group
+          const index = context.state.groups.findIndex(g => g.id === payload.id);
+
+          if (index < 0) {
+            throw new Error(`Group ID ${payload.id} was not found in state.`);
+          }
+
+          context.commit({
+            type: 'renameGroup',
+            index,
+            name: payload.name
+          });
+        });
+    },
     async loadBudget({ commit }) {
       const { data } = await api.get('/budget');
 

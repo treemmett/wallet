@@ -4,6 +4,7 @@
       v-for="group in budget"
       :key="group.id"
       :group-name="group.name"
+      :group-id="group.id"
       :categories="group.categories"
     />
   </div>

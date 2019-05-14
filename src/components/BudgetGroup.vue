@@ -2,7 +2,12 @@
   <div class="group">
     <div class="head-wrapper">
       <div class="head" :class="{ collapsed }">
-        <div class="name">{{ groupName }}</div>
+        <input
+          class="name"
+          :value="groupName"
+          @change="changeName"
+          @keydown.enter="$event.currentTarget.blur()"
+        />
         <chevron-down @click.native="collapsed = !collapsed" />
       </div>
     </div>
@@ -20,6 +25,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
 import ChevronDown from './icons/ChevronDown.vue';
 
 @Component({ components: { ChevronDown } })
@@ -28,11 +34,22 @@ export default class BudgetGroup extends Vue {
 
   private renderedHeight: number = 0;
 
-  @Prop(String)
+  @Prop({ type: String, required: true })
   readonly groupName!: string;
 
-  @Prop()
+  @Prop({ type: String, required: true })
+  readonly groupId!: string;
+
+  @Prop({ type: Array, required: true })
   readonly categories!: Rudget.BudgetCategory[];
+
+  @Action('renameGroup')
+  renameGroup: (payload: { name: string; id: string }) => void;
+
+  changeName(e: Event) {
+    const input = e.currentTarget as HTMLInputElement;
+    this.renameGroup({ id: this.groupId, name: input.value.trim() });
+  }
 
   enter(el: HTMLElement) {
     // store computed height of element
@@ -95,7 +112,7 @@ export default class BudgetGroup extends Vue {
 .head {
   display: flex;
   align-items: center;
-  padding: 1em 0;
+  padding: 0.75em 0;
   border-bottom: 1px solid #ccc;
   transition: border-bottom-color 0.2s $curve;
 
@@ -107,8 +124,25 @@ export default class BudgetGroup extends Vue {
     }
   }
 
+  &:hover .name {
+    border-color: #ccc;
+  }
+
   .name {
     font-size: 22px;
+    font-family: $font-stack;
+    padding: 4px;
+    border: 1px solid transparent;
+    outline: none;
+    border-radius: 4px;
+    transition: 0.15s $curve;
+    transition-property: box-shadow, border-color;
+
+    &:focus,
+    &:active {
+      box-shadow: 0 0 3px 0 $blue;
+      border-color: $blue;
+    }
   }
 
   svg {
@@ -144,7 +178,7 @@ export default class BudgetGroup extends Vue {
     width: 4em;
     margin-right: 1em;
     border: 1px solid transparent;
-    transition: 0.2s $curve;
+    transition: 0.15s $curve;
     transition-property: box-shadow, border-color;
 
     &:focus,
