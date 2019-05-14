@@ -12,6 +12,15 @@ declare namespace Rudget {
     categories?: BudgetCategory[];
   }
 
+  interface RootState {
+    session: {
+      accessToken: string;
+      loggedIn: boolean;
+      sessionExpires: Date;
+      userId: string;
+    };
+  }
+
   interface ToastOptions {
     message: string;
     error?: boolean;

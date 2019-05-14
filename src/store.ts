@@ -1,11 +1,11 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
 
 import budget from './modules/budget';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const opt: StoreOptions<Rudget.RootState> = {
   modules: {
     budget
   },
@@ -46,4 +46,6 @@ export default new Vuex.Store({
       localStorage.setItem('accessToken', token);
     }
   }
-});
+};
+
+export default new Vuex.Store(opt);
