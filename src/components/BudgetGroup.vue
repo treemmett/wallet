@@ -14,8 +14,18 @@
     <transition @before-leave="beforeLeave" @leave="leave" @enter="enter" @after-enter="afterEnter">
       <div v-if="!collapsed" class="category-list">
         <div v-for="category in categories" :key="category.id" class="category">
-          <div class="name">{{ category.name }}</div>
-          <input :value="category.amount" />
+          <input
+            class="name"
+            :value="category.name"
+            @change="changeCategory($event, 'name', category.id)"
+            @keydown.enter="$event.currentTarget.blur()"
+          />
+          <input
+            class="amount"
+            :value="category.amount"
+            @change="changeCategory($event, 'amount', category.id)"
+            @keydown.enter="$event.currentTarget.blur()"
+          />
           <div class="used">{{ category.amount }}</div>
         </div>
       </div>
@@ -49,6 +59,23 @@ export default class BudgetGroup extends Vue {
   changeName(e: Event) {
     const input = e.currentTarget as HTMLInputElement;
     this.renameGroup({ id: this.groupId, name: input.value.trim() });
+  }
+
+  @Action('editCategory')
+  editCategory: (payload: { name?: string; amount?: number; id: string }) => void;
+
+  changeCategory(e: Event, field: 'name' | 'amount', id: string) {
+    const input = e.currentTarget as HTMLInputElement;
+
+    const payload: { id: string; name?: string; amount?: number } = { id };
+
+    if (field === 'name') {
+      payload.name = input.value.trim();
+    } else if (field === 'amount') {
+      payload.amount = parseInt(input.value.replace(/\D/g, ''), 10);
+    }
+
+    this.editCategory(payload);
   }
 
   enter(el: HTMLElement) {
@@ -130,19 +157,6 @@ export default class BudgetGroup extends Vue {
 
   .name {
     font-size: 22px;
-    font-family: $font-stack;
-    padding: 4px;
-    border: 1px solid transparent;
-    outline: none;
-    border-radius: 4px;
-    transition: 0.15s $curve;
-    transition-property: box-shadow, border-color;
-
-    &:focus,
-    &:active {
-      box-shadow: 0 0 3px 0 $blue;
-      border-color: $blue;
-    }
   }
 
   svg {
@@ -168,7 +182,7 @@ export default class BudgetGroup extends Vue {
     border-color: #ccc;
   }
 
-  input {
+  .amount {
     font-family: $font-stack;
     outline: none;
     padding: 5px;
@@ -200,5 +214,19 @@ export default class BudgetGroup extends Vue {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-family: $font-stack;
+  padding: 4px;
+  border: 1px solid transparent;
+  outline: none;
+  border-radius: 4px;
+  transition: 0.15s $curve;
+  transition-property: box-shadow, border-color;
+  color: #333;
+
+  &:focus,
+  &:active {
+    box-shadow: 0 0 3px 0 $blue;
+    border-color: $blue;
+  }
 }
 </style>
