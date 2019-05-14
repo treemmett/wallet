@@ -67,6 +67,7 @@ $fontSize: 16px;
   height: calc(100% + 10px);
   overflow-x: hidden;
   overflow-y: visible;
+  pointer-events: none;
 }
 
 .label {
