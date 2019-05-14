@@ -183,17 +183,10 @@ export default class BudgetGroup extends Vue {
   }
 
   .amount {
-    font-family: $font-stack;
-    outline: none;
-    padding: 5px;
-    border-radius: 4px;
-    border: 0;
+    @include input;
     font-size: 16px;
     width: 4em;
     margin-right: 1em;
-    border: 1px solid transparent;
-    transition: 0.15s $curve;
-    transition-property: box-shadow, border-color;
 
     &:focus,
     &:active {
@@ -209,24 +202,9 @@ export default class BudgetGroup extends Vue {
 }
 
 .name {
+  @include input;
   margin-right: auto;
   font-size: 20px;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-family: $font-stack;
-  padding: 4px;
-  border: 1px solid transparent;
-  outline: none;
-  border-radius: 4px;
-  transition: 0.15s $curve;
-  transition-property: box-shadow, border-color;
-  color: #333;
-
-  &:focus,
-  &:active {
-    box-shadow: 0 0 3px 0 $blue;
-    border-color: $blue;
-  }
 }
 </style>

@@ -20,8 +20,8 @@
             @submit.prevent="login"
           >
             <h2>Login</h2>
-            <Input v-model="email" label="Email" name="email" />
-            <Input label="Password" type="password" name="password" />
+            <TextField v-model="email" label="Email" name="email" />
+            <TextField label="Password" type="password" name="password" />
             <div class="button-group">
               <Button
                 label="Register"
@@ -39,12 +39,12 @@
           >
             <h2>Registration</h2>
             <div class="split">
-              <Input label="First Name" name="firstName" />
-              <Input label="Last Name" name="lastName" />
+              <TextField label="First Name" name="firstName" />
+              <TextField label="Last Name" name="lastName" />
             </div>
-            <Input v-model="email" label="Email" name="email" />
-            <Input v-model="password" label="Password" type="password" name="password" />
-            <Input label="Confirm Password" type="password" name="confirmPassword" />
+            <TextField v-model="email" label="Email" name="email" />
+            <TextField v-model="password" label="Password" type="password" name="password" />
+            <TextField label="Confirm Password" type="password" name="confirmPassword" />
             <div class="button-group">
               <Button label="Login" color="green" @click.native="$router.push({ name: 'login' })" />
               <Button label="Create Account" solid color="blue" type="submit" />
@@ -59,13 +59,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Action } from 'vuex-class';
-import Input from '@/components/Input.vue';
+import TextField from '@/components/TextField.vue';
 import Button from '@/components/Button.vue';
 
 @Component({
   components: {
     Button,
-    Input
+    TextField
   }
 })
 export default class Login extends Vue {

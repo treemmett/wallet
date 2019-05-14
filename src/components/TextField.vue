@@ -19,7 +19,7 @@
 import { Component, Vue, Prop, Model } from 'vue-property-decorator';
 
 @Component({ inheritAttrs: false })
-export default class Input extends Vue {
+export default class TextField extends Vue {
   @Prop(String)
   readonly label!: string;
 
