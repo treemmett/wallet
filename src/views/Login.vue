@@ -219,28 +219,60 @@ export default class Login extends Vue {
       width: calc(50% - 0.5em);
     }
   }
+}
 
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: auto;
-    padding-top: 1em;
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 1em;
 
-    > *:only-child,
-    > *:not(:first-child) {
-      margin-left: auto;
-    }
+  > *:only-child,
+  > *:not(:first-child) {
+    margin-left: auto;
+  }
+}
 
-    @media screen and (max-width: 885px) {
-      flex-direction: column-reverse;
+@media screen and (max-width: 885px) {
+  .card {
+    height: 33em;
+  }
+
+  .form {
+    padding: 2em;
+
+    .split {
+      display: block;
 
       > * {
-        &:only-child,
-        &:not(:first-child) {
-          margin-bottom: 1em;
-          margin-left: 0;
-        }
+        width: initial;
       }
+    }
+  }
+
+  .button-group {
+    flex-direction: column-reverse;
+
+    > * {
+      &:only-child,
+      &:not(:first-child) {
+        margin-bottom: 1em;
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .view {
+    padding: 2.5em;
+  }
+
+  .half {
+    width: 100%;
+
+    &:first-child {
+      display: none;
     }
   }
 }
