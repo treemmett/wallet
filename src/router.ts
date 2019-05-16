@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Budget from './views/Budget.vue';
+import store from './store';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -20,9 +21,31 @@ export default new Router({
       children: [
         {
           path: 'register',
-          name: 'registration'
+          name: 'registration',
+          meta: {
+            public: true
+          }
         }
-      ]
+      ],
+      meta: {
+        public: true
+      }
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.public) {
+    return next();
+  }
+
+  if (store.state.session.loggedIn) {
+    return next();
+  }
+
+  return next({
+    name: 'login'
+  });
+});
+
+export default router;

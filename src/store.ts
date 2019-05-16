@@ -5,17 +5,39 @@ import budget from './modules/budget';
 
 Vue.use(Vuex);
 
+const defaultSession = {
+  accessToken: '',
+  loggedIn: false,
+  sessionExpires: new Date(),
+  userId: ''
+};
+
+// check if there's an existing session
+const token = localStorage.getItem('accessToken');
+if (token) {
+  const parts = token.split('.');
+  const payload = JSON.parse(atob(parts[1]));
+
+  const exp = new Date(payload.exp * 1000);
+  const iat = new Date(payload.iat * 1000);
+
+  // check if session is still active
+  if (exp > new Date() && new Date() > iat) {
+    defaultSession.accessToken = token;
+    defaultSession.loggedIn = true;
+    defaultSession.sessionExpires = exp;
+    defaultSession.userId = payload.sub;
+  } else {
+    localStorage.removeItem('accessToken');
+  }
+}
+
 const opt: StoreOptions<Rudget.RootState> = {
   modules: {
     budget
   },
   state: {
-    session: {
-      accessToken: '',
-      loggedIn: false,
-      sessionExpires: new Date(),
-      userId: ''
-    }
+    session: defaultSession
   },
   mutations: {
     login(
