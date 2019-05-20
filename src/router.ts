@@ -30,6 +30,11 @@ const router = new Router({
       meta: {
         public: true
       }
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: () => import('./views/Transactions.vue')
     }
   ]
 });
