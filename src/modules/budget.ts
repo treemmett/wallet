@@ -90,12 +90,8 @@ const module: Module<BudgetState, Rudget.RootState> = {
 
       commit({
         type: 'setBudget',
-        categories: [].concat(
-          ...data.groups.map(({ categories, id }: any) =>
-            categories.map((c: any) => ({ ...c, groupId: id }))
-          )
-        ),
-        groups: data.groups.map(({ categories, ...rest }: any) => ({ ...rest }))
+        categories: data.categories,
+        groups: data.groups
       });
     }
   }
