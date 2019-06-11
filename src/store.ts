@@ -13,9 +13,9 @@ const defaultSession = {
 };
 
 // check if there's an existing session
-const token = localStorage.getItem('accessToken');
-if (token) {
-  const parts = token.split('.');
+const existingToken = localStorage.getItem('accessToken');
+if (existingToken) {
+  const parts = existingToken.split('.');
   const payload = JSON.parse(atob(parts[1]));
 
   const exp = new Date(payload.exp * 1000);
@@ -23,7 +23,7 @@ if (token) {
 
   // check if session is still active
   if (exp > new Date() && new Date() > iat) {
-    defaultSession.accessToken = token;
+    defaultSession.accessToken = existingToken;
     defaultSession.loggedIn = true;
     defaultSession.sessionExpires = exp;
     defaultSession.userId = payload.sub;
